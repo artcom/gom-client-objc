@@ -23,17 +23,17 @@ typedef void (^GOMClientCallback)(NSDictionary *);
 
 - (id)initWithGOMRoot:(NSURL *)gomRoot;
 
-- (void)retrieveAttribute:(NSString *)attribute;
-- (void)retrieveNode:(NSString *)node;
+- (void)retrieveAttribute:(NSString *)attribute completionBlock:(GOMClientCallback)block;
+- (void)retrieveNode:(NSString *)node completionBlock:(GOMClientCallback)block;
 
-- (void)createNode:(NSString *)node;
-- (void)createNode:(NSString *)node withAttributes:(NSDictionary *)attributes;
+- (void)createNode:(NSString *)node completionBlock:(GOMClientCallback)block;
+- (void)createNode:(NSString *)node withAttributes:(NSDictionary *)attributes completionBlock:(GOMClientCallback)block;
 
-- (void)updateAttribute:(NSString *)attribute withValue:(NSString *)value;
-- (void)updateNode:(NSString *)node withAttributes:(NSDictionary *)attributes;
+- (void)updateAttribute:(NSString *)attribute withValue:(NSString *)value completionBlock:(GOMClientCallback)block;
+- (void)updateNode:(NSString *)node withAttributes:(NSDictionary *)attributes completionBlock:(GOMClientCallback)block;
 
-- (void)deleteNode:(NSString *)node;
+- (void)deleteNode:(NSString *)node completionBlock:(GOMClientCallback)block;
 
-- (void)registerGOMObserverForPath:(NSString *)path options:(NSDictionary *)options callback:(GOMClientCallback)callback;
+- (void)registerGOMObserverForPath:(NSString *)path options:(NSDictionary *)options completionBlock:(GOMClientCallback)block;
 
 @end
