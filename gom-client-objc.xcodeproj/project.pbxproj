@@ -26,7 +26,6 @@
 		3B2A5FC117E313A3009A4430 /* GOMHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B2A5FBE17E313A3009A4430 /* GOMHandle.m */; };
 		3B2A5FC317E313B2009A4430 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 3B2A5FC217E313B2009A4430 /* README.md */; };
 		3B2A5FC517E31406009A4430 /* gom-client-objc.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 3B2A5FC417E31406009A4430 /* gom-client-objc.podspec */; };
-		3B52973617E32438004BCF2A /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 3B52973517E32438004BCF2A /* LICENSE */; };
 		3B52973C17E33209004BCF2A /* GOMClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B52973B17E33209004BCF2A /* GOMClient.m */; };
 		3B52974017E35040004BCF2A /* NSString+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B52973F17E35040004BCF2A /* NSString+JSON.m */; };
 		FC06EB50CCD54191931C6B3C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 694C9E8687BC4122932CF915 /* libPods.a */; };
@@ -69,7 +68,6 @@
 		3B2A5FBE17E313A3009A4430 /* GOMHandle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GOMHandle.m; sourceTree = "<group>"; };
 		3B2A5FC217E313B2009A4430 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		3B2A5FC417E31406009A4430 /* gom-client-objc.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "gom-client-objc.podspec"; sourceTree = "<group>"; };
-		3B52973517E32438004BCF2A /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		3B52973A17E33209004BCF2A /* GOMClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GOMClient.h; sourceTree = "<group>"; };
 		3B52973B17E33209004BCF2A /* GOMClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GOMClient.m; sourceTree = "<group>"; };
 		3B52973D17E33FEE004BCF2A /* GOMClientDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GOMClientDelegate.h; sourceTree = "<group>"; };
@@ -107,7 +105,6 @@
 		3B2A5F7417E312FF009A4430 = {
 			isa = PBXGroup;
 			children = (
-				3B52973517E32438004BCF2A /* LICENSE */,
 				3B2A5FC217E313B2009A4430 /* README.md */,
 				3B2A5FC417E31406009A4430 /* gom-client-objc.podspec */,
 				3B2A5F8617E312FF009A4430 /* gom-client-objc */,
@@ -281,7 +278,6 @@
 				3B2A5F9717E312FF009A4430 /* Main_iPad.storyboard in Resources */,
 				3B2A5F9C17E312FF009A4430 /* Images.xcassets in Resources */,
 				3B2A5FC317E313B2009A4430 /* README.md in Resources */,
-				3B52973617E32438004BCF2A /* LICENSE in Resources */,
 				3B2A5FC517E31406009A4430 /* gom-client-objc.podspec in Resources */,
 				3B2A5F9417E312FF009A4430 /* Main_iPhone.storyboard in Resources */,
 				3B2A5F8B17E312FF009A4430 /* InfoPlist.strings in Resources */,
