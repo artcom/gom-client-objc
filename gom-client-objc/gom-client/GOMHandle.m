@@ -9,7 +9,8 @@
 #import "GOMHandle.h"
 
 @implementation GOMHandle
-
+@synthesize callback = _callback;
+@synthesize binding = _binding;
 
 - (id)initWithBinding:(GOMBinding *)aBinding callback:(GOMHandleCallback)aCallback
 {

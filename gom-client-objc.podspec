@@ -68,7 +68,7 @@ Pod::Spec.new do |s|
   #
 
   # s.source       = { :git => "https://github.com/artcom/gom-client-objc.git",  tag: => 0.0.1 }
-  s.source       = { :git => "git://gitorious.staging.t-gallery/core/gom-client-objc.git", :commit => '1b822d9f8b494a1463607d0111772fabb14e8261' }
+  s.source       = { :git => "git://gitorious.staging.t-gallery/core/gom-client-objc.git", :commit => '3ff558306beb3feada877b66a8432b7dbe051425' }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -108,7 +108,7 @@ Pod::Spec.new do |s|
   # s.library   = 'iconv'
   # s.libraries = 'iconv', 'xml2'
 
-  # s.requires_arc = true
+  s.requires_arc = true
 
   # s.xcconfig = { 'HEADER_SEARCH_PATHS' => '$(SDKROOT)/usr/include/libxml2' }
   s.dependency 'SocketRocket', '~> 0.3'
