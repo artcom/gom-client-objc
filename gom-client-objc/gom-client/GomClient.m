@@ -11,7 +11,7 @@
 #import "SRWebSocket.h"
 #import "GOMBinding.h"
 
-@interface GomClient () <SRWebSocketDelegate, UITextViewDelegate>
+@interface GomClient () <SRWebSocketDelegate>
 
 @property (nonatomic, retain) NSMutableDictionary *bindings;
 
