@@ -22,7 +22,7 @@
 {
     self = [super init];
     if (self) {
-        self.subscriptionUri = subscriptionUri;
+        _subscriptionUri = subscriptionUri;
         _observerUri = nil;
         _handles = [[NSMutableArray alloc] init];
         registered = false;
