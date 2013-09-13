@@ -25,6 +25,6 @@ typedef void (^GOMHandleCallback)(NSDictionary *);
  
  @return The resulting GOMHandle object
  */
-- (id)initWithBinding:(GOMBinding *)binding callback:(GOMHandleCallback)callback;
+- (id)initWithBinding:(GOMBinding *)aBinding callback:(GOMHandleCallback)aCallback;
 
 @end

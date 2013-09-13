@@ -9,16 +9,15 @@
 #import "GOMHandle.h"
 
 @implementation GOMHandle
-@synthesize binding = _binding;
 @synthesize callback = _callback;
 @synthesize initialRetrieved;
 
-- (id)initWithBinding:(GOMBinding *)binding callback:(GOMHandleCallback)callback
+- (id)initWithBinding:(GOMBinding *)aBinding callback:(GOMHandleCallback)aCallback
 {
     self = [super init];
     if (self) {
-        _binding = binding;
-        _callback = callback;
+        self.binding = aBinding;
+        self.callback = aCallback;
         initialRetrieved = false;
     }
     return self;
