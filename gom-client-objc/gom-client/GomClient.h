@@ -17,8 +17,6 @@ typedef void (^GOMClientCallback)(NSDictionary *);
 @property (nonatomic, strong, readonly) NSString *gomRoot;
 @property (nonatomic, weak) id<GOMClientDelegate> delegate;
 
-+ (id)sharedInstance;
-
 - (id)initWithGOMRoot:(NSString *)gomRoot;
 
 - (void)retrieveAttribute:(NSString *)attribute;

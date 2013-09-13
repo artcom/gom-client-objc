@@ -37,17 +37,6 @@
 
 @synthesize gomRoot = _gomRoot;
 
-+ (id)sharedInstance
-{
-    static dispatch_once_t p = 0;
-    __strong static id _sharedInstance = nil;
-    dispatch_once(&p, ^{
-        _sharedInstance = [[self alloc] init];
-    });
-    
-    return _sharedInstance;
-}
-
 - (id)initWithGOMRoot:(NSString *)gomRoot
 {
     self = [super init];
