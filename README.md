@@ -8,7 +8,7 @@
 
 To setup the project for GOM client development open the terminal and clone the repo:
 
-```$ git clone https://github.com/artcom/gom-client-objc.git gom-client-objc```
+```$ git clone https://github.com/artcom/gom-client-objc.git```
 
 and install all necessary dependencies from the CocoaPods dependency manager:
 
