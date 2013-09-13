@@ -1,9 +1,9 @@
 //
 //  GOMBinding.m
-//  iOS-Gom-Client
+//  gom-client-objc
 //
 //  Created by Julian Krumow on 12.09.13.
-//
+//  Copyright (c) 2013 ART+COM. All rights reserved.
 //
 
 #import "GOMBinding.h"

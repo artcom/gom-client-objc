@@ -7,17 +7,23 @@
 //
 
 #import "ViewController.h"
+#import "GOMObserver.h"
 
 @interface ViewController ()
-
+@property (nonatomic, strong) GOMObserver *gomClient;
 @end
 
 @implementation ViewController
+@synthesize gomClient = _gomClient;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    
+    _gomClient = [[GOMObserver alloc] init];
+    
+    [_gomClient reconnect];
 }
 
 - (void)didReceiveMemoryWarning

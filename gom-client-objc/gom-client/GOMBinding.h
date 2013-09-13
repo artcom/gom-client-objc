@@ -1,9 +1,9 @@
 //
 //  GOMBinding.h
-//  iOS-Gom-Client
+//  gom-client-objc
 //
 //  Created by Julian Krumow on 12.09.13.
-//
+//  Copyright (c) 2013 ART+COM. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -27,7 +27,7 @@
 - (id)initWithSubscriptionUri:(NSString *)subscriptionUri;
 
 /**
- Adds a given GONHandle object to the binding.
+ Adds a given GOMHandle object to the binding.
  
  @param handle The given GOMHandle object to add
  */

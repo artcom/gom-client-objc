@@ -1,6 +1,6 @@
 //
-//  GomClient.h
-//  gom-client-ios
+//  GOMClient.h
+//  gom-client-objc
 //
 //  Created by Julian Krumow on 13.09.13.
 //  Copyright (c) 2013 ART+COM. All rights reserved.
@@ -8,6 +8,21 @@
 
 #import <Foundation/Foundation.h>
 
-@interface GomClient : NSObject
+@interface GOMClient : NSObject
+
+@property (nonatomic, strong, readonly) NSString *gomUrl;
+
+- (id)initWithGOMUrl:(NSString *)gomUrl;
+
+- (void)retrieveAttribute:(NSString *)attribute;
+- (void)retrieveNode:(NSString *)node;
+
+- (void)createNode:(NSString *)node;
+- (void)createNode:(NSString *)node withAttributes:(NSDictionary *)attributes;
+
+- (void)updateAttribute:(NSString *)attribute withValue:(NSString *)value;
+- (void)updateNode:(NSString *)node withAttributes:(NSDictionary *)attributes;
+
+- (void)deleteNode:(NSString *)node;
 
 @end
