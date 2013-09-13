@@ -9,6 +9,7 @@
 #import "GOMClient.h"
 #import "SRWebSocket.h"
 #import "GOMBinding.h"
+#import "NSString+JSON.h"
 
 @interface GOMClient () <SRWebSocketDelegate>
 
@@ -90,7 +91,7 @@
 - (void)registerGOMObserverForPath:(NSString *)path withCallback:(GOMClientCallback)callback
 {
     GOMBinding *binding = [[GOMBinding alloc] initWithSubscriptionUri:path];
-    [_bindings setObject:binding forKey:path];
+    _bindings[path] = binding;
     
     GOMHandle *handle = [[GOMHandle alloc] initWithBinding:binding callback:callback];
     [binding addHandle:handle];
@@ -126,7 +127,9 @@
 }
 
 - (void)setup {
-    [self.delegate gomClientDidBecomeReady:self];
+    if ([self.delegate respondsToSelector:@selector(gomClientDidBecomeReady:)]) {
+        [self.delegate gomClientDidBecomeReady:self];
+    }
 }
 
 - (void)registerGOMObserverForBinding:(GOMBinding *)binding
@@ -171,17 +174,17 @@
 
 - (void)handleResponse:(NSDictionary* )response
 {
-    if ([response objectForKey:@"initial"]) {
+    if (response[@"initial"]) {
         [self handleInitialResponse:response];
-    } else if ([response objectForKey:@"payload"]) {
+    } else if (response[@"payload"]) {
         [self handleGNPFromResponse:response];
     }
 }
 
 - (void)handleInitialResponse:(NSDictionary *)response
 {
-    NSString *path = [response objectForKey:@"path"];
-    GOMBinding *binding = [_bindings objectForKey:path];
+    NSString *path = response[@"path"];
+    GOMBinding *binding = _bindings[path];
     
     if (binding) {
         for (GOMHandle *handle in binding.handles) {
@@ -193,17 +196,18 @@
 - (void)handleGNPFromResponse:(NSDictionary *)response
 {
     NSMutableDictionary *operation = nil;
-    NSMutableDictionary *payload = [response valueForKey:@"payload"];
-    if ([payload valueForKey:@"create"]) {
-        operation = [payload valueForKey:@"create"];
-    } else if ([payload valueForKey:@"update"]) {
-        operation = [payload valueForKey:@"update"];
-    } else if ([payload valueForKey:@"delete"]) {
-        operation = [payload valueForKey:@"delete"];
+    NSString *payloadString = response[@"payload"];
+    NSMutableDictionary *payload = [payloadString stringToJSON];
+    if (payload[@"create"]) {
+        operation = payload [@"create"];
+    } else if (payload[@"update"]) {
+        operation = payload[@"update"];
+    } else if (payload[@"delete"]) {
+        operation = payload[@"delete"];
     }
     
-    NSString *path = [response objectForKey:@"path"];
-    GOMBinding *binding = [_bindings objectForKey:path];
+    NSString *path = response[@"path"];
+    GOMBinding *binding = _bindings[path];
     if (operation && binding) {
         for (GOMHandle *handle in binding.handles) {
             [self fireCallback:handle.callback withGomObject:operation];
@@ -251,10 +255,7 @@
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message;
 {
     NSString *messageString = (NSString *)message;
-    NSData *messageData = [messageString dataUsingEncoding:NSUTF8StringEncoding];
-    
-    NSError *error = nil;
-    NSMutableDictionary *response = [NSJSONSerialization JSONObjectWithData:messageData options:NSJSONReadingMutableContainers error:&error];
+    NSMutableDictionary *response = [messageString stringToJSON];
     
     if (response) {
         [self handleResponse:response];
