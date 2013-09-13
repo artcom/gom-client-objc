@@ -22,6 +22,12 @@
 		3B2A5FA517E312FF009A4430 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B2A5F8417E312FF009A4430 /* UIKit.framework */; };
 		3B2A5FAD17E312FF009A4430 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3B2A5FAB17E312FF009A4430 /* InfoPlist.strings */; };
 		3B2A5FAF17E312FF009A4430 /* gom_client_objcTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B2A5FAE17E312FF009A4430 /* gom_client_objcTests.m */; };
+		3B2A5FBF17E313A3009A4430 /* GOMBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B2A5FBA17E313A3009A4430 /* GOMBinding.m */; };
+		3B2A5FC017E313A3009A4430 /* GomClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B2A5FBC17E313A3009A4430 /* GomClient.m */; };
+		3B2A5FC117E313A3009A4430 /* GOMHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B2A5FBE17E313A3009A4430 /* GOMHandle.m */; };
+		3B2A5FC317E313B2009A4430 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 3B2A5FC217E313B2009A4430 /* README.md */; };
+		3B2A5FC517E31406009A4430 /* gom-client-objc.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 3B2A5FC417E31406009A4430 /* gom-client-objc.podspec */; };
+		FC06EB50CCD54191931C6B3C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 694C9E8687BC4122932CF915 /* libPods.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +61,16 @@
 		3B2A5FAA17E312FF009A4430 /* gom-client-objcTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "gom-client-objcTests-Info.plist"; sourceTree = "<group>"; };
 		3B2A5FAC17E312FF009A4430 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		3B2A5FAE17E312FF009A4430 /* gom_client_objcTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = gom_client_objcTests.m; sourceTree = "<group>"; };
+		3B2A5FB917E313A3009A4430 /* GOMBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GOMBinding.h; sourceTree = "<group>"; };
+		3B2A5FBA17E313A3009A4430 /* GOMBinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GOMBinding.m; sourceTree = "<group>"; };
+		3B2A5FBB17E313A3009A4430 /* GomClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GomClient.h; sourceTree = "<group>"; };
+		3B2A5FBC17E313A3009A4430 /* GomClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GomClient.m; sourceTree = "<group>"; };
+		3B2A5FBD17E313A3009A4430 /* GOMHandle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GOMHandle.h; sourceTree = "<group>"; };
+		3B2A5FBE17E313A3009A4430 /* GOMHandle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GOMHandle.m; sourceTree = "<group>"; };
+		3B2A5FC217E313B2009A4430 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		3B2A5FC417E31406009A4430 /* gom-client-objc.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "gom-client-objc.podspec"; sourceTree = "<group>"; };
+		694C9E8687BC4122932CF915 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		9F7B628C805A4295A2750449 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +81,7 @@
 				3B2A5F8317E312FF009A4430 /* CoreGraphics.framework in Frameworks */,
 				3B2A5F8517E312FF009A4430 /* UIKit.framework in Frameworks */,
 				3B2A5F8117E312FF009A4430 /* Foundation.framework in Frameworks */,
+				FC06EB50CCD54191931C6B3C /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,10 +101,13 @@
 		3B2A5F7417E312FF009A4430 = {
 			isa = PBXGroup;
 			children = (
+				3B2A5FC217E313B2009A4430 /* README.md */,
+				3B2A5FC417E31406009A4430 /* gom-client-objc.podspec */,
 				3B2A5F8617E312FF009A4430 /* gom-client-objc */,
 				3B2A5FA817E312FF009A4430 /* gom-client-objcTests */,
 				3B2A5F7F17E312FF009A4430 /* Frameworks */,
 				3B2A5F7E17E312FF009A4430 /* Products */,
+				9F7B628C805A4295A2750449 /* Pods.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -107,6 +127,7 @@
 				3B2A5F8217E312FF009A4430 /* CoreGraphics.framework */,
 				3B2A5F8417E312FF009A4430 /* UIKit.framework */,
 				3B2A5FA217E312FF009A4430 /* XCTest.framework */,
+				694C9E8687BC4122932CF915 /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -114,6 +135,7 @@
 		3B2A5F8617E312FF009A4430 /* gom-client-objc */ = {
 			isa = PBXGroup;
 			children = (
+				3B2A5FB817E313A3009A4430 /* gom-client */,
 				3B2A5F8F17E312FF009A4430 /* AppDelegate.h */,
 				3B2A5F9017E312FF009A4430 /* AppDelegate.m */,
 				3B2A5F9217E312FF009A4430 /* Main_iPhone.storyboard */,
@@ -155,6 +177,19 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		3B2A5FB817E313A3009A4430 /* gom-client */ = {
+			isa = PBXGroup;
+			children = (
+				3B2A5FB917E313A3009A4430 /* GOMBinding.h */,
+				3B2A5FBA17E313A3009A4430 /* GOMBinding.m */,
+				3B2A5FBB17E313A3009A4430 /* GomClient.h */,
+				3B2A5FBC17E313A3009A4430 /* GomClient.m */,
+				3B2A5FBD17E313A3009A4430 /* GOMHandle.h */,
+				3B2A5FBE17E313A3009A4430 /* GOMHandle.m */,
+			);
+			path = "gom-client";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -162,9 +197,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3B2A5FB217E312FF009A4430 /* Build configuration list for PBXNativeTarget "gom-client-objc" */;
 			buildPhases = (
+				34A30F07CC82461798F04F75 /* Check Pods Manifest.lock */,
 				3B2A5F7917E312FF009A4430 /* Sources */,
 				3B2A5F7A17E312FF009A4430 /* Frameworks */,
 				3B2A5F7B17E312FF009A4430 /* Resources */,
+				C058C9C8A4534BE99DCC203F /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -233,6 +270,8 @@
 			files = (
 				3B2A5F9717E312FF009A4430 /* Main_iPad.storyboard in Resources */,
 				3B2A5F9C17E312FF009A4430 /* Images.xcassets in Resources */,
+				3B2A5FC317E313B2009A4430 /* README.md in Resources */,
+				3B2A5FC517E31406009A4430 /* gom-client-objc.podspec in Resources */,
 				3B2A5F9417E312FF009A4430 /* Main_iPhone.storyboard in Resources */,
 				3B2A5F8B17E312FF009A4430 /* InfoPlist.strings in Resources */,
 			);
@@ -248,13 +287,49 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		34A30F07CC82461798F04F75 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		C058C9C8A4534BE99DCC203F /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		3B2A5F7917E312FF009A4430 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				3B2A5F9A17E312FF009A4430 /* ViewController.m in Sources */,
+				3B2A5FBF17E313A3009A4430 /* GOMBinding.m in Sources */,
 				3B2A5F9117E312FF009A4430 /* AppDelegate.m in Sources */,
+				3B2A5FC117E313A3009A4430 /* GOMHandle.m in Sources */,
+				3B2A5FC017E313A3009A4430 /* GomClient.m in Sources */,
 				3B2A5F8D17E312FF009A4430 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -389,6 +464,7 @@
 		};
 		3B2A5FB317E312FF009A4430 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9F7B628C805A4295A2750449 /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -402,6 +478,7 @@
 		};
 		3B2A5FB417E312FF009A4430 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9F7B628C805A4295A2750449 /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -474,6 +551,7 @@
 				3B2A5FB417E312FF009A4430 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3B2A5FB517E312FF009A4430 /* Build configuration list for PBXNativeTarget "gom-client-objcTests" */ = {
 			isa = XCConfigurationList;
@@ -482,6 +560,7 @@
 				3B2A5FB717E312FF009A4430 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
