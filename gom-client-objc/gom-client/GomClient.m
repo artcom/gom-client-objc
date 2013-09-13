@@ -7,8 +7,8 @@
 //
 
 #import "GOMClient.h"
-#import "SRWebSocket.h"
 #import "GOMBinding.h"
+#import "SRWebSocket.h"
 #import "NSString+JSON.h"
 
 @interface GOMClient () <SRWebSocketDelegate>
@@ -183,12 +183,14 @@
 
 - (void)handleInitialResponse:(NSDictionary *)response
 {
+    NSString *payloadString = response[@"initial"];
+    NSMutableDictionary *payload = [payloadString stringToJSON];
+    
     NSString *path = response[@"path"];
     GOMBinding *binding = _bindings[path];
-    
     if (binding) {
         for (GOMHandle *handle in binding.handles) {
-            [self fireCallback:handle.callback withGomObject:response];
+            [self fireCallback:handle.callback withGomObject:payload];
         }
     }
 }

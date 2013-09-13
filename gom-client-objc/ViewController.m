@@ -33,7 +33,7 @@
 - (void)gomClientDidBecomeReady:(GOMClient *)gomClient
 {
     [_gomClient registerGOMObserverForPath:@"/areas/home/audio:volume" withCallback:^(NSDictionary *dict) {
-        NSString *text = [NSString stringWithFormat:@"%@\n\n%@", self.consoleView.text, dict.description];
+        NSString *text = [NSString stringWithFormat:@"%@\n\n%@", dict.description, self.consoleView.text];
         self.consoleView.text = text;
     }];
 }
