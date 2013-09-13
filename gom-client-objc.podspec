@@ -34,8 +34,7 @@ Pod::Spec.new do |s|
   #  Popular ones are 'MIT', 'BSD' and 'Apache License, Version 2.0'.
   #
 
-  s.license      = 'MIT (example)'
-  # s.license      = { :type => 'MIT', :file => 'FILE_LICENSE' }
+  s.license      = { :type => 'MIT', :file => 'LICENSE' }
 
 
   # ――― Author Metadata  ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -69,7 +68,7 @@ Pod::Spec.new do |s|
   #
 
   # s.source       = { :git => "https://github.com/artcom/gom-client-objc.git",  tag: => 0.0.1 }
-  s.source       = { :git => "git://gitorious.staging.t-gallery/core/gom-client-objc.git", :commit => '862c9672b5ea51058f3485e7d64e53ae120bf40b' }
+  s.source       = { :git => "git://gitorious.staging.t-gallery/core/gom-client-objc.git", :commit => '3252e8d02f19fdea37cf7dbf64a49d92aded0b3d' }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
