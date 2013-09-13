@@ -1,7 +1,7 @@
 # Objective-C GOM Client
 
 ##Requirements
- * cocoapods package manager
+ * [cocoapods package manager](http://cocoapods.org)
  * Xcode 4.5 or later
 
 ### Setting up for development
