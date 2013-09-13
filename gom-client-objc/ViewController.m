@@ -20,7 +20,9 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
-    _gomClient = [[GOMClient alloc] initWithGOMRoot:@"172.40.2.20"];
+    //NSURL *url = [NSURL URLWithString:@"172.40.2.20"];
+    NSURL *url = [NSURL URLWithString:@"http://gom.staging.t-gallery"];
+    _gomClient = [[GOMClient alloc] initWithGOMRoot:url];
     _gomClient.delegate = self;
 }
 
@@ -32,7 +34,7 @@
 
 - (void)gomClientDidBecomeReady:(GOMClient *)gomClient
 {
-    [_gomClient registerGOMObserverForPath:@"/areas/home/audio:volume" withCallback:^(NSDictionary *dict) {
+    [_gomClient registerGOMObserverForPath:@"/areas/home/audio:volume" options:nil callback:^(NSDictionary *dict) {
         NSString *text = [NSString stringWithFormat:@"%@\n\n%@", dict.description, self.consoleView.text];
         self.consoleView.text = text;
     }];

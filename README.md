@@ -32,7 +32,7 @@ All dependencies are defined in the file ```gom-client-objc.podspec```
 
 ### Initialization
 
-### Delegate
+### retrieve
 
 ### create
 

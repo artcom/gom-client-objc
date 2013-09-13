@@ -9,8 +9,18 @@
 #import <Foundation/Foundation.h>
 
 @class GOMClient;
+
+/**
+ This protocol represents...
+ 
+ */
 @protocol GOMClientDelegate <NSObject>
 
+/**
+ 
+ 
+ @param gomClient
+ */
 - (void)gomClientDidBecomeReady:(GOMClient *)gomClient;
 
 @end

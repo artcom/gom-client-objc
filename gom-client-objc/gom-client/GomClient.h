@@ -12,12 +12,16 @@
 
 typedef void (^GOMClientCallback)(NSDictionary *);
 
+/**
+ This class represents...
+ 
+ */
 @interface GOMClient : NSObject
 
-@property (nonatomic, strong, readonly) NSString *gomRoot;
+@property (nonatomic, strong, readonly) NSURL *gomRoot;
 @property (nonatomic, weak) id<GOMClientDelegate> delegate;
 
-- (id)initWithGOMRoot:(NSString *)gomRoot;
+- (id)initWithGOMRoot:(NSURL *)gomRoot;
 
 - (void)retrieveAttribute:(NSString *)attribute;
 - (void)retrieveNode:(NSString *)node;
@@ -30,6 +34,6 @@ typedef void (^GOMClientCallback)(NSDictionary *);
 
 - (void)deleteNode:(NSString *)node;
 
-- (void)registerGOMObserverForPath:(NSString *)path withCallback:(GOMClientCallback)callback;
+- (void)registerGOMObserverForPath:(NSString *)path options:(NSDictionary *)options callback:(GOMClientCallback)callback;
 
 @end

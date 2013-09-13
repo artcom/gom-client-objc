@@ -9,6 +9,10 @@
 #import <Foundation/Foundation.h>
 #import "GOMHandle.h"
 
+/**
+ This class represents...
+ 
+ */
 @interface GOMBinding : NSObject
 
 @property (nonatomic, strong) NSString *subscriptionUri;

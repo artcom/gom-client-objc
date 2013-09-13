@@ -10,7 +10,7 @@
 
 @implementation NSString (JSON)
 
-- (id)stringToJSON
+- (id)parseAsJSON
 {
     NSData *data = [self dataUsingEncoding:NSUTF8StringEncoding];
     return [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];

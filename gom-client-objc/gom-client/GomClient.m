@@ -42,7 +42,7 @@
 
 @synthesize gomRoot = _gomRoot;
 
-- (id)initWithGOMRoot:(NSString *)gomRoot
+- (id)initWithGOMRoot:(NSURL *)gomRoot
 {
     self = [super init];
     if (self) {
@@ -92,7 +92,7 @@
 
 #pragma mark - GOM observers
 
-- (void)registerGOMObserverForPath:(NSString *)path withCallback:(GOMClientCallback)callback
+- (void)registerGOMObserverForPath:(NSString *)path options:(NSDictionary *)options callback:(GOMClientCallback)callback
 {
     GOMBinding *binding = [[GOMBinding alloc] initWithSubscriptionUri:path];
     _bindings[path] = binding;
@@ -109,6 +109,7 @@
     
     
     // TODO: read /services/websockets_proxy:url
+    [self retrieveAttribute:@"/services/websockets_proxy:url"];
     _webSocketUri = @"ws://172.40.2.20:3082/";
     
     _webSocket = [[SRWebSocket alloc] initWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:_webSocketUri]]];
@@ -168,7 +169,7 @@
 {
     if (_webSocket && _webSocket.readyState == SR_OPEN) {
         NSError *error = nil;
-        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:commands options:NSJSONWritingPrettyPrinted error:&error];
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:commands options:kNilOptions error:&error];
         [_webSocket send:jsonData];
         
     } else {
@@ -188,7 +189,7 @@
 - (void)handleInitialResponse:(NSDictionary *)response
 {
     NSString *payloadString = response[@"initial"];
-    NSMutableDictionary *payload = [payloadString stringToJSON];
+    NSMutableDictionary *payload = [payloadString parseAsJSON];
     
     NSString *path = response[@"path"];
     GOMBinding *binding = _bindings[path];
@@ -203,7 +204,7 @@
 {
     NSMutableDictionary *operation = nil;
     NSString *payloadString = response[@"payload"];
-    NSMutableDictionary *payload = [payloadString stringToJSON];
+    NSMutableDictionary *payload = [payloadString parseAsJSON];
     if (payload[@"create"]) {
         operation = payload [@"create"];
     } else if (payload[@"update"]) {
@@ -261,7 +262,7 @@
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message;
 {
     NSString *messageString = (NSString *)message;
-    NSMutableDictionary *response = [messageString stringToJSON];
+    NSMutableDictionary *response = [messageString parseAsJSON];
     
     if (response) {
         [self handleResponse:response];

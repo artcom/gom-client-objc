@@ -10,6 +10,11 @@
 
 @interface NSString (JSON)
 
-- (id)stringToJSON;
+/**
+ Parses the string object as JSON ans returns a Foundation object or nil.
+ 
+ @return The resulting Foundation object or nil
+ */
+- (id)parseAsJSON;
 
 @end
