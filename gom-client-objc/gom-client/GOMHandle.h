@@ -8,10 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
+typedef void (^GOMHandleCallback)(NSDictionary *);
+
 @class GOMBinding;
 @interface GOMHandle : NSObject
-
-typedef void (^GOMHandleCallback)(NSDictionary *);
 
 @property (nonatomic, weak) GOMBinding *binding;
 @property (nonatomic, strong) GOMHandleCallback callback;

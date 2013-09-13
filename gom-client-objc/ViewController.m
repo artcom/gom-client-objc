@@ -7,10 +7,9 @@
 //
 
 #import "ViewController.h"
-#import "GOMObserver.h"
 
 @interface ViewController ()
-@property (nonatomic, strong) GOMObserver *gomClient;
+@property (nonatomic, strong) GOMClient *gomClient;
 @end
 
 @implementation ViewController
@@ -21,15 +20,21 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
-    _gomClient = [[GOMObserver alloc] init];
-    
-    [_gomClient reconnect];
+    _gomClient = [[GOMClient alloc] initWithGOMRoot:@"172.40.2.20"];
+    _gomClient.delegate = self;
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)gomClientDidBecomeReady:(GOMClient *)gomClient
+{
+    [_gomClient registerGOMObserverForPath:@"/areas/home/audio:volume" withCallBack:^(NSDictionary *dict) {
+        NSLog(@"CALLBACK.");
+    }];
 }
 
 @end

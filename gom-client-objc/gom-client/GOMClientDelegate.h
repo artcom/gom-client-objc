@@ -1,5 +1,5 @@
 //
-//  GomObserver.h
+//  GOMClientDelegate.h
 //  gom-client-objc
 //
 //  Created by Julian Krumow on 13.09.13.
@@ -8,10 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@interface GOMObserver : NSObject
+@class GOMClient;
+@protocol GOMClientDelegate <NSObject>
 
-+ (id)sharedInstance;
-- (void)reconnect;
-- (void)disconnect;
+- (void)gomClientDidBecomeReady:(GOMClient *)gomClient;
 
 @end

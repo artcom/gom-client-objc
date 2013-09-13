@@ -8,11 +8,18 @@
 
 #import <Foundation/Foundation.h>
 
+#import "GOMClientDelegate.h"
+
+typedef void (^GOMClientCallback)(NSDictionary *);
+
 @interface GOMClient : NSObject
 
-@property (nonatomic, strong, readonly) NSString *gomUrl;
+@property (nonatomic, strong, readonly) NSString *gomRoot;
+@property (nonatomic, weak) id<GOMClientDelegate> delegate;
 
-- (id)initWithGOMUrl:(NSString *)gomUrl;
++ (id)sharedInstance;
+
+- (id)initWithGOMRoot:(NSString *)gomRoot;
 
 - (void)retrieveAttribute:(NSString *)attribute;
 - (void)retrieveNode:(NSString *)node;
@@ -24,5 +31,9 @@
 - (void)updateNode:(NSString *)node withAttributes:(NSDictionary *)attributes;
 
 - (void)deleteNode:(NSString *)node;
+
+- (void)reconnect;
+- (void)disconnect;
+- (void)registerGOMObserverForPath:(NSString *)path withCallback:(GOMClientCallback)callback;
 
 @end

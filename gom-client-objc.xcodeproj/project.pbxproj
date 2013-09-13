@@ -27,7 +27,6 @@
 		3B2A5FC317E313B2009A4430 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 3B2A5FC217E313B2009A4430 /* README.md */; };
 		3B2A5FC517E31406009A4430 /* gom-client-objc.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 3B2A5FC417E31406009A4430 /* gom-client-objc.podspec */; };
 		3B52973617E32438004BCF2A /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 3B52973517E32438004BCF2A /* LICENSE */; };
-		3B52973917E3259B004BCF2A /* GOMObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B52973817E3259B004BCF2A /* GOMObserver.m */; };
 		3B52973C17E33209004BCF2A /* GOMClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B52973B17E33209004BCF2A /* GOMClient.m */; };
 		FC06EB50CCD54191931C6B3C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 694C9E8687BC4122932CF915 /* libPods.a */; };
 /* End PBXBuildFile section */
@@ -70,10 +69,9 @@
 		3B2A5FC217E313B2009A4430 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		3B2A5FC417E31406009A4430 /* gom-client-objc.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "gom-client-objc.podspec"; sourceTree = "<group>"; };
 		3B52973517E32438004BCF2A /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		3B52973717E3259B004BCF2A /* GOMObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GOMObserver.h; sourceTree = "<group>"; };
-		3B52973817E3259B004BCF2A /* GOMObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GOMObserver.m; sourceTree = "<group>"; };
 		3B52973A17E33209004BCF2A /* GOMClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GOMClient.h; sourceTree = "<group>"; };
 		3B52973B17E33209004BCF2A /* GOMClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GOMClient.m; sourceTree = "<group>"; };
+		3B52973D17E33FEE004BCF2A /* GOMClientDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GOMClientDelegate.h; sourceTree = "<group>"; };
 		694C9E8687BC4122932CF915 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F7B628C805A4295A2750449 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -186,14 +184,13 @@
 		3B2A5FB817E313A3009A4430 /* gom-client */ = {
 			isa = PBXGroup;
 			children = (
-				3B52973717E3259B004BCF2A /* GOMObserver.h */,
-				3B52973817E3259B004BCF2A /* GOMObserver.m */,
 				3B2A5FB917E313A3009A4430 /* GOMBinding.h */,
 				3B2A5FBA17E313A3009A4430 /* GOMBinding.m */,
 				3B2A5FBD17E313A3009A4430 /* GOMHandle.h */,
 				3B2A5FBE17E313A3009A4430 /* GOMHandle.m */,
 				3B52973A17E33209004BCF2A /* GOMClient.h */,
 				3B52973B17E33209004BCF2A /* GOMClient.m */,
+				3B52973D17E33FEE004BCF2A /* GOMClientDelegate.h */,
 			);
 			path = "gom-client";
 			sourceTree = "<group>";
@@ -334,7 +331,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3B52973917E3259B004BCF2A /* GOMObserver.m in Sources */,
 				3B52973C17E33209004BCF2A /* GOMClient.m in Sources */,
 				3B2A5F9A17E312FF009A4430 /* ViewController.m in Sources */,
 				3B2A5FBF17E313A3009A4430 /* GOMBinding.m in Sources */,

@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+#import "GOMClient.h"
+
+@interface ViewController : UIViewController <GOMClientDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextView *consoleView;
 
