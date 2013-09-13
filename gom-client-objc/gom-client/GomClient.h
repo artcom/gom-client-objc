@@ -30,8 +30,6 @@ typedef void (^GOMClientCallback)(NSDictionary *);
 
 - (void)deleteNode:(NSString *)node;
 
-- (void)reconnect;
-- (void)disconnect;
 - (void)registerGOMObserverForPath:(NSString *)path withCallback:(GOMClientCallback)callback;
 
 @end

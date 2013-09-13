@@ -16,6 +16,9 @@
 @property (nonatomic, retain) NSMutableDictionary *bindings;
 
 - (void)setup;
+- (void)reconnect;
+- (void)disconnect;
+
 - (void)registerGOMObserverForBinding:(GOMBinding *)binding;
 - (void)unregisterGOMObserverForBinding:(GOMBinding *)binding;
 - (void)sendCommand:(NSDictionary *)commands;
@@ -31,6 +34,7 @@
 @end
 
 @implementation GOMClient {
+    NSURLConnection *_urlConnection;
     SRWebSocket *_webSocket;
     NSString *_webSocketUri;
     NSMutableArray *_messages;
