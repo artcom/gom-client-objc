@@ -68,7 +68,7 @@ Pod::Spec.new do |s|
   #
 
   # s.source       = { :git => "https://github.com/artcom/gom-client-objc.git",  tag: => 0.0.1 }
-  s.source       = { :git => "git://gitorious.staging.t-gallery/core/gom-client-objc.git", :commit => '3252e8d02f19fdea37cf7dbf64a49d92aded0b3d' }
+  s.source       = { :git => "git://gitorious.staging.t-gallery/core/gom-client-objc.git", :commit => '1b822d9f8b494a1463607d0111772fabb14e8261' }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #

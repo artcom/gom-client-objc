@@ -9,8 +9,7 @@
 #import "GOMHandle.h"
 
 @implementation GOMHandle
-@synthesize callback = _callback;
-@synthesize initialRetrieved;
+
 
 - (id)initWithBinding:(GOMBinding *)aBinding callback:(GOMHandleCallback)aCallback
 {
@@ -18,7 +17,7 @@
     if (self) {
         self.binding = aBinding;
         self.callback = aCallback;
-        initialRetrieved = false;
+        self.initialRetrieved = false;
     }
     return self;
 }
