@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "ObserverViewController.h"
 
 @interface ViewController ()
 {
@@ -14,20 +15,18 @@
 }
 @property (nonatomic, strong) GOMClient *gomClient;
 @property (nonatomic, strong) NSURL *gomRoot;
-@property (nonatomic, strong) NSString *observerPath;
+@property (nonatomic, strong) NSMutableArray *observers;
 @end
 
 @implementation ViewController
 @synthesize gomClient = _gomClient;
 @synthesize gomRoot = _gomRoot;
-@synthesize observerPath = _observerPath;
+@synthesize observers = _observers;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    self.observerPath = @"/areas/home/audio:volume";
-    self.attributeField.text = self.observerPath;
     self.attributeField.delegate = self;
     self.valueField.delegate = self;
     
@@ -36,6 +35,7 @@
     
     isSlidUp = NO;
     
+    _observers = [[NSMutableArray alloc] init];
     [self registerObservers];
     [self resetGOMClient];
 }
@@ -53,7 +53,7 @@
 
 - (void)resetGOMClient
 {
-    self.attributeField.text = self.observerPath;
+    self.attributeField.text = @"";
     self.valueField.text = @"";
     self.consoleView.text = @"";
     
@@ -76,20 +76,45 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:NSUserDefaultsDidChangeNotification object:nil];
 }
 
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"ManageObservers"]) {
+        ObserverViewController *destViewController = segue.destinationViewController;
+        destViewController.observers = self.observers;
+        destViewController.delegate = self;
+    }
+}
+
+#pragma mark - ObserverViewControllerDelegate
+
+- (void)observerViewController:(ObserverViewController *)observerViewController didAddObserverWithPath:(NSString *)path
+{
+    [self.gomClient registerGOMObserverForPath:path options:nil completionBlock:^(NSDictionary *dict) {
+        [self writeToConsole:dict];
+    }];
+}
+
+- (void)observerViewController:(ObserverViewController *)observerViewController didRemoveObserverWithPath:(NSString *)path
+{
+    [self. gomClient unregisterGOMObserverForPath:path options:nil completionBlock:^(NSDictionary *dict){
+        [self writeToConsole:dict];
+    }];
+}
+
+- (void)writeToConsole:(NSDictionary *)output
+{
+    CGPoint offset = self.consoleView.contentOffset;
+    NSString *text = [NSString stringWithFormat:@"%@\n\n%@", self.consoleView.text, output.description];
+    self.consoleView.text = text;
+    [self.consoleView setContentOffset:offset animated:NO];
+    NSRange range = NSMakeRange(text.length, 1);
+    [self.consoleView scrollRangeToVisible:range];
+}
+
+
 #pragma mark - GOMClientDelegate
 
 - (void)gomClientDidBecomeReady:(GOMClient *)gomClient
 {
-    [gomClient registerGOMObserverForPath:self.observerPath options:nil completionBlock:^(NSDictionary *dict) {
-        
-        CGPoint offset = self.consoleView.contentOffset;
-        NSString *text = [NSString stringWithFormat:@"%@\n\n%@", self.consoleView.text, dict.description];
-        self.consoleView.text = text;
-        [self.consoleView setContentOffset:offset animated:NO];
-        NSRange range = NSMakeRange(text.length, 1);
-        [self.consoleView scrollRangeToVisible:range];
-        self.valueField.text = dict[@"attribute"][@"value"];
-    }];
 }
 
 - (void)gomClient:(GOMClient *)gomClient didFailWithError:(NSError *)error
@@ -102,57 +127,66 @@
 
 - (void)slideUp
 {
-    CGFloat fraction = 0.4;
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-        fraction = 0.5;
+    if (isSlidUp == NO) {
+        CGFloat fraction = 0.4;
+        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+            fraction = 0.5;
+        }
+        
+        [UIView animateWithDuration:0.25
+                         animations:^{
+                             self.consoleView.frame = CGRectMake(self.consoleView.frame.origin.x, self.consoleView.frame.origin.y, self.consoleView.frame.size.width, self.view.bounds.size.height * fraction);
+                             self.inputContainer.frame = CGRectMake(self.inputContainer.frame.origin.x, self.view.bounds.size.height * fraction, self.inputContainer.frame.size.width, self.inputContainer.frame.size.height);
+                         }
+                         completion:^(BOOL finished) {
+                             isSlidUp = YES;
+                         }
+         ];
     }
-    
-    [UIView animateWithDuration:0.25
-                     animations:^{
-                         self.sendButton.alpha = 0.0;
-                         self.consoleView.frame = CGRectMake(self.consoleView.frame.origin.x, self.consoleView.frame.origin.y, self.consoleView.frame.size.width, self.view.bounds.size.height * fraction);
-                         self.inputContainer.frame = CGRectMake(self.inputContainer.frame.origin.x, self.view.bounds.size.height * fraction, self.inputContainer.frame.size.width, self.inputContainer.frame.size.height);
-                     }
-                     completion:^(BOOL finished) {
-                         isSlidUp = YES;
-                         self.sendButton.enabled = NO;
-                     }
-     ];
 }
 
 - (void)slideDown
 {
-    [UIView animateWithDuration:0.25
-                     animations:^{
-                         self.sendButton.alpha = 1.0;
-                         self.consoleView.frame = CGRectMake(self.consoleView.frame.origin.x, self.consoleView.frame.origin.y, self.consoleView.frame.size.width, self.view.bounds.size.height * 0.7);
-                         self.inputContainer.frame = CGRectMake(self.inputContainer.frame.origin.x, self.view.bounds.size.height * 0.7, self.inputContainer.frame.size.width, self.inputContainer.frame.size.height);
-                     }
-                     completion:^(BOOL finished) {
-                         isSlidUp = NO;
-                         self.sendButton.enabled = YES;
-                     }
-     ];
+    if (isSlidUp) {
+        [UIView animateWithDuration:0.25
+                         animations:^{
+                             self.consoleView.frame = CGRectMake(self.consoleView.frame.origin.x, self.consoleView.frame.origin.y, self.consoleView.frame.size.width, self.view.bounds.size.height * 0.7);
+                             self.inputContainer.frame = CGRectMake(self.inputContainer.frame.origin.x, self.view.bounds.size.height * 0.7, self.inputContainer.frame.size.width, self.inputContainer.frame.size.height);
+                         }
+                         completion:^(BOOL finished) {
+                             isSlidUp = NO;
+                         }
+         ];
+    }
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    if (isSlidUp == NO) {
-        [self slideUp];
-    }
+    [self slideUp];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [textField resignFirstResponder];
-    if (isSlidUp) {
-        [self slideDown];
-    }
-    return NO;
+    [self slideDown];
+    return YES;
 }
 
 - (IBAction)sendToGOM:(id)sender
 {
+    
+}
+
+- (IBAction)manageObservers:(id)sender {
+    UITextField *textfield = nil;
+    if (self.attributeField.isFirstResponder) {
+        textfield = self.attributeField;
+    } else if (self.valueField.isFirstResponder) {
+        textfield = self.valueField;
+    }
+    [textfield resignFirstResponder];
+    [self slideDown];
+    
     
 }
 

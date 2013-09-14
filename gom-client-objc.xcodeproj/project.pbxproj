@@ -28,6 +28,7 @@
 		3B2A5FC517E31406009A4430 /* gom-client-objc.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 3B2A5FC417E31406009A4430 /* gom-client-objc.podspec */; };
 		3B52973C17E33209004BCF2A /* GOMClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B52973B17E33209004BCF2A /* GOMClient.m */; };
 		3B52974017E35040004BCF2A /* NSString+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B52973F17E35040004BCF2A /* NSString+JSON.m */; };
+		3BAF0F3E17E4FA1900BF6625 /* ObserverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BAF0F3D17E4FA1900BF6625 /* ObserverViewController.m */; };
 		3BBB534B17E49BBD00777BB6 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3BBB534A17E49BBD00777BB6 /* Settings.bundle */; };
 		FC06EB50CCD54191931C6B3C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 694C9E8687BC4122932CF915 /* libPods.a */; };
 /* End PBXBuildFile section */
@@ -74,6 +75,8 @@
 		3B52973D17E33FEE004BCF2A /* GOMClientDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GOMClientDelegate.h; sourceTree = "<group>"; };
 		3B52973E17E35040004BCF2A /* NSString+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+JSON.h"; sourceTree = "<group>"; };
 		3B52973F17E35040004BCF2A /* NSString+JSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+JSON.m"; sourceTree = "<group>"; };
+		3BAF0F3C17E4FA1900BF6625 /* ObserverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObserverViewController.h; sourceTree = "<group>"; };
+		3BAF0F3D17E4FA1900BF6625 /* ObserverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObserverViewController.m; sourceTree = "<group>"; };
 		3BBB534A17E49BBD00777BB6 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		694C9E8687BC4122932CF915 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F7B628C805A4295A2750449 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
@@ -146,6 +149,8 @@
 				3B2A5F9017E312FF009A4430 /* AppDelegate.m */,
 				3B2A5F9817E312FF009A4430 /* ViewController.h */,
 				3B2A5F9917E312FF009A4430 /* ViewController.m */,
+				3BAF0F3C17E4FA1900BF6625 /* ObserverViewController.h */,
+				3BAF0F3D17E4FA1900BF6625 /* ObserverViewController.m */,
 				3B2A5F9217E312FF009A4430 /* Main_iPhone.storyboard */,
 				3B2A5F9517E312FF009A4430 /* Main_iPad.storyboard */,
 				3B2A5F9B17E312FF009A4430 /* Images.xcassets */,
@@ -338,6 +343,7 @@
 			files = (
 				3B52973C17E33209004BCF2A /* GOMClient.m in Sources */,
 				3B2A5F9A17E312FF009A4430 /* ViewController.m in Sources */,
+				3BAF0F3E17E4FA1900BF6625 /* ObserverViewController.m in Sources */,
 				3B52974017E35040004BCF2A /* NSString+JSON.m in Sources */,
 				3B2A5FBF17E313A3009A4430 /* GOMBinding.m in Sources */,
 				3B2A5F9117E312FF009A4430 /* AppDelegate.m in Sources */,

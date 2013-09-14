@@ -134,6 +134,13 @@
     [self _registerGOMObserverForBinding:binding];
 }
 
+- (void)unregisterGOMObserverForPath:(NSString *)path options:(NSDictionary *)options completionBlock:(GOMClientCallback)block
+{
+    GOMBinding *binding = _bindings[path];
+    [self _unregisterGOMObserverForBinding:binding];
+    [_bindings removeObjectForKey:path];
+}
+
 - (void)_registerGOMObserverForBinding:(GOMBinding *)binding
 {
     NSLog(@"registering GOM observer at path: %@", binding.subscriptionUri);
