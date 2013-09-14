@@ -28,6 +28,7 @@
 		3B2A5FC517E31406009A4430 /* gom-client-objc.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 3B2A5FC417E31406009A4430 /* gom-client-objc.podspec */; };
 		3B52973C17E33209004BCF2A /* GOMClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B52973B17E33209004BCF2A /* GOMClient.m */; };
 		3B52974017E35040004BCF2A /* NSString+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B52973F17E35040004BCF2A /* NSString+JSON.m */; };
+		3BBB534B17E49BBD00777BB6 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3BBB534A17E49BBD00777BB6 /* Settings.bundle */; };
 		FC06EB50CCD54191931C6B3C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 694C9E8687BC4122932CF915 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -73,6 +74,7 @@
 		3B52973D17E33FEE004BCF2A /* GOMClientDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GOMClientDelegate.h; sourceTree = "<group>"; };
 		3B52973E17E35040004BCF2A /* NSString+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+JSON.h"; sourceTree = "<group>"; };
 		3B52973F17E35040004BCF2A /* NSString+JSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+JSON.m"; sourceTree = "<group>"; };
+		3BBB534A17E49BBD00777BB6 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		694C9E8687BC4122932CF915 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F7B628C805A4295A2750449 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -159,6 +161,7 @@
 				3B2A5F8917E312FF009A4430 /* InfoPlist.strings */,
 				3B2A5F8C17E312FF009A4430 /* main.m */,
 				3B2A5F8E17E312FF009A4430 /* gom-client-objc-Prefix.pch */,
+				3BBB534A17E49BBD00777BB6 /* Settings.bundle */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -281,6 +284,7 @@
 				3B2A5FC517E31406009A4430 /* gom-client-objc.podspec in Resources */,
 				3B2A5F9417E312FF009A4430 /* Main_iPhone.storyboard in Resources */,
 				3B2A5F8B17E312FF009A4430 /* InfoPlist.strings in Resources */,
+				3BBB534B17E49BBD00777BB6 /* Settings.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -476,6 +480,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "gom-client-objc/gom-client-objc-Prefix.pch";
 				INFOPLIST_FILE = "gom-client-objc/gom-client-objc-Info.plist";
@@ -490,6 +495,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "gom-client-objc/gom-client-objc-Prefix.pch";
 				INFOPLIST_FILE = "gom-client-objc/gom-client-objc-Info.plist";

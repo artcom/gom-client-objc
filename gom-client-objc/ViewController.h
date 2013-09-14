@@ -10,8 +10,13 @@
 
 #import "GOMClient.h"
 
-@interface ViewController : UIViewController <GOMClientDelegate>
+@interface ViewController : UIViewController <GOMClientDelegate, UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextView *consoleView;
+@property (weak, nonatomic) IBOutlet UIView *inputContainer;
+@property (weak, nonatomic) IBOutlet UITextField *attributeField;
+@property (weak, nonatomic) IBOutlet UITextField *valueField;
+@property (weak, nonatomic) IBOutlet UIButton *sendButton;
 
+- (IBAction)sendToGOM:(id)sender;
 @end
