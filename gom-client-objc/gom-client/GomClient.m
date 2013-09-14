@@ -42,11 +42,11 @@
 
 @synthesize gomRoot = _gomRoot;
 
-- (id)initWithGOMRoot:(NSURL *)gomRoot
+- (id)initWithGomURI:(NSURL *)gomURI
 {
     self = [super init];
     if (self) {
-        _gomRoot = gomRoot;
+        _gomRoot = gomURI;
         _bindings = [[NSMutableDictionary alloc] init];
         gomIsReady = false;
         

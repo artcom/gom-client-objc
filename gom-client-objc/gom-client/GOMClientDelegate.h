@@ -23,4 +23,11 @@
  */
 - (void)gomClientDidBecomeReady:(GOMClient *)gomClient;
 
+/**
+ 
+ @param gomClient
+ @param error
+ */
+- (void)gomClient:(GOMClient *)gomClient didFailWithError:(NSError *)error;
+
 @end

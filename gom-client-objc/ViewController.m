@@ -61,10 +61,22 @@
     NSString *gomRootPath = [[NSUserDefaults standardUserDefaults] stringForKey:@"gom_address_preference"];
     if (gomRootPath && [gomRootPath isEqualToString:@""] == NO) {
         self.gomRoot = [NSURL URLWithString:gomRootPath];
-        _gomClient = [[GOMClient alloc] initWithGOMRoot:_gomRoot];
+        _gomClient = [[GOMClient alloc] initWithGomURI:_gomRoot];
         self.gomClient.delegate = self;
     }
 }
+
+- (void)registerObservers
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetGOMClient) name:NSUserDefaultsDidChangeNotification object:nil];
+}
+
+- (void)removeObservers
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSUserDefaultsDidChangeNotification object:nil];
+}
+
+#pragma mark - GOMClientDelegate
 
 - (void)gomClientDidBecomeReady:(GOMClient *)gomClient
 {
@@ -80,15 +92,13 @@
     }];
 }
 
-- (void)registerObservers
+- (void)gomClient:(GOMClient *)gomClient didFailWithError:(NSError *)error
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetGOMClient) name:NSUserDefaultsDidChangeNotification object:nil];
+    NSLog(@"GOMClient setup did fail with error:\n%@", error);
+    self.gomClient = nil;
 }
 
-- (void)removeObservers
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSUserDefaultsDidChangeNotification object:nil];
-}
+#pragma - mark UI handling
 
 - (void)slideUp
 {

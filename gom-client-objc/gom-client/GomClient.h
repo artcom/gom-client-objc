@@ -21,7 +21,7 @@ typedef void (^GOMClientCallback)(NSDictionary *);
 @property (nonatomic, strong, readonly) NSURL *gomRoot;
 @property (nonatomic, weak) id<GOMClientDelegate> delegate;
 
-- (id)initWithGOMRoot:(NSURL *)gomRoot;
+- (id)initWithGomURI:(NSURL *)gomURI;
 
 - (void)retrieveAttribute:(NSString *)attribute completionBlock:(GOMClientCallback)block;
 - (void)retrieveNode:(NSString *)node completionBlock:(GOMClientCallback)block;
