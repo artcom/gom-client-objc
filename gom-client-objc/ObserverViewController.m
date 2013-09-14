@@ -88,15 +88,12 @@
 - (void)slideUp
 {
     if (isSlidUp == NO) {
-        CGFloat fraction = 0.4;
-        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-            fraction = 0.5;
-        }
-        
         [UIView animateWithDuration:0.25
                          animations:^{
-                             self.tableView.frame = CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, self.view.bounds.size.height * fraction);
-                             self.inputContainer.frame = CGRectMake(self.inputContainer.frame.origin.x, self.view.bounds.size.height * fraction, self.inputContainer.frame.size.width, self.inputContainer.frame.size.height);
+                             if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+                                 self.tableView.frame = CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, self.view.bounds.size.height * 0.4);
+                             }
+                             self.inputContainer.frame = CGRectMake(self.inputContainer.frame.origin.x, self.view.bounds.size.height * 0.4, self.inputContainer.frame.size.width, self.inputContainer.frame.size.height);
                          }
                          completion:^(BOOL finished) {
                              isSlidUp = YES;
@@ -110,7 +107,9 @@
     if (isSlidUp) {
         [UIView animateWithDuration:0.25
                          animations:^{
-                             self.tableView.frame = CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, self.view.bounds.size.height * 0.7);
+                             if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+                                 self.tableView.frame = CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, self.view.bounds.size.height * 0.7);
+                             }
                              self.inputContainer.frame = CGRectMake(self.inputContainer.frame.origin.x, self.view.bounds.size.height * 0.7, self.inputContainer.frame.size.width, self.inputContainer.frame.size.height);
                          }
                          completion:^(BOOL finished) {
