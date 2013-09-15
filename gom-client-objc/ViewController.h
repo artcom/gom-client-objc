@@ -20,6 +20,11 @@
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
 @property (weak, nonatomic) IBOutlet UIButton *observerButton;
 
-- (IBAction)sendToGOM:(id)sender;
+
+- (IBAction)retrievePressed:(id)sender;
+- (IBAction)createPressed:(id)sender;
+- (IBAction)updatePressed:(id)sender;
+- (IBAction)deletePressed:(id)sender;
+
 - (IBAction)manageObservers:(id)sender;
 @end

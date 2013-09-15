@@ -97,7 +97,7 @@
         if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
             height = 400.0;
         }
-        [UIView animateWithDuration:0.25
+        [UIView animateWithDuration:0.4
                          animations:^{
                              self.consoleView.frame = CGRectMake(self.consoleView.frame.origin.x, self.consoleView.frame.origin.y, self.consoleView.frame.size.width, self.view.bounds.size.height - height);
                              self.inputContainer.frame = CGRectMake(self.inputContainer.frame.origin.x, self.view.bounds.size.height - height, self.inputContainer.frame.size.width, self.inputContainer.frame.size.height);
@@ -112,7 +112,7 @@
 - (void)slideDown
 {
     if (isSlidUp) {
-        [UIView animateWithDuration:0.25
+        [UIView animateWithDuration:0.4
                          animations:^{
                              self.consoleView.frame = CGRectMake(self.consoleView.frame.origin.x, self.consoleView.frame.origin.y, self.consoleView.frame.size.width, self.view.bounds.size.height - self.inputContainer.frame.size.height);
                              self.inputContainer.frame = CGRectMake(self.inputContainer.frame.origin.x, self.view.bounds.size.height - self.inputContainer.frame.size.height, self.inputContainer.frame.size.width, self.inputContainer.frame.size.height);
@@ -152,16 +152,14 @@
 
 - (void)observerViewController:(ObserverViewController *)observerViewController didAddObserverWithPath:(NSString *)path
 {
-    [self.gomClient registerGOMObserverForPath:path options:nil completionBlock:^(NSDictionary *dict) {
+    [self.gomClient registerGOMObserverForPath:path options:nil clientCallback:^(NSDictionary *dict) {
         [self writeToConsole:dict];
     }];
 }
 
 - (void)observerViewController:(ObserverViewController *)observerViewController didRemoveObserverWithPath:(NSString *)path
 {
-    [self. gomClient unregisterGOMObserverForPath:path options:nil completionBlock:^(NSDictionary *dict){
-        [self writeToConsole:dict];
-    }];
+    [self. gomClient unregisterGOMObserverForPath:path options:nil];
 }
 
 - (void)didFinishManagingObservers:(ObserverViewController *)observerViewController
@@ -177,9 +175,19 @@
     }
 }
 
-- (IBAction)sendToGOM:(id)sender
-{
+
+
+- (IBAction)retrievePressed:(id)sender {
     
+}
+
+- (IBAction)createPressed:(id)sender {
+}
+
+- (IBAction)updatePressed:(id)sender {
+}
+
+- (IBAction)deletePressed:(id)sender {
 }
 
 - (IBAction)manageObservers:(id)sender {
