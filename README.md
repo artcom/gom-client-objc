@@ -43,13 +43,106 @@ Errors that occur during GOM requests are passed to the sender through the compl
 
 Fundamental errors are returned to the delegate through the GOMClientDelegate message ```- (void)gomClient:(GOMClient *)gomClient didFailWithError:(NSError *)error```
 
+### RESTful operations
 
-### retrieve
+* GET/retrieve
 
-### create
+    * Attribute retrieval:
+    
+    ```objective-c
+    [gomClient retrieveAttribute:@"/areas/home/audio:volume" completionBlock:^(NSDictionary *result) {
 
-### update
+        // result will be nil here when retrieving a non-existing attribute
+        
+    }];
+    ```
+    
+    * Node retrieval:
+  
+    ```objective-c
+    [gomClient retrieveNode:@"/areas/home/audio" completionBlock:^(NSDictionary *result) {
+    
+        // result will be nil here when retrieving a non-existing node
 
-### delete
+    }];
 
-### registering observers
+    ```
+
+* POST/create
+ 
+    * Create empty node:
+    
+    ```objective-c
+    [gomClient createNode:@"/areas/home/audio" completionBlock:^(NSDictionary *result) {
+        
+    }];
+    ```
+
+    * Create node with attributes:
+    
+    ```objective-c
+    NSDictionary *attributes = […];
+    gomClient createNode:@"/areas/home/audio" withAttributes:attributes completionBlock:^(NSDictionary *result) {
+        
+    }];
+    ```
+    
+* PUT/update
+ 
+    * Attribute update:
+    
+    ```objective-c
+    [gomClient updateAttribute:@"/areas/home/audio:volume" withValue:@"50" completionBlock:^(NSDictionary *result) {
+        
+    }];
+    ```
+    
+    * Node update:
+    
+    ```objective-c
+    NSDictionary *attributes = […];
+    [gomClient updateNode:@"/areas/home/audio" withAttributesValue:attributes completionBlock:^(NSDictionary *result) {
+        
+    }];
+    ```
+
+* DELETE/destroy
+
+    * Destroy existing node:
+    
+    ```objective-c
+    [gomClient createNode:@"/areas/home/audio" completionBlock:completionBlock:^(NSDictionary *result) {
+        
+        // result will be nil here when destroying a non-existing attribute
+        
+    }];
+    ```
+    
+    * Destroy non-existent node
+    
+    ```objective-c
+    NSDictionary *attributes = […];
+    [gomClient createNode:@"/areas/home/audio" withAttributes:attributes completionBlock:^(NSDictionary *result) {
+        
+        // result will be nil here when destroying a non-existing node
+        
+    }];
+    ```
+
+### Handling observers
+
+* Register an observer:
+
+    ```objective-c
+    [gomClient registerGOMObserverForPath:@"/areas/home/audio:volume" options:nil clientCallback:^(NSDictionary *dict) {    
+
+    }];
+    ```
+
+* Unregister an observer:
+
+    ```objective-c
+    [gomClient unregisterGOMObserverForPath:@"/areas/home/audio:volume" options:nil];
+    ```
+
+TODO: document content of response dictionaries.
