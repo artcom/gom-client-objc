@@ -36,7 +36,7 @@ NSURL *gomURI = [NSURL URLWithString:@"http://<ip-or-name>:<port>"];
 GOMClient *gomClient = [[GOMClient alloc] initWithGomURI:gomURI];
 gomClient.delegate = <your delegate object>;
 ```
-As soon as the GOMCLient object is initialized and completely set up the delegate will receive the message ```- (void)gomClientDidBecomeReady:(GOMClient *)gomClient``` returning a reference of the GOMClient object in question.
+As soon as the GOMClient object is initialized and completely set up the delegate will receive the message ```- (void)gomClientDidBecomeReady:(GOMClient *)gomClient``` returning a reference of the GOMClient object in question.
 
 #### Errorhandling
 Errors that occur during GOM requests are passed to the sender through the completion blocks of the respective methods.
