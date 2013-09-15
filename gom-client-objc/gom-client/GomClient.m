@@ -38,6 +38,7 @@
 }
 
 @synthesize gomRoot = _gomRoot;
+@synthesize bindings = _bindings;
 
 - (id)initWithGomURI:(NSURL *)gomURI
 {
