@@ -83,42 +83,7 @@
     }
 }
 
-#pragma - mark UI handling
-
-- (void)slideUp
-{
-    if (isSlidUp == NO) {
-        CGFloat height = 350.0;
-        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-            height = 500.0;
-        }
-        [UIView animateWithDuration:0.25
-                         animations:^{
-                             self.tableView.frame = CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, self.view.bounds.size.height - height);
-                             self.inputContainer.frame = CGRectMake(self.inputContainer.frame.origin.x, self.view.bounds.size.height - height, self.inputContainer.frame.size.width, self.inputContainer.frame.size.height);
-                         }
-                         completion:^(BOOL finished) {
-                             isSlidUp = YES;
-                         }
-         ];
-    }
-}
-
-- (void)slideDown
-{
-    if (isSlidUp) {
-        [UIView animateWithDuration:0.25
-                         animations:^{
-                             self.tableView.frame = CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, self.view.bounds.size.height - self.inputContainer.frame.size.height);
-                             self.inputContainer.frame = CGRectMake(self.inputContainer.frame.origin.x, self.view.bounds.size.height - self.inputContainer.frame.size.height, self.inputContainer.frame.size.width, self.inputContainer.frame.size.height);
-                         }
-                         completion:^(BOOL finished) {
-                             isSlidUp = NO;
-                         }
-         ];
-    }
-}
-
+#pragma mark - UITextFieldDelegate
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
@@ -132,12 +97,55 @@
     return YES;
 }
 
+#pragma - mark UI handling
+
+- (void)slideUp
+{
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+        if (isSlidUp == NO) {
+            CGFloat height = 350.0;
+            [UIView animateWithDuration:0.25
+                             animations:^{
+                                 self.tableView.frame = CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, self.view.bounds.size.height - height);
+                                 self.inputContainer.frame = CGRectMake(self.inputContainer.frame.origin.x, self.view.bounds.size.height - height, self.inputContainer.frame.size.width, self.inputContainer.frame.size.height);
+                             }
+                             completion:^(BOOL finished) {
+                                 isSlidUp = YES;
+                             }
+             ];
+        }
+    }
+}
+
+- (void)slideDown
+{
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+        if (isSlidUp) {
+            [UIView animateWithDuration:0.25
+                             animations:^{
+                                 self.tableView.frame = CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, self.view.bounds.size.height - self.inputContainer.frame.size.height);
+                                 self.inputContainer.frame = CGRectMake(self.inputContainer.frame.origin.x, self.view.bounds.size.height - self.inputContainer.frame.size.height, self.inputContainer.frame.size.width, self.inputContainer.frame.size.height);
+                             }
+                             completion:^(BOOL finished) {
+                                 isSlidUp = NO;
+                             }
+             ];
+        }
+    }
+}
+
 - (IBAction)addGomObserver:(id)sender {
     [self.observers addObject:self.observerPathField.text];
     [self.tableView reloadData];
     
     if ([self.delegate respondsToSelector:@selector(observerViewController:didAddObserverWithPath:)]) {
         [self.delegate observerViewController:self didAddObserverWithPath:self.observerPathField.text];
+    }
+}
+
+- (IBAction)done:(id)sender {
+    if ([self.delegate respondsToSelector:@selector(didFinishManagingObservers:)]) {
+        [self.delegate didFinishManagingObservers:self];
     }
 }
 

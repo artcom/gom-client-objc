@@ -48,6 +48,18 @@
     [self removeObservers];
 }
 
+- (void)registerObservers
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetGOMClient) name:NSUserDefaultsDidChangeNotification object:nil];
+}
+
+- (void)removeObservers
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSUserDefaultsDidChangeNotification object:nil];
+}
+
+#pragma mark - GOMClient
+
 - (void)resetGOMClient
 {
     self.attributeField.text = @"";
@@ -63,55 +75,11 @@
     }
 }
 
-- (void)registerObservers
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetGOMClient) name:NSUserDefaultsDidChangeNotification object:nil];
-}
-
-- (void)removeObservers
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSUserDefaultsDidChangeNotification object:nil];
-}
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier isEqualToString:@"ManageObservers"]) {
-        ObserverViewController *destViewController = segue.destinationViewController;
-        destViewController.observers = self.observers;
-        destViewController.delegate = self;
-    }
-}
-
-#pragma mark - ObserverViewControllerDelegate
-
-- (void)observerViewController:(ObserverViewController *)observerViewController didAddObserverWithPath:(NSString *)path
-{
-    [self.gomClient registerGOMObserverForPath:path options:nil completionBlock:^(NSDictionary *dict) {
-        [self writeToConsole:dict];
-    }];
-}
-
-- (void)observerViewController:(ObserverViewController *)observerViewController didRemoveObserverWithPath:(NSString *)path
-{
-    [self. gomClient unregisterGOMObserverForPath:path options:nil completionBlock:^(NSDictionary *dict){
-        [self writeToConsole:dict];
-    }];
-}
-
-- (void)writeToConsole:(NSDictionary *)output
-{
-    CGPoint offset = self.consoleView.contentOffset;
-    NSString *text = [NSString stringWithFormat:@"%@\n\n%@", self.consoleView.text, output.description];
-    self.consoleView.text = text;
-    [self.consoleView setContentOffset:offset animated:NO];
-    NSRange range = NSMakeRange(text.length, 1);
-    [self.consoleView scrollRangeToVisible:range];
-}
-
-
 #pragma mark - GOMClientDelegate
 
 - (void)gomClientDidBecomeReady:(GOMClient *)gomClient
 {
+    NSLog(@"GOMClient did become ready");
 }
 
 - (void)gomClient:(GOMClient *)gomClient didFailWithError:(NSError *)error
@@ -156,6 +124,18 @@
     }
 }
 
+- (void)writeToConsole:(NSDictionary *)output
+{
+    CGPoint offset = self.consoleView.contentOffset;
+    NSString *text = [NSString stringWithFormat:@"%@\n\n%@", self.consoleView.text, output.description];
+    self.consoleView.text = text;
+    [self.consoleView setContentOffset:offset animated:NO];
+    NSRange range = NSMakeRange(text.length, 1);
+    [self.consoleView scrollRangeToVisible:range];
+}
+
+#pragma mark - UITextFielDelegate
+
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
     [self slideUp];
@@ -166,6 +146,35 @@
     [textField resignFirstResponder];
     [self slideDown];
     return YES;
+}
+
+#pragma mark - ObserverViewControllerDelegate
+
+- (void)observerViewController:(ObserverViewController *)observerViewController didAddObserverWithPath:(NSString *)path
+{
+    [self.gomClient registerGOMObserverForPath:path options:nil completionBlock:^(NSDictionary *dict) {
+        [self writeToConsole:dict];
+    }];
+}
+
+- (void)observerViewController:(ObserverViewController *)observerViewController didRemoveObserverWithPath:(NSString *)path
+{
+    [self. gomClient unregisterGOMObserverForPath:path options:nil completionBlock:^(NSDictionary *dict){
+        [self writeToConsole:dict];
+    }];
+}
+
+- (void)didFinishManagingObservers:(ObserverViewController *)observerViewController
+{
+    [observerViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"ManageObservers"]) {
+        ObserverViewController *destViewController = segue.destinationViewController;
+        destViewController.observers = self.observers;
+        destViewController.delegate = self;
+    }
 }
 
 - (IBAction)sendToGOM:(id)sender

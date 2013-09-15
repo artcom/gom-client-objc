@@ -120,7 +120,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="jyc-Ex-l80">
-                                <rect key="frame" x="0.0" y="20" width="320" height="445"/>
+                                <rect key="frame" x="0.0" y="66" width="320" height="399"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -165,6 +165,19 @@
                                     <constraint firstAttribute="height" constant="100" id="8xg-YM-HP8"/>
                                 </constraints>
                             </view>
+                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NAC-Pg-dIG">
+                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <items>
+                                    <navigationItem title="Manage Observers" id="Wzn-bN-zKz">
+                                        <barButtonItem key="rightBarButtonItem" title="Done" id="rp4-gU-YbQ">
+                                            <connections>
+                                                <action selector="done:" destination="nvV-5S-63d" id="kdT-wk-0g6"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -172,7 +185,7 @@
                             <constraint firstAttribute="bottom" secondItem="uSK-lE-IN1" secondAttribute="bottom" id="PEr-Bh-pjC"/>
                             <constraint firstItem="jyc-Ex-l80" firstAttribute="leading" secondItem="uSK-lE-IN1" secondAttribute="leading" id="WlB-YR-cFC"/>
                             <constraint firstItem="uSK-lE-IN1" firstAttribute="leading" secondItem="eqg-il-J8V" secondAttribute="leading" id="d4J-Pe-cQ6"/>
-                            <constraint firstItem="jyc-Ex-l80" firstAttribute="top" secondItem="eqg-il-J8V" secondAttribute="top" constant="20" id="rVF-bC-Oly"/>
+                            <constraint firstItem="jyc-Ex-l80" firstAttribute="top" secondItem="eqg-il-J8V" secondAttribute="top" constant="66" id="rVF-bC-Oly"/>
                         </constraints>
                     </view>
                     <connections>

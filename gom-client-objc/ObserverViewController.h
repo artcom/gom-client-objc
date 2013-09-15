@@ -18,9 +18,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *observerPathField;
 @property (weak, nonatomic) IBOutlet UIView *inputContainer;
 
-
 - (IBAction)addGomObserver:(id)sender;
-
+- (IBAction)done:(id)sender;
 
 @end
 
@@ -28,5 +27,6 @@
 
 - (void)observerViewController:(ObserverViewController *)observerViewController didAddObserverWithPath:(NSString *)path;
 - (void)observerViewController:(ObserverViewController *)observerViewController didRemoveObserverWithPath:(NSString *)path;
+- (void)didFinishManagingObservers:(ObserverViewController *)observerViewController;
 
 @end
