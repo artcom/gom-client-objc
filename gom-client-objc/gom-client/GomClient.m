@@ -15,9 +15,6 @@
 
 @property (nonatomic, retain) NSMutableDictionary *bindings;
 
-- (void)_reconnect;
-- (void)_disconnect;
-
 - (void)_registerGOMObserverForBinding:(GOMBinding *)binding;
 - (void)_unregisterGOMObserverForBinding:(GOMBinding *)binding;
 - (void)_sendCommand:(NSDictionary *)commands;
@@ -25,10 +22,10 @@
 - (void)_handleResponse:(NSDictionary* )response;
 - (void)_handleInitialResponse:(NSDictionary *)response;
 - (void)_handleGNPFromResponse:(NSDictionary *)response;
-
 - (void)_fireCallback:(GOMHandleCallback)callback withGomObject:(NSDictionary *)gomObject;
-
 - (void)_retrieveInitial:(GOMBinding *)binding;
+- (void)_reconnectWebsocket;
+- (void)_disconnectWebsocket;
 
 @end
 
@@ -50,14 +47,13 @@
         _bindings = [[NSMutableDictionary alloc] init];
         gomIsReady = false;
         
-        [self _reconnect];
+        [self _reconnectWebsocket];
     }
     return self;
 }
 
 - (void)retrieveAttribute:(NSString *)attribute completionBlock:(GOMClientCallback)block
 {
-    
     if (block) {
         block(nil);
     }
@@ -65,76 +61,59 @@
 
 - (void)retrieveNode:(NSString *)node completionBlock:(GOMClientCallback)block
 {
-    
+    if (block) {
+        block(nil);
+    }
 }
 
 - (void)createNode:(NSString *)node completionBlock:(GOMClientCallback)block
 {
-    
+    if (block) {
+        block(nil);
+    }
 }
 
 - (void)createNode:(NSString *)node withAttributes:(NSDictionary *)attributes completionBlock:(GOMClientCallback)block
 {
-    
+    if (block) {
+        block(nil);
+    }
 }
 
 - (void)updateAttribute:(NSString *)attribute withValue:(NSString *)value completionBlock:(GOMClientCallback)block
 {
-    
+    if (block) {
+        block(nil);
+    }
 }
 
 - (void)updateNode:(NSString *)node withAttributes:(NSDictionary *)attributes completionBlock:(GOMClientCallback)block
 {
-    
+    if (block) {
+        block(nil);
+    }
 }
 
 - (void)deleteNode:(NSString *)node completionBlock:(GOMClientCallback)block
 {
-    
+    if (block) {
+        block(nil);
+    }
 }
-
 
 #pragma mark - GOM observers
 
-- (void)_reconnect
-{
-    _webSocket.delegate = nil;
-    [_webSocket close];
-    
-    [self retrieveAttribute:@"/services/websockets_proxy:url" completionBlock:^(NSDictionary *response){
-        
-        // TODO: check for successful request and set uri
-        _webSocketUri = @"ws://172.40.2.20:3082/";
-        _webSocket = [[SRWebSocket alloc] initWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:_webSocketUri]]];
-        _webSocket.delegate = self;
-        
-        [_webSocket open];
-    }];
-}
-
-- (void)_disconnect
-{
-    _webSocket.delegate = nil;
-    
-    for (GOMBinding *binding in _bindings) {
-        [self _unregisterGOMObserverForBinding:binding];
-    }
-    
-    [_webSocket close];
-    _webSocket = nil;
-}
-
-- (void)registerGOMObserverForPath:(NSString *)path options:(NSDictionary *)options completionBlock:(GOMClientCallback)block
+- (void)registerGOMObserverForPath:(NSString *)path options:(NSDictionary *)options clientCallback:(GOMClientCallback)callback
 {
     GOMBinding *binding = [[GOMBinding alloc] initWithSubscriptionUri:path];
     _bindings[path] = binding;
     
-    GOMHandle *handle = [[GOMHandle alloc] initWithBinding:binding callback:block];
+    GOMHandle *handle = [[GOMHandle alloc] initWithBinding:binding callback:callback];
     [binding addHandle:handle];
     [self _registerGOMObserverForBinding:binding];
 }
 
-- (void)unregisterGOMObserverForPath:(NSString *)path options:(NSDictionary *)options completionBlock:(GOMClientCallback)block
+- (void)unregisterGOMObserverForPath:(NSString *)path options:(NSDictionary *)options
 {
     GOMBinding *binding = _bindings[path];
     [self _unregisterGOMObserverForBinding:binding];
@@ -245,6 +224,34 @@
     for (GOMHandle *handle in binding.handles) {
         [self _fireCallback:handle.callback withGomObject:gomObject];
     }
+}
+
+- (void)_reconnectWebsocket
+{
+    _webSocket.delegate = nil;
+    [_webSocket close];
+    
+    [self retrieveAttribute:@"/services/websockets_proxy:url" completionBlock:^(NSDictionary *response){
+        
+        // TODO: check for successful request and set uri
+        _webSocketUri = @"ws://172.40.2.20:3082/";
+        _webSocket = [[SRWebSocket alloc] initWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:_webSocketUri]]];
+        _webSocket.delegate = self;
+        
+        [_webSocket open];
+    }];
+}
+
+- (void)_disconnectWebsocket
+{
+    _webSocket.delegate = nil;
+    
+    for (GOMBinding *binding in _bindings) {
+        [self _unregisterGOMObserverForBinding:binding];
+    }
+    
+    [_webSocket close];
+    _webSocket = nil;
 }
 
 #pragma mark - SRWebSocketDelegate
