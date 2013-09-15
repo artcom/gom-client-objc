@@ -159,7 +159,7 @@
 
 - (void)observerViewController:(ObserverViewController *)observerViewController didRemoveObserverWithPath:(NSString *)path
 {
-    [self. gomClient unregisterGOMObserverForPath:path options:nil];
+    [self.gomClient unregisterGOMObserverForPath:path options:nil];
 }
 
 - (void)didFinishManagingObservers:(ObserverViewController *)observerViewController

@@ -32,7 +32,8 @@ typedef void (^GOMClientCallback)(NSDictionary *);
 - (void)updateAttribute:(NSString *)attribute withValue:(NSString *)value completionBlock:(GOMClientCallback)block;
 - (void)updateNode:(NSString *)node withAttributes:(NSDictionary *)attributes completionBlock:(GOMClientCallback)block;
 
-- (void)deleteNode:(NSString *)node completionBlock:(GOMClientCallback)block;
+- (void)destroyAttribute:(NSString *)attribute completionBlock:(GOMClientCallback)block;
+- (void)destroyNode:(NSString *)node completionBlock:(GOMClientCallback)block;
 
 - (void)registerGOMObserverForPath:(NSString *)path options:(NSDictionary *)options clientCallback:(GOMClientCallback)callback;
 - (void)unregisterGOMObserverForPath:(NSString *)path options:(NSDictionary *)options;

@@ -46,14 +46,25 @@
         _gomRoot = gomURI;
         _bindings = [[NSMutableDictionary alloc] init];
         gomIsReady = false;
-        
-        [self _reconnectWebsocket];
     }
     return self;
 }
 
+- (void)dealloc
+{
+    [self _disconnectWebsocket];
+}
+
+- (void)setDelegate:(id<GOMClientDelegate>)delegate
+{
+    _delegate = delegate;
+    [self _reconnectWebsocket];
+}
+
 - (void)retrieveAttribute:(NSString *)attribute completionBlock:(GOMClientCallback)block
 {
+    
+    // Return nil when retrieving non-existent attribute
     if (block) {
         block(nil);
     }
@@ -61,6 +72,7 @@
 
 - (void)retrieveNode:(NSString *)node completionBlock:(GOMClientCallback)block
 {
+    // Return nil when retrieving non-existent node
     if (block) {
         block(nil);
     }
@@ -94,8 +106,17 @@
     }
 }
 
-- (void)deleteNode:(NSString *)node completionBlock:(GOMClientCallback)block
+- (void)destroyAttribute:(NSString *)attribute completionBlock:(GOMClientCallback)block
 {
+    // Return nil when destroying non-existent attribute
+    if (block) {
+        block(nil);
+    }
+}
+
+- (void)destroyNode:(NSString *)node completionBlock:(GOMClientCallback)block
+{
+    // Return nil when destroying non-existent node
     if (block) {
         block(nil);
     }
@@ -174,11 +195,14 @@
     NSString *payloadString = response[@"initial"];
     NSMutableDictionary *payload = [payloadString parseAsJSON];
     
-    NSString *path = response[@"path"];
-    GOMBinding *binding = _bindings[path];
-    if (binding) {
-        for (GOMHandle *handle in binding.handles) {
-            [self _fireCallback:handle.callback withGomObject:payload];
+    if (payloadString) {
+        
+        NSString *path = response[@"path"];
+        GOMBinding *binding = _bindings[path];
+        if (binding) {
+            for (GOMHandle *handle in binding.handles) {
+                [self _fireCallback:handle.callback withGomObject:payload];
+            }
         }
     }
 }
@@ -187,20 +211,24 @@
 {
     NSMutableDictionary *operation = nil;
     NSString *payloadString = response[@"payload"];
-    NSMutableDictionary *payload = [payloadString parseAsJSON];
-    if (payload[@"create"]) {
-        operation = payload [@"create"];
-    } else if (payload[@"update"]) {
-        operation = payload[@"update"];
-    } else if (payload[@"delete"]) {
-        operation = payload[@"delete"];
-    }
     
-    NSString *path = response[@"path"];
-    GOMBinding *binding = _bindings[path];
-    if (operation && binding) {
-        for (GOMHandle *handle in binding.handles) {
-            [self _fireCallback:handle.callback withGomObject:operation];
+    if (payloadString) {
+        
+        NSMutableDictionary *payload = [payloadString parseAsJSON];
+        if (payload[@"create"]) {
+            operation = payload [@"create"];
+        } else if (payload[@"update"]) {
+            operation = payload[@"update"];
+        } else if (payload[@"delete"]) {
+            operation = payload[@"delete"];
+        }
+        
+        NSString *path = response[@"path"];
+        GOMBinding *binding = _bindings[path];
+        if (operation && binding) {
+            for (GOMHandle *handle in binding.handles) {
+                [self _fireCallback:handle.callback withGomObject:operation];
+            }
         }
     }
 }
@@ -228,10 +256,9 @@
 
 - (void)_reconnectWebsocket
 {
-    _webSocket.delegate = nil;
-    [_webSocket close];
+    [self _disconnectWebsocket];
     
-    [self retrieveAttribute:@"/services/websockets_proxy:url" completionBlock:^(NSDictionary *response){
+    [self retrieveAttribute:@"/services/websockets_proxy:url" completionBlock:^(NSDictionary *response) {
         
         // TODO: check for successful request and set uri
         _webSocketUri = @"ws://172.40.2.20:3082/";
@@ -246,9 +273,7 @@
 {
     _webSocket.delegate = nil;
     
-    for (GOMBinding *binding in _bindings) {
-        [self _unregisterGOMObserverForBinding:binding];
-    }
+    [_bindings removeAllObjects];
     
     [_webSocket close];
     _webSocket = nil;
@@ -259,7 +284,6 @@
 - (void)webSocketDidOpen:(SRWebSocket *)webSocket;
 {
     NSLog(@"Websocket Connected");
-    
     if ([self.delegate respondsToSelector:@selector(gomClientDidBecomeReady:)]) {
         [self.delegate gomClientDidBecomeReady:self];
     }
@@ -267,8 +291,7 @@
 
 - (void)webSocket:(SRWebSocket *)webSocket didFailWithError:(NSError *)error;
 {
-    NSLog(@":( Websocket Failed With Error %@", error);
-    
+    NSLog(@"Websocket Failed With Error %@", error);
     _webSocket = nil;
 }
 
@@ -284,7 +307,7 @@
 
 - (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean;
 {
-    NSLog(@"WebSocket closed");
+    NSLog(@"WebSocket closed with code: %d\n%@\nclean: %d", code, reason, wasClean);
     _webSocket = nil;
 }
 

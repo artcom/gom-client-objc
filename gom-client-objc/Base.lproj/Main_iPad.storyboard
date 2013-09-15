@@ -99,7 +99,7 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="sendToGOM:" destination="BYZ-38-t0r" eventType="touchUpInside" id="zBI-aY-kvd"/>
+                                            <action selector="manageObservers:" destination="BYZ-38-t0r" eventType="touchUpInside" id="acN-Yf-I6L"/>
                                             <segue destination="psg-Vp-FW6" kind="modal" identifier="ManageObservers" modalPresentationStyle="formSheet" id="3VI-RV-bGo"/>
                                         </connections>
                                     </button>

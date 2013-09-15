@@ -17,7 +17,6 @@
 @property (weak, nonatomic) IBOutlet UIView *inputContainer;
 @property (weak, nonatomic) IBOutlet UITextField *attributeField;
 @property (weak, nonatomic) IBOutlet UITextField *valueField;
-@property (weak, nonatomic) IBOutlet UIButton *sendButton;
 @property (weak, nonatomic) IBOutlet UIButton *observerButton;
 
 
