@@ -145,4 +145,10 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     [gomClient unregisterGOMObserverForPath:@"/areas/home/audio:volume" options:nil];
     ```
 
-TODO: document content of response dictionaries.
+## TODO
+
+* document content of response dictionaries.
+
+## Demo app
+
+* document usage of demo app.
