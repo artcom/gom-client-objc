@@ -30,9 +30,6 @@
     self.attributeField.delegate = self;
     self.valueField.delegate = self;
     
-    self.consoleView.frame = CGRectMake(self.consoleView.frame.origin.x, self.consoleView.frame.origin.y, self.consoleView.frame.size.width, self.view.bounds.size.height * 0.7);
-    self.inputContainer.frame = CGRectMake(self.inputContainer.frame.origin.x, self.view.bounds.size.height * 0.7, self.inputContainer.frame.size.width, self.inputContainer.frame.size.height);
-    
     isSlidUp = NO;
     
     _observers = [[NSMutableArray alloc] init];
@@ -128,15 +125,14 @@
 - (void)slideUp
 {
     if (isSlidUp == NO) {
-        CGFloat fraction = 0.4;
+        CGFloat height = 350.0;
         if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-            fraction = 0.5;
+            height = 400.0;
         }
-        
         [UIView animateWithDuration:0.25
                          animations:^{
-                             self.consoleView.frame = CGRectMake(self.consoleView.frame.origin.x, self.consoleView.frame.origin.y, self.consoleView.frame.size.width, self.view.bounds.size.height * fraction);
-                             self.inputContainer.frame = CGRectMake(self.inputContainer.frame.origin.x, self.view.bounds.size.height * fraction, self.inputContainer.frame.size.width, self.inputContainer.frame.size.height);
+                             self.consoleView.frame = CGRectMake(self.consoleView.frame.origin.x, self.consoleView.frame.origin.y, self.consoleView.frame.size.width, self.view.bounds.size.height - height);
+                             self.inputContainer.frame = CGRectMake(self.inputContainer.frame.origin.x, self.view.bounds.size.height - height, self.inputContainer.frame.size.width, self.inputContainer.frame.size.height);
                          }
                          completion:^(BOOL finished) {
                              isSlidUp = YES;
@@ -150,8 +146,8 @@
     if (isSlidUp) {
         [UIView animateWithDuration:0.25
                          animations:^{
-                             self.consoleView.frame = CGRectMake(self.consoleView.frame.origin.x, self.consoleView.frame.origin.y, self.consoleView.frame.size.width, self.view.bounds.size.height * 0.7);
-                             self.inputContainer.frame = CGRectMake(self.inputContainer.frame.origin.x, self.view.bounds.size.height * 0.7, self.inputContainer.frame.size.width, self.inputContainer.frame.size.height);
+                             self.consoleView.frame = CGRectMake(self.consoleView.frame.origin.x, self.consoleView.frame.origin.y, self.consoleView.frame.size.width, self.view.bounds.size.height - self.inputContainer.frame.size.height);
+                             self.inputContainer.frame = CGRectMake(self.inputContainer.frame.origin.x, self.view.bounds.size.height - self.inputContainer.frame.size.height, self.inputContainer.frame.size.width, self.inputContainer.frame.size.height);
                          }
                          completion:^(BOOL finished) {
                              isSlidUp = NO;

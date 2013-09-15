@@ -88,12 +88,14 @@
 - (void)slideUp
 {
     if (isSlidUp == NO) {
+        CGFloat height = 350.0;
+        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+            height = 500.0;
+        }
         [UIView animateWithDuration:0.25
                          animations:^{
-                             if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-                                 self.tableView.frame = CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, self.view.bounds.size.height * 0.4);
-                             }
-                             self.inputContainer.frame = CGRectMake(self.inputContainer.frame.origin.x, self.view.bounds.size.height * 0.4, self.inputContainer.frame.size.width, self.inputContainer.frame.size.height);
+                             self.tableView.frame = CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, self.view.bounds.size.height - height);
+                             self.inputContainer.frame = CGRectMake(self.inputContainer.frame.origin.x, self.view.bounds.size.height - height, self.inputContainer.frame.size.width, self.inputContainer.frame.size.height);
                          }
                          completion:^(BOOL finished) {
                              isSlidUp = YES;
@@ -107,10 +109,8 @@
     if (isSlidUp) {
         [UIView animateWithDuration:0.25
                          animations:^{
-                             if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-                                 self.tableView.frame = CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, self.view.bounds.size.height * 0.7);
-                             }
-                             self.inputContainer.frame = CGRectMake(self.inputContainer.frame.origin.x, self.view.bounds.size.height * 0.7, self.inputContainer.frame.size.width, self.inputContainer.frame.size.height);
+                             self.tableView.frame = CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, self.view.bounds.size.height - self.inputContainer.frame.size.height);
+                             self.inputContainer.frame = CGRectMake(self.inputContainer.frame.origin.x, self.view.bounds.size.height - self.inputContainer.frame.size.height, self.inputContainer.frame.size.width, self.inputContainer.frame.size.height);
                          }
                          completion:^(BOOL finished) {
                              isSlidUp = NO;
@@ -118,6 +118,7 @@
          ];
     }
 }
+
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
