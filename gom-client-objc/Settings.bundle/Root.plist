@@ -24,7 +24,7 @@
 			<key>KeyboardType</key>
 			<string>Alphabet</string>
 			<key>Title</key>
-			<string>GOM address</string>
+			<string></string>
 			<key>Type</key>
 			<string>PSTextFieldSpecifier</string>
 		</dict>
