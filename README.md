@@ -52,7 +52,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     * Attribute retrieval:
     
     ```objective-c
-    [gomClient retrieve:@"/areas/home/audio:volume" completionBlock:^(NSDictionary *result) {
+    [gomClient retrieve:@"/areas/home/audio:volume" completionBlock:^(NSDictionary *response) {
 
         // result will be nil here when retrieving a non-existing attribute
         
@@ -62,8 +62,8 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     * Node retrieval:
   
     ```objective-c
-    [gomClient retrieve:@"/areas/home/audio" completionBlock:^(NSDictionary *result) {
-    
+    [gomClient retrieve:@"/areas/home/audio" completionBlock:^(NSDictionary *response) {
+   
         // result will be nil here when retrieving a non-existing node
 
     }];
@@ -75,7 +75,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     * Create empty node:
     
     ```objective-c
-    gomClient create:@"/areas/home/audio" withAttributes:nil completionBlock:^(NSDictionary *result) {
+    gomClient create:@"/areas/home/audio" withAttributes:nil completionBlock:^(NSDictionary *response) {
         
     }];
     ```
@@ -86,7 +86,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     
     ```objective-c
     NSDictionary *attributes = […];
-    gomClient create:@"/areas/home/audio" withAttributes:attributes completionBlock:^(NSDictionary *result) {
+    gomClient create:@"/areas/home/audio" withAttributes:attributes completionBlock:^(NSDictionary *response) {
         
     }];
     ```
@@ -96,7 +96,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     * Attribute update:
     
     ```objective-c
-    [gomClient updateAttribute:@"/areas/home/audio:volume" withValue:@"50" completionBlock:^(NSDictionary *result) {
+    [gomClient updateAttribute:@"/areas/home/audio:volume" withValue:@"50" completionBlock:^(NSDictionary *response) {
         
     }];
     ```
@@ -107,7 +107,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     
     ```objective-c
     NSDictionary *attributes = […];
-    [gomClient updateNode:@"/areas/home/audio" withAttributesValue:attributes completionBlock:^(NSDictionary *result) {
+    [gomClient updateNode:@"/areas/home/audio" withAttributesValue:attributes completionBlock:^(NSDictionary *response) {
         
     }];
     ```
