@@ -118,7 +118,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     
     * Destroy existing node:
     
-    ``objective-c
+    ```objective-c
     [_gomClient destroyNode:@"/areas/home/audio:volume" completionBlock:^(NSDictionary *response) {
         
     }];
