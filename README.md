@@ -50,7 +50,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     * Attribute retrieval:
     
     ```objective-c
-    [gomClient retrieveAttribute:@"/areas/home/audio:volume" completionBlock:^(NSDictionary *result) {
+    [gomClient retrieve:@"/areas/home/audio:volume" completionBlock:^(NSDictionary *result) {
 
         // result will be nil here when retrieving a non-existing attribute
         
@@ -60,7 +60,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     * Node retrieval:
   
     ```objective-c
-    [gomClient retrieveNode:@"/areas/home/audio" completionBlock:^(NSDictionary *result) {
+    [gomClient retrieve:@"/areas/home/audio" completionBlock:^(NSDictionary *result) {
     
         // result will be nil here when retrieving a non-existing node
 
@@ -73,7 +73,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     * Create empty node:
     
     ```objective-c
-    gomClient createNode:@"/areas/home/audio" withAttributes:nil completionBlock:^(NSDictionary *result) 
+    gomClient create:@"/areas/home/audio" withAttributes:nil completionBlock:^(NSDictionary *result) 
         
     }];
     ```
@@ -82,7 +82,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     
     ```objective-c
     NSDictionary *attributes = […];
-    gomClient createNode:@"/areas/home/audio" withAttributes:attributes completionBlock:^(NSDictionary *result) {
+    gomClient create:@"/areas/home/audio" withAttributes:attributes completionBlock:^(NSDictionary *result) {
         
     }];
     ```
@@ -111,7 +111,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     * Destroy existing attribute:
     
     ```objective-c
-    [gomClient destroyAttribute:@"/areas/home/audio:volume" completionBlock:^(NSDictionary *response) {
+    [gomClient destroy:@"/areas/home/audio:volume" completionBlock:^(NSDictionary *response) {
         
     }];
     ```
@@ -119,7 +119,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     * Destroy existing node:
     
     ```objective-c
-    [gomClient destroyNode:@"/areas/home/audio:volume" completionBlock:^(NSDictionary *response) {
+    [gomClient destroy:@"/areas/home/audio" completionBlock:^(NSDictionary *response) {
         
     }];
     ```
@@ -127,7 +127,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     * Destroy non-existing attribute:
     
     ```objective-c
-    [gomClient destroyAttribute:@"/areas/home/audio_x:volume" completionBlock:^(NSDictionary *response) {
+    [gomClient destroy:@"/areas/home/audio_x:volume" completionBlock:^(NSDictionary *response) {
         
         // result will be nil here when retrieving a non-existing node
         
@@ -137,7 +137,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     * Destroy non-existing node:
     
     ```objective-c
-    [gomClient destroyNode:@"/areas/home/audio" completionBlock:^(NSDictionary *response) {
+    [gomClient destroy:@"/areas/home/audio" completionBlock:^(NSDictionary *response) {
         
         // result will be nil here when retrieving a non-existing node
         

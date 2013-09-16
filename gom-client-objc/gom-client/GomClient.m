@@ -40,6 +40,8 @@
 @synthesize gomRoot = _gomRoot;
 @synthesize bindings = _bindings;
 
+#define WEBSOCKETS_PROXY_PATH @"/services/websockets_proxy:url"
+
 - (id)initWithGomURI:(NSURL *)gomURI
 {
     self = [super init];
@@ -62,88 +64,59 @@
     [self _reconnectWebsocket];
 }
 
-- (void)retrieveAttribute:(NSString *)attribute completionBlock:(GOMClientCallback)block
+- (void)retrieve:(NSString *)path completionBlock:(GOMClientCallback)block
 {
     NSMutableDictionary *headers = [[NSMutableDictionary alloc] init];
     [headers setValue:@"application/json" forKey:@"Accept"];
     [headers setValue:@"application/json" forKey:@"Content-Type"];
-    [self performGOMRequestWithPath:attribute method:@"GET" headers:headers payload:nil completionBlock:block];
+    
+    NSURL *requestURL = [_gomRoot URLByAppendingPathComponent:path];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:requestURL];
+    [request setAllHTTPHeaderFields:headers];
+    [request setHTTPMethod:@"GET"];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+        NSDictionary *responseData = nil;
+        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+        switch (httpResponse.statusCode) {
+            case 200:
+            {
+                if (data) {
+                    NSError *error = nil;
+                    responseData = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+                }
+                NSLog(@"dict: %@", responseData);
+            }
+                break;
+            case 500:
+                responseData = nil;
+                break;
+            case 404:
+                responseData = nil;
+                break;
+            default:
+                break;
+        }
+        if (block) {
+            block(responseData);
+        }
+    }];
 }
 
-- (void)retrieveNode:(NSString *)node completionBlock:(GOMClientCallback)block
+- (void)create:(NSString *)node withAttributes:(NSDictionary *)attributes completionBlock:(GOMClientCallback)block
 {
-    NSMutableDictionary *headers = [[NSMutableDictionary alloc] init];
-    [headers setValue:@"application/json" forKey:@"Accept"];
-    [headers setValue:@"application/json" forKey:@"Content-Type"];
-    [self performGOMRequestWithPath:node method:@"GET" headers:headers payload:nil completionBlock:block];
-}
-
-- (void)createNode:(NSString *)node withAttributes:(NSDictionary *)attributes completionBlock:(GOMClientCallback)block
-{
-    NSMutableDictionary *headers = [[NSMutableDictionary alloc] init];
-    [headers setValue:@"application/xml" forKey:@"Content-Type"];
-    [self performGOMRequestWithPath:node method:@"CREATE" headers:headers payload:nil completionBlock:block];
 }
 
 - (void)updateAttribute:(NSString *)attribute withValue:(NSString *)value completionBlock:(GOMClientCallback)block
 {
-    NSMutableDictionary *headers = [[NSMutableDictionary alloc] init];
-    [headers setValue:@"text/plain" forKey:@"Accept"];
-    [headers setValue:@"application/x-www-form-urlencoded" forKey:@"Content-Type"];
-    
-    //NSDictionary *payload = [NSDictionary dictionaryWithObjects:@[value, @"string"] forKeys:@[@"attribute", @"type"]];
-    NSData *payloadData = nil; // TODO encode dictionary.
-        
-    [self performGOMRequestWithPath:attribute method:@"PUT" headers:headers payload:payloadData completionBlock:block];
 }
 
 - (void)updateNode:(NSString *)node withAttributes:(NSDictionary *)attributes completionBlock:(GOMClientCallback)block
 {
-    NSMutableDictionary *headers = [[NSMutableDictionary alloc] init];
-    [headers setValue:@"application/json" forKey:@"Accept"];
-    [headers setValue:@"application/" forKey:@"Content-Type"];
-    
-    [self performGOMRequestWithPath:node method:@"PUT" headers:headers payload:nil completionBlock:block];
 }
 
-- (void)destroyAttribute:(NSString *)attribute completionBlock:(GOMClientCallback)block
+- (void)destroy:(NSString *)path completionBlock:(GOMClientCallback)block
 {
-    NSMutableDictionary *headers = [[NSMutableDictionary alloc] init];
-    //[headers setValue:@"application/json" forKey:@"Accept"];
-    //[headers setValue:@"application/" forKey:@"Content-Type"];
-    [self performGOMRequestWithPath:attribute method:@"DELETE" headers:headers payload:nil completionBlock:block];
-}
-
-- (void)destroyNode:(NSString *)node completionBlock:(GOMClientCallback)block
-{
-    NSMutableDictionary *headers = [[NSMutableDictionary alloc] init];
-    //[headers setValue:@"application/json" forKey:@"Accept"];
-    //[headers setValue:@"application/" forKey:@"Content-Type"];
-    [self performGOMRequestWithPath:node method:@"DELETE" headers:headers payload:nil completionBlock:block];
-}
-
-- (void)performGOMRequestWithPath:(NSString *)path method:(NSString *)method headers:(NSDictionary *)headers payload:(NSData *)payload completionBlock:(GOMClientCallback)block
-{
-    NSURL *requestURL = [_gomRoot URLByAppendingPathComponent:path];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:requestURL];
-    [request setAllHTTPHeaderFields:headers];
-    [request setHTTPBody:payload];
-    
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-        NSLog(@"response: %@", response.description);
-        
-        NSDictionary *responseData = nil;
-        if (data) {
-            NSError *error = nil;
-            responseData = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-        }
-        NSLog(@"dict: %@", responseData);
-        
-        if (block) {
-            block(responseData);
-        }
-        
-    }];
 }
 
 #pragma mark - GOM observers
@@ -281,7 +254,7 @@
 - (void)_reconnectWebsocket
 {
     [self _disconnectWebsocket];
-    [self retrieveAttribute:@"/services/websockets_proxy:url" completionBlock:^(NSDictionary *response) {
+    [self retrieve:WEBSOCKETS_PROXY_PATH completionBlock:^(NSDictionary *response) {
         NSDictionary *attribute = response[@"attribute"];
         if (attribute) {
             _webSocketUri = attribute[@"value"];
@@ -318,6 +291,10 @@
 {
     NSLog(@"Websocket Failed With Error %@", error);
     _webSocket = nil;
+    
+    if ([self.delegate respondsToSelector:@selector(gomClient:didFailWithError:)]) {
+        [self.delegate gomClient:self didFailWithError:error];
+    }
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message;

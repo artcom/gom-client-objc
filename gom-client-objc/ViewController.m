@@ -198,7 +198,7 @@
 
 
 - (IBAction)retrievePressed:(id)sender {
-    [self.gomClient retrieveAttribute:self.attributeField.text completionBlock:^(NSDictionary *response) {
+    [self.gomClient retrieve:self.attributeField.text completionBlock:^(NSDictionary *response) {
         [self writeToConsole:response];
     }];
 }
@@ -213,7 +213,7 @@
 }
 
 - (IBAction)deletePressed:(id)sender {
-    [self.gomClient destroyAttribute:self.attributeField.text completionBlock:^(NSDictionary *response) {
+    [self.gomClient destroy:self.attributeField.text completionBlock:^(NSDictionary *response) {
         [self writeToConsole:response];
     }];
 }

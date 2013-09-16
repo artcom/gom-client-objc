@@ -23,16 +23,11 @@ typedef void (^GOMClientCallback)(NSDictionary *);
 
 - (id)initWithGomURI:(NSURL *)gomURI;
 
-- (void)retrieveAttribute:(NSString *)attribute completionBlock:(GOMClientCallback)block;
-- (void)retrieveNode:(NSString *)node completionBlock:(GOMClientCallback)block;
-
-- (void)createNode:(NSString *)node withAttributes:(NSDictionary *)attributes completionBlock:(GOMClientCallback)block;
-
+- (void)retrieve:(NSString *)path completionBlock:(GOMClientCallback)block;
+- (void)create:(NSString *)node withAttributes:(NSDictionary *)attributes completionBlock:(GOMClientCallback)block;
 - (void)updateAttribute:(NSString *)attribute withValue:(NSString *)value completionBlock:(GOMClientCallback)block;
 - (void)updateNode:(NSString *)node withAttributes:(NSDictionary *)attributes completionBlock:(GOMClientCallback)block;
-
-- (void)destroyAttribute:(NSString *)attribute completionBlock:(GOMClientCallback)block;
-- (void)destroyNode:(NSString *)node completionBlock:(GOMClientCallback)block;
+- (void)destroy:(NSString *)path completionBlock:(GOMClientCallback)block;
 
 - (void)registerGOMObserverForPath:(NSString *)path options:(NSDictionary *)options clientCallback:(GOMClientCallback)callback;
 - (void)unregisterGOMObserverForPath:(NSString *)path options:(NSDictionary *)options;
