@@ -12,6 +12,9 @@
 {
     BOOL isSlidUp;
 }
+
+- (void)slideUp;
+- (void)slideDown;
 @end
 
 @implementation ObserverViewController

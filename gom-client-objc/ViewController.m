@@ -16,6 +16,14 @@
 @property (nonatomic, strong) GOMClient *gomClient;
 @property (nonatomic, strong) NSURL *gomRoot;
 @property (nonatomic, strong) NSMutableArray *observers;
+
+
+- (void)registerObservers;
+- (void)removeObservers;
+- (void)slideUp;
+- (void)slideDown;
+- (void)writeToConsole:(NSDictionary *)output;
+- (void)resetTextfields;
 @end
 
 @implementation ViewController
