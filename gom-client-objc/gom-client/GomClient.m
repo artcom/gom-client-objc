@@ -417,7 +417,7 @@
 
 - (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean;
 {
-    NSLog(@"WebSocket closed with code: %d\n%@\nclean: %d", code, reason, wasClean);
+    NSLog(@"WebSocket closed with code: %ld\n%@\nclean: %d", (long)code, reason, wasClean);
     _webSocket = nil;
 }
 

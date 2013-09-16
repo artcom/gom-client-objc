@@ -82,6 +82,8 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
 
     * Create node with attributes:
     
+    Currently not supported
+    
     ```objective-c
     NSDictionary *attributes = […];
     gomClient create:@"/areas/home/audio" withAttributes:attributes completionBlock:^(NSDictionary *result) {
@@ -100,6 +102,8 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     ```
     
     * Node update:
+    
+    Currently not supported
     
     ```objective-c
     NSDictionary *attributes = […];
