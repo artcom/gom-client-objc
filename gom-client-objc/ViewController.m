@@ -31,6 +31,8 @@
     self.valueField.delegate = self;
     
     isSlidUp = NO;
+    self.inputContainer.alpha = 0.5;
+    self.inputContainer.userInteractionEnabled = NO;
     
     _observers = [[NSMutableArray alloc] init];
     [self registerObservers];
@@ -80,11 +82,29 @@
 - (void)gomClientDidBecomeReady:(GOMClient *)gomClient
 {
     NSLog(@"GOMClient did become ready");
+    
+    [UIView animateWithDuration:0.4
+                     animations:^{
+                         self.inputContainer.alpha = 1.0;
+                     }
+                     completion:^(BOOL isComplete) {
+                         self.inputContainer.userInteractionEnabled = YES;
+                     }
+     ];
 }
 
 - (void)gomClient:(GOMClient *)gomClient didFailWithError:(NSError *)error
 {
-    NSLog(@"GOMClient setup did fail with error:\n%@", error);
+    [UIView animateWithDuration:0.4
+                     animations:^{
+                         self.inputContainer.alpha = 0.5;
+                     }
+                     completion:^(BOOL isComplete){
+                         self.inputContainer.userInteractionEnabled = NO;
+                     }
+     ];
+    
+    NSLog(@"GOMClient did fail with error:\n%@", error);
     self.gomClient = nil;
 }
 
@@ -102,7 +122,7 @@
                              self.consoleView.frame = CGRectMake(self.consoleView.frame.origin.x, self.consoleView.frame.origin.y, self.consoleView.frame.size.width, self.view.bounds.size.height - height);
                              self.inputContainer.frame = CGRectMake(self.inputContainer.frame.origin.x, self.view.bounds.size.height - height, self.inputContainer.frame.size.width, self.inputContainer.frame.size.height);
                          }
-                         completion:^(BOOL finished) {
+                         completion:^(BOOL isComplete) {
                              isSlidUp = YES;
                          }
          ];
@@ -117,7 +137,7 @@
                              self.consoleView.frame = CGRectMake(self.consoleView.frame.origin.x, self.consoleView.frame.origin.y, self.consoleView.frame.size.width, self.view.bounds.size.height - self.inputContainer.frame.size.height);
                              self.inputContainer.frame = CGRectMake(self.inputContainer.frame.origin.x, self.view.bounds.size.height - self.inputContainer.frame.size.height, self.inputContainer.frame.size.width, self.inputContainer.frame.size.height);
                          }
-                         completion:^(BOOL finished) {
+                         completion:^(BOOL isComplete) {
                              isSlidUp = NO;
                          }
          ];
@@ -193,6 +213,9 @@
 }
 
 - (IBAction)deletePressed:(id)sender {
+    [self.gomClient destroyAttribute:self.attributeField.text completionBlock:^(NSDictionary *response) {
+        [self writeToConsole:response];
+    }];
 }
 
 - (IBAction)manageObservers:(id)sender {

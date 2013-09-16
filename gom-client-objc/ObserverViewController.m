@@ -109,7 +109,7 @@
                                  self.tableView.frame = CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, self.view.bounds.size.height - height);
                                  self.inputContainer.frame = CGRectMake(self.inputContainer.frame.origin.x, self.view.bounds.size.height - height, self.inputContainer.frame.size.width, self.inputContainer.frame.size.height);
                              }
-                             completion:^(BOOL finished) {
+                             completion:^(BOOL isComplete) {
                                  isSlidUp = YES;
                              }
              ];
@@ -126,7 +126,7 @@
                                  self.tableView.frame = CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, self.view.bounds.size.height - self.inputContainer.frame.size.height);
                                  self.inputContainer.frame = CGRectMake(self.inputContainer.frame.origin.x, self.view.bounds.size.height - self.inputContainer.frame.size.height, self.inputContainer.frame.size.width, self.inputContainer.frame.size.height);
                              }
-                             completion:^(BOOL finished) {
+                             completion:^(BOOL isComplete) {
                                  isSlidUp = NO;
                              }
              ];
