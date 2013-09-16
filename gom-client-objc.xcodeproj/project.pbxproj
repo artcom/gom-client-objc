@@ -252,7 +252,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0500;
-				ORGANIZATIONNAME = "ART+COM";
+				ORGANIZATIONNAME = "ART+COM AG";
 				TargetAttributes = {
 					3B2A5FA017E312FF009A4430 = {
 						TestTargetID = 3B2A5F7C17E312FF009A4430;

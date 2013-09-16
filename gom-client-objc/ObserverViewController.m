@@ -3,7 +3,7 @@
 //  gom-client-objc
 //
 //  Created by Julian Krumow on 14.09.13.
-//  Copyright (c) 2013 ART+COM. All rights reserved.
+//  Copyright (c) 2013 ART+COM AG. All rights reserved.
 //
 
 #import "ObserverViewController.h"
