@@ -79,13 +79,6 @@
     }
 }
 
-- (void)createNode:(NSString *)node completionBlock:(GOMClientCallback)block
-{
-    if (block) {
-        block(nil);
-    }
-}
-
 - (void)createNode:(NSString *)node withAttributes:(NSDictionary *)attributes completionBlock:(GOMClientCallback)block
 {
     if (block) {

@@ -26,7 +26,6 @@ typedef void (^GOMClientCallback)(NSDictionary *);
 - (void)retrieveAttribute:(NSString *)attribute completionBlock:(GOMClientCallback)block;
 - (void)retrieveNode:(NSString *)node completionBlock:(GOMClientCallback)block;
 
-- (void)createNode:(NSString *)node completionBlock:(GOMClientCallback)block;
 - (void)createNode:(NSString *)node withAttributes:(NSDictionary *)attributes completionBlock:(GOMClientCallback)block;
 
 - (void)updateAttribute:(NSString *)attribute withValue:(NSString *)value completionBlock:(GOMClientCallback)block;
