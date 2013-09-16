@@ -54,7 +54,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     ```objective-c
     [gomClient retrieve:@"/areas/home/audio:volume" completionBlock:^(NSDictionary *response) {
 
-        // result will be nil here when retrieving a non-existing attribute
+        // response will be nil here when retrieving a non-existing attribute
         
     }];
     ```
@@ -64,7 +64,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     ```objective-c
     [gomClient retrieve:@"/areas/home/audio" completionBlock:^(NSDictionary *response) {
    
-        // result will be nil here when retrieving a non-existing node
+        // response will be nil here when retrieving a non-existing node
 
     }];
 
@@ -135,7 +135,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     ```objective-c
     [gomClient destroy:@"/areas/home/audio_x:volume" completionBlock:^(NSDictionary *response) {
         
-        // result will be nil here when retrieving a non-existing node
+        // response will be nil here when retrieving a non-existing node
         
     }];
     ```
@@ -145,7 +145,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     ```objective-c
     [gomClient destroy:@"/areas/home/audio" completionBlock:^(NSDictionary *response) {
         
-        // result will be nil here when retrieving a non-existing node
+        // response will be nil here when retrieving a non-existing node
         
     }];
     ```
