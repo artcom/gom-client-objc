@@ -75,7 +75,11 @@
     if (UITableViewCellEditingStyleDelete) {
         NSString *path = [self.observers objectAtIndex:indexPath.row];
         [self.observers removeObjectAtIndex:indexPath.row];
-        [self.tableView reloadData];
+        
+        [self.tableView beginUpdates];
+        [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:self.observers.count-1 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView endUpdates];
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.observers.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
         
         if ([self.delegate respondsToSelector:@selector(observerViewController:didRemoveObserverWithPath:)]) {
             [self.delegate observerViewController:self didRemoveObserverWithPath:path];
@@ -136,7 +140,11 @@
 
 - (IBAction)addGomObserver:(id)sender {
     [self.observers addObject:self.observerPathField.text];
-    [self.tableView reloadData];
+    
+    [self.tableView beginUpdates];
+    [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:self.observers.count-1 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [self.tableView endUpdates];
+    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.observers.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     
     if ([self.delegate respondsToSelector:@selector(observerViewController:didAddObserverWithPath:)]) {
         [self.delegate observerViewController:self didAddObserverWithPath:self.observerPathField.text];

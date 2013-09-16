@@ -194,30 +194,35 @@
 }
 
 - (IBAction)retrievePressed:(id)sender {
+    [self resetTextfields];
     [self.gomClient retrieve:self.attributeField.text completionBlock:^(NSDictionary *response) {
         [self writeToConsole:response];
     }];
 }
 
 - (IBAction)createPressed:(id)sender {
+    [self resetTextfields];
     [self.gomClient create:self.attributeField.text withAttributes:nil completionBlock:^(NSDictionary *response) {
         [self writeToConsole:response];
     }];
 }
 
 - (IBAction)updatePressed:(id)sender {
+    [self resetTextfields];
     [self.gomClient updateAttribute:self.attributeField.text withValue:self.valueField.text completionBlock:^(NSDictionary *response) {
         [self writeToConsole:response];
     }];
 }
 
 - (IBAction)deletePressed:(id)sender {
+    [self resetTextfields];
     [self.gomClient destroy:self.attributeField.text completionBlock:^(NSDictionary *response) {
         [self writeToConsole:response];
     }];
 }
 
-- (IBAction)manageObservers:(id)sender {
+- (void)resetTextfields
+{
     UITextField *textfield = nil;
     if (self.attributeField.isFirstResponder) {
         textfield = self.attributeField;
@@ -226,8 +231,11 @@
     }
     [textfield resignFirstResponder];
     [self slideDown];
+}
+
+- (IBAction)manageObservers:(id)sender {
     
-    
+    [self resetTextfields];
 }
 
 @end
