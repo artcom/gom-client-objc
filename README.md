@@ -31,11 +31,13 @@ All dependencies are defined in the file ```gom-client-objc.podspec```
 ## Usage
 
 ### Initialization
-```
+
+```objective-c
 NSURL *gomURI = [NSURL URLWithString:@"http://<ip-or-name>:<port>"];
 GOMClient *gomClient = [[GOMClient alloc] initWithGomURI:gomURI];
 gomClient.delegate = <your delegate object>;
 ```
+
 As soon as the GOMClient object is initialized and completely set up the delegate will receive the message ```- (void)gomClientDidBecomeReady:(GOMClient *)gomClient``` returning a reference of the GOMClient object in question.
 
 #### Errorhandling

@@ -85,7 +85,6 @@
                     NSError *error = nil;
                     responseData = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
                 }
-                NSLog(@"dict: %@", responseData);
             }
                 break;
             case 500:
@@ -105,18 +104,127 @@
 
 - (void)create:(NSString *)node withAttributes:(NSDictionary *)attributes completionBlock:(GOMClientCallback)block
 {
+    NSMutableDictionary *headers = [[NSMutableDictionary alloc] init];
+    [headers setValue:@"application/xml" forKey:@"Content-Type"];
+    [headers setValue:@"application/json" forKey:@"Accept"];
+    
+    
+    // TODO: add payload for attributes.
+    NSString *attributesXML = @"";
+    
+    NSString *payload = [NSString stringWithFormat:@"<node>%@</node>", attributesXML];
+    
+    
+    NSData *payloadData = [payload dataUsingEncoding:NSUTF8StringEncoding];
+
+    NSURL *requestURL = [_gomRoot URLByAppendingPathComponent:node];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:requestURL];
+    [request setHTTPMethod:@"POST"];
+    [request setAllHTTPHeaderFields:headers];
+    [request setHTTPBody:payloadData];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+        NSDictionary *responseData = nil;
+        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+        switch (httpResponse.statusCode) {
+            case 200:
+            {
+                if (data) {
+                    NSError *error = nil;
+                    responseData = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+                }
+            }
+                break;
+            case 500:
+                responseData = nil;
+                break;
+            default:
+                break;
+        }
+        if (block) {
+            block(responseData);
+        }
+    }];
 }
 
 - (void)updateAttribute:(NSString *)attribute withValue:(NSString *)value completionBlock:(GOMClientCallback)block
 {
+    NSMutableDictionary *headers = [[NSMutableDictionary alloc] init];
+    [headers setValue:@"application/xml" forKey:@"Content-Type"];
+    [headers setValue:@"application/json" forKey:@"Accept"];
+    NSString *payload = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"UTF-8\"?><attribute type=\"int\">%@</attribute>", value];
+    NSData *payloadData = [payload dataUsingEncoding:NSUTF8StringEncoding];
+    
+    NSURL *requestURL = [_gomRoot URLByAppendingPathComponent:attribute];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:requestURL];
+    [request setHTTPMethod:@"PUT"];
+    [request setAllHTTPHeaderFields:headers];
+    [request setHTTPBody:payloadData];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+        NSDictionary *responseData = nil;
+        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+        switch (httpResponse.statusCode) {
+            case 200:
+            {
+                if (data) {
+                    NSError *error = nil;
+                    responseData = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+                }
+            }
+                break;
+            case 500:
+                responseData = nil;
+                break;
+            default:
+                break;
+        }
+        if (block) {
+            block(responseData);
+        }
+    }];
 }
 
 - (void)updateNode:(NSString *)node withAttributes:(NSDictionary *)attributes completionBlock:(GOMClientCallback)block
 {
+    return;
+    
+    //    NSMutableDictionary *headers = [[NSMutableDictionary alloc] init];
+    //    [headers setValue:@"application/json" forKey:@"Accept"];
+    //    [headers setValue:@"application/" forKey:@"Content-Type"];
+    //
+    //    [self performGOMRequestWithPath:node method:@"PUT" headers:headers payload:nil completionBlock:block];
 }
 
 - (void)destroy:(NSString *)path completionBlock:(GOMClientCallback)block
 {
+    NSURL *requestURL = [_gomRoot URLByAppendingPathComponent:path];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:requestURL];
+    [request setHTTPMethod:@"DELETE"];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+        
+        NSDictionary *responseData = nil;
+        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+        switch (httpResponse.statusCode) {
+            case 200:
+            {
+                responseData = [NSDictionary dictionaryWithObject:@YES forKey:@"success "];
+            }
+                break;
+            case 500:
+                responseData = nil;
+                break;
+            case 404:
+                responseData = nil;
+                break;
+            default:
+                break;
+        }
+        if (block) {
+            block(responseData);
+        }
+    }];
 }
 
 #pragma mark - GOM observers

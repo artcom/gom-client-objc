@@ -195,8 +195,6 @@
     }
 }
 
-
-
 - (IBAction)retrievePressed:(id)sender {
     [self.gomClient retrieve:self.attributeField.text completionBlock:^(NSDictionary *response) {
         [self writeToConsole:response];
@@ -204,6 +202,9 @@
 }
 
 - (IBAction)createPressed:(id)sender {
+    [self.gomClient create:self.attributeField.text withAttributes:nil completionBlock:^(NSDictionary *response) {
+        [self writeToConsole:response];
+    }];
 }
 
 - (IBAction)updatePressed:(id)sender {
