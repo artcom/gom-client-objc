@@ -146,11 +146,9 @@
 
 - (void)writeToConsole:(NSDictionary *)output
 {
-    CGPoint offset = self.consoleView.contentOffset;
-    NSString *text = [NSString stringWithFormat:@"%@\n\n%@", self.consoleView.text, output.description];
+    NSString *text = [NSString stringWithFormat:@"%@\n\n%@", output.description, self.consoleView.text];
     self.consoleView.text = text;
-    [self.consoleView setContentOffset:offset animated:NO];
-    NSRange range = NSMakeRange(text.length, 1);
+    NSRange range = NSMakeRange(0, 1);
     [self.consoleView scrollRangeToVisible:range];
 }
 
