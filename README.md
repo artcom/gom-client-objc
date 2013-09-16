@@ -151,20 +151,6 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
 
 ## Demo app
 
-![Settings](https://github.com/artcom/gom-client-objc/raw/master/Documentation/images/screenshots/1_settings.png)
 
-![Setting the GOM root](https://github.com/artcom/gom-client-objc/raw/master/Documentation/images/screenshots/2_settings.png)
-
-![Startup](https://github.com/artcom/gom-client-objc/raw/master/Documentation/images/screenshots/3_entry.png)
-
-![Accessing GOM values](https://github.com/artcom/gom-client-objc/raw/master/Documentation/images/screenshots/4_accessing_gom_values.png)
-
-![Adding a GOM observer](https://github.com/artcom/gom-client-objc/raw/master/Documentation/images/screenshots/5_adding_observer.png)
-
-![GOM observer added](https://github.com/artcom/gom-client-objc/raw/master/Documentation/images/screenshots/6_added_observer)
-
-![Deleting a GOM observer](https://github.com/artcom/gom-client-objc/raw/master/Documentation/images/screenshots/7_deleting_observer.png)
-
-![Displaying received GNP data](https://github.com/artcom/gom-client-objc/raw/master/Documentation/images/screenshots/8_receiving_GNP_data.png)
 
 * Document usage of demo app.
