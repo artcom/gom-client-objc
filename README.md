@@ -73,7 +73,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     * Create empty node:
     
     ```objective-c
-    [gomClient createNode:@"/areas/home/audio" completionBlock:^(NSDictionary *result) {
+    gomClient createNode:@"/areas/home/audio" withAttributes:nil completionBlock:^(NSDictionary *result) 
         
     }];
     ```
