@@ -7,6 +7,7 @@
 //
 
 #import "ObserverViewController.h"
+#import "GOMBinding.h"
 
 @interface ObserverViewController ()
 {
@@ -42,7 +43,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)setObservers:(NSMutableArray *)observers
+- (void)setObservers:(NSMutableDictionary *)observers
 {
     _observers = observers;
     [self.tableView reloadData];
@@ -64,10 +65,14 @@
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"observerCell"];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"observerCell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"observerCell"];
     }
     
-    cell.textLabel.text = self.observers[indexPath.row];
+    NSString *path = self.observers.allValues[indexPath.row];
+    GOMBinding *binding = self.gomClient.bindings[path];
+    
+    cell.textLabel.text = path;
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", binding.handles.count];
     return cell;
 }
 
@@ -76,11 +81,11 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (UITableViewCellEditingStyleDelete) {
-        NSString *path = [self.observers objectAtIndex:indexPath.row];
-        [self.observers removeObjectAtIndex:indexPath.row];
+        NSString *path = [self.observers.allValues objectAtIndex:indexPath.row];
+        [self.observers removeObjectForKey:path];
         
         [self.tableView beginUpdates];
-        [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:self.observers.count-1 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.observers.count-1 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
         [self.tableView endUpdates];
         [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.observers.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
         
@@ -142,15 +147,20 @@
 }
 
 - (IBAction)addGomObserver:(id)sender {
-    [self.observers addObject:self.observerPathField.text];
-    
-    [self.tableView beginUpdates];
-    [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:self.observers.count-1 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
-    [self.tableView endUpdates];
-    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.observers.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     
     if ([self.delegate respondsToSelector:@selector(observerViewController:didAddObserverWithPath:)]) {
         [self.delegate observerViewController:self didAddObserverWithPath:self.observerPathField.text];
+    }
+    
+    if (self.observers[self.observerPathField.text] == nil) {
+        [self.observers setObject:self.observerPathField.text forKey:self.observerPathField.text];
+        
+        [self.tableView beginUpdates];
+        [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.observers.count-1 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView endUpdates];
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.observers.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    } else {
+        [self.tableView reloadData];
     }
 }
 

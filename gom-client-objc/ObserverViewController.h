@@ -13,7 +13,8 @@
 @protocol ObserverViewControllerDelegate;
 @interface ObserverViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 @property (weak, nonatomic) id<ObserverViewControllerDelegate> delegate;
-@property (weak, nonatomic) NSMutableArray *observers;
+@property (weak, nonatomic) NSMutableDictionary *observers;
+@property (weak, nonatomic) GOMClient *gomClient;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UITextField *observerPathField;
 @property (weak, nonatomic) IBOutlet UIView *inputContainer;

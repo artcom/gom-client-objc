@@ -15,7 +15,7 @@
 }
 @property (nonatomic, strong) GOMClient *gomClient;
 @property (nonatomic, strong) NSURL *gomRoot;
-@property (nonatomic, strong) NSMutableArray *observers;
+@property (nonatomic, strong) NSMutableDictionary *observers;
 
 
 - (void)registerObservers;
@@ -42,7 +42,7 @@
     self.inputContainer.alpha = 0.5;
     self.inputContainer.userInteractionEnabled = NO;
     
-    _observers = [[NSMutableArray alloc] init];
+    _observers = [[NSMutableDictionary alloc] init];
     [self registerObservers];
     [self resetGOMClient];
 }
@@ -198,6 +198,7 @@
         ObserverViewController *destViewController = segue.destinationViewController;
         destViewController.observers = self.observers;
         destViewController.delegate = self;
+        destViewController.gomClient = self.gomClient;
     }
 }
 
