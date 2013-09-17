@@ -65,10 +65,9 @@
 
 - (void)retrieve:(NSString *)path completionBlock:(GOMClientCallback)block
 {
-    NSDictionary *headers = @{@"Content-Type" : @"application/json", @"Accept" : @"application/json"};
-    
     NSURL *requestURL = [_gomRoot URLByAppendingPathComponent:path];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:requestURL];
+    NSDictionary *headers = @{@"Content-Type" : @"application/json", @"Accept" : @"application/json"};
     [request setAllHTTPHeaderFields:headers];
     [request setHTTPMethod:@"GET"];
     
@@ -100,22 +99,19 @@
 
 - (void)create:(NSString *)node withAttributes:(NSDictionary *)attributes completionBlock:(GOMClientCallback)block
 {
+    NSURL *requestURL = [_gomRoot URLByAppendingPathComponent:node];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:requestURL];
+    NSDictionary *headers = @{@"Content-Type" : @"application/xml", @"Accept" : @"application/json"};
+    [request setAllHTTPHeaderFields:headers];
+    [request setHTTPMethod:@"POST"];
     
     
     // TODO: add payload for attributes.
     NSString *attributesXML = @"";
-    
     NSString *payload = [NSString stringWithFormat:@"<node>%@</node>", attributesXML];
     
     
     NSData *payloadData = [payload dataUsingEncoding:NSUTF8StringEncoding];
-    
-    NSURL *requestURL = [_gomRoot URLByAppendingPathComponent:node];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:requestURL];
-    [request setHTTPMethod:@"POST"];
-    
-    NSDictionary *headers = @{@"Content-Type" : @"application/xml", @"Accept" : @"application/json"};
-    [request setAllHTTPHeaderFields:headers];
     [request setHTTPBody:payloadData];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
@@ -143,15 +139,14 @@
 
 - (void)updateAttribute:(NSString *)attribute withValue:(NSString *)value completionBlock:(GOMClientCallback)block
 {
-    NSDictionary *headers = @{@"Content-Type" : @"application/xml", @"Accept" : @"application/json"};
-    
-    NSString *payload = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"UTF-8\"?><attribute type=\"int\">%@</attribute>", value];
-    NSData *payloadData = [payload dataUsingEncoding:NSUTF8StringEncoding];
-    
     NSURL *requestURL = [_gomRoot URLByAppendingPathComponent:attribute];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:requestURL];
-    [request setHTTPMethod:@"PUT"];
+    NSDictionary *headers = @{@"Content-Type" : @"application/xml", @"Accept" : @"application/json"};
     [request setAllHTTPHeaderFields:headers];
+    [request setHTTPMethod:@"PUT"];
+    
+    NSString *payload = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"UTF-8\"?><attribute type=\"string\">%@</attribute>", value];
+    NSData *payloadData = [payload dataUsingEncoding:NSUTF8StringEncoding];
     [request setHTTPBody:payloadData];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
@@ -311,7 +306,6 @@
     NSString *payloadString = response[@"payload"];
     
     if (payloadString) {
-        
         NSMutableDictionary *payload = [payloadString parseAsJSON];
         if (payload[@"create"]) {
             operation = payload [@"create"];
@@ -320,7 +314,6 @@
         } else if (payload[@"delete"]) {
             operation = payload[@"delete"];
         }
-        
         NSString *path = response[@"path"];
         GOMBinding *binding = _bindings[path];
         if (operation && binding) {
