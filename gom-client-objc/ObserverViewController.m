@@ -7,7 +7,6 @@
 //
 
 #import "ObserverViewController.h"
-#import "GOMBinding.h"
 
 @interface ObserverViewController ()
 {

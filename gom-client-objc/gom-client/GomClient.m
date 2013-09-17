@@ -7,7 +7,6 @@
 //
 
 #import "GOMClient.h"
-#import "GOMBinding.h"
 #import "SRWebSocket.h"
 #import "NSString+JSON.h"
 #import "NSData+JSON.h"
@@ -80,7 +79,6 @@
             case 200:
             {
                 if (data) {
-                    NSError *error = nil;
                     responseData = [data parseAsJSON];
                 }
             }
@@ -127,7 +125,6 @@
             case 200:
             {
                 if (data) {
-                    NSError *error = nil;
                     responseData = [data parseAsJSON];
                 }
             }
@@ -164,7 +161,6 @@
             case 200:
             {
                 if (data) {
-                    NSError *error = nil;
                     responseData = [data parseAsJSON];
                 }
             }

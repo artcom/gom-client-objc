@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #import "GOMClientDelegate.h"
+#import "GOMBinding.h"
 
 typedef void (^GOMClientCallback)(NSDictionary *);
 
