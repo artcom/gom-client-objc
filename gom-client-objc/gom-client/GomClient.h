@@ -13,10 +13,6 @@
 
 typedef void (^GOMClientCallback)(NSDictionary *);
 
-/**
- This class represents...
- 
- */
 @interface GOMClient : NSObject
 
 @property (nonatomic, strong, readonly) NSURL *gomRoot;

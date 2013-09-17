@@ -10,11 +10,6 @@
 
 @interface NSDictionary (JSON)
 
-/**
- Converts the dictionary to JSON data.
- 
- @return The resulting JSON data or nil
- */
 - (NSData *)convertToJSON;
 
 @end

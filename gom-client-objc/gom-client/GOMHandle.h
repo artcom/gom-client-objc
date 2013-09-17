@@ -8,28 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
-@class GOMBinding;
-
 typedef void (^GOMHandleCallback)(NSDictionary *);
 
-/**
- This class represents a handle on a given GOMBinding.
- 
- */
+@class GOMBinding;
 @interface GOMHandle : NSObject
 
 @property (nonatomic, weak) GOMBinding *binding;
 @property (nonatomic, strong) GOMHandleCallback callback;
 @property (nonatomic, unsafe_unretained) BOOL initialRetrieved;
 
-/**
- Custom initializer to create a handle on a given GOMBinding object.
- 
- @param binding The given GOMBinding object
- @param callback The given callback function to  call
- 
- @return The resulting GOMHandle object
- */
 - (id)initWithBinding:(GOMBinding *)binding callback:(GOMHandleCallback)callback;
 
 @end

@@ -10,11 +10,6 @@
 
 @interface NSData (JSON)
 
-/**
- Parses the data object as JSON and returns a Foundation object or nil.
- 
- @return The resulting Foundation object or nil
- */
 - (id)parseAsJSON;
 
 @end
