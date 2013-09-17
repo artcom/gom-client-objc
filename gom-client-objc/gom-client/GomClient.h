@@ -20,6 +20,7 @@ typedef void (^GOMClientCallback)(NSDictionary *);
 
 @property (nonatomic, strong, readonly) NSURL *gomRoot;
 @property (nonatomic, weak) id<GOMClientDelegate> delegate;
+@property (nonatomic, strong, readonly) NSMutableDictionary *bindings;
 
 - (id)initWithGomURI:(NSURL *)gomURI;
 

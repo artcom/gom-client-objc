@@ -10,10 +10,10 @@
 #import "GOMBinding.h"
 #import "SRWebSocket.h"
 #import "NSString+JSON.h"
+#import "NSData+JSON.h"
+#import "NSDictionary+JSON.h"
 
 @interface GOMClient () <SRWebSocketDelegate>
-
-@property (nonatomic, retain) NSMutableDictionary *bindings;
 
 - (void)_registerGOMObserverForBinding:(GOMBinding *)binding;
 - (void)_unregisterGOMObserverForBinding:(GOMBinding *)binding;
@@ -48,7 +48,7 @@
     if (self) {
         _gomRoot = gomURI;
         _bindings = [[NSMutableDictionary alloc] init];
-        gomIsReady = false;
+        gomIsReady = NO;
     }
     return self;
 }
@@ -66,9 +66,7 @@
 
 - (void)retrieve:(NSString *)path completionBlock:(GOMClientCallback)block
 {
-    NSMutableDictionary *headers = [[NSMutableDictionary alloc] init];
-    [headers setValue:@"application/json" forKey:@"Accept"];
-    [headers setValue:@"application/json" forKey:@"Content-Type"];
+    NSDictionary *headers = @{@"Content-Type" : @"application/json", @"Accept" : @"application/json"};
     
     NSURL *requestURL = [_gomRoot URLByAppendingPathComponent:path];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:requestURL];
@@ -83,7 +81,7 @@
             {
                 if (data) {
                     NSError *error = nil;
-                    responseData = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+                    responseData = [data parseAsJSON];
                 }
             }
                 break;
@@ -104,9 +102,6 @@
 
 - (void)create:(NSString *)node withAttributes:(NSDictionary *)attributes completionBlock:(GOMClientCallback)block
 {
-    NSMutableDictionary *headers = [[NSMutableDictionary alloc] init];
-    [headers setValue:@"application/xml" forKey:@"Content-Type"];
-    [headers setValue:@"application/json" forKey:@"Accept"];
     
     
     // TODO: add payload for attributes.
@@ -116,10 +111,12 @@
     
     
     NSData *payloadData = [payload dataUsingEncoding:NSUTF8StringEncoding];
-
+    
     NSURL *requestURL = [_gomRoot URLByAppendingPathComponent:node];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:requestURL];
     [request setHTTPMethod:@"POST"];
+    
+    NSDictionary *headers = @{@"Content-Type" : @"application/xml", @"Accept" : @"application/json"};
     [request setAllHTTPHeaderFields:headers];
     [request setHTTPBody:payloadData];
     
@@ -131,7 +128,7 @@
             {
                 if (data) {
                     NSError *error = nil;
-                    responseData = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+                    responseData = [data parseAsJSON];
                 }
             }
                 break;
@@ -149,9 +146,8 @@
 
 - (void)updateAttribute:(NSString *)attribute withValue:(NSString *)value completionBlock:(GOMClientCallback)block
 {
-    NSMutableDictionary *headers = [[NSMutableDictionary alloc] init];
-    [headers setValue:@"application/xml" forKey:@"Content-Type"];
-    [headers setValue:@"application/json" forKey:@"Accept"];
+    NSDictionary *headers = @{@"Content-Type" : @"application/xml", @"Accept" : @"application/json"};
+    
     NSString *payload = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"UTF-8\"?><attribute type=\"int\">%@</attribute>", value];
     NSData *payloadData = [payload dataUsingEncoding:NSUTF8StringEncoding];
     
@@ -169,7 +165,7 @@
             {
                 if (data) {
                     NSError *error = nil;
-                    responseData = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+                    responseData = [data parseAsJSON];
                 }
             }
                 break;
@@ -231,11 +227,14 @@
 
 - (void)registerGOMObserverForPath:(NSString *)path options:(NSDictionary *)options clientCallback:(GOMClientCallback)callback
 {
-    GOMBinding *binding = [[GOMBinding alloc] initWithSubscriptionUri:path];
-    _bindings[path] = binding;
-    
+    GOMBinding *binding = _bindings[path];
+    if (binding == nil) {
+        binding = [[GOMBinding alloc] initWithSubscriptionUri:path];
+        _bindings[path] = binding;
+    }
     GOMHandle *handle = [[GOMHandle alloc] initWithBinding:binding callback:callback];
     [binding addHandle:handle];
+    
     [self _registerGOMObserverForBinding:binding];
 }
 
@@ -251,11 +250,9 @@
     NSLog(@"registering GOM observer at path: %@", binding.subscriptionUri);
     
     if (binding.registered == NO) {
-        NSMutableDictionary *commands = [[NSMutableDictionary alloc] init];
-        [commands setValue:@"subscribe" forKey:@"command"];
-        [commands setValue:binding.subscriptionUri forKey:@"path"];
+        NSDictionary *commands = commands = @{@"command" : @"subscribe", @"path" : binding.subscriptionUri};
         [self _sendCommand:commands];
-        binding.registered = true;
+        binding.registered = YES;
     } else {
         [self _retrieveInitial:binding];
     }
@@ -266,19 +263,16 @@
     NSLog(@"unregistering GNP at path: %@", binding.subscriptionUri);
     
     if (binding.registered) {
-        NSMutableDictionary *commands = [[NSMutableDictionary alloc] init];
-        [commands setValue:@"unsubscribe" forKey:@"command"];
-        [commands setValue:binding.subscriptionUri forKey:@"path"];
+        NSDictionary *commands = commands = @{@"command" : @"unsubscribe", @"path" : binding.subscriptionUri};
         [self _sendCommand:commands];
-        binding.registered = false;
+        binding.registered = NO;
     }
 }
 
 - (void)_sendCommand:(NSDictionary *)commands
 {
     if (_webSocket && _webSocket.readyState == SR_OPEN) {
-        NSError *error = nil;
-        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:commands options:kNilOptions error:&error];
+        NSData *jsonData = [commands convertToJSON];
         [_webSocket send:jsonData];
         
     } else {
