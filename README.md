@@ -60,7 +60,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     ```
     
     ```
-    {attribute =     {
+    {attribute = {
         ctime = "2013-09-17T20:30:45+02:00";
         mtime = "2013-09-17T20:30:45+02:00";
         name = volume;
@@ -82,14 +82,14 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
      ```
      {node =     {
         ctime = "2013-09-16T16:34:53+02:00";
-        entries =         (
-                        {
+        entries = (
+            {
                 ctime = "2013-09-10T17:11:35+02:00";
                 mtime = "2013-09-10T17:11:35+02:00";
                 node = "/areas/home/audio/presets";
             },
-                        {
-                attribute =                 {
+            {
+                attribute = {
                     ctime = "2013-09-15T03:24:17+02:00";
                     mtime = "2013-09-15T03:24:17+02:00";
                     name = "default_volume";
@@ -98,8 +98,8 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
                     value = 15;
                 };
             },
-                        {
-                attribute =                 {
+            {
+                attribute = {
                     ctime = "2013-09-17T16:31:58+02:00";
                     mtime = "2013-09-17T16:31:58+02:00";
                     name = preset;
@@ -108,8 +108,8 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
                     value = schweigen;
                 };
             },
-                        {
-                attribute =                 {
+            {
+                attribute = {
                     ctime = "2013-09-17T20:30:45+02:00";
                     mtime = "2013-09-17T20:30:45+02:00";
                     name = volume;
@@ -135,9 +135,9 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     ```
     
     ```
-    {node =     {
+    {node = {
         ctime = "2013-09-17T21:01:55+02:00";
-        entries =         (
+        entries = (
         );
         mtime = "2013-09-17T21:01:55+02:00";
         uri = "/areas/home/audio_test/1b418710-4d08-493f-a89d-0e31ffbd56eb";
