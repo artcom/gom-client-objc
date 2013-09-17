@@ -32,8 +32,6 @@
     NSURLConnection *_urlConnection;
     SRWebSocket *_webSocket;
     NSString *_webSocketUri;
-    NSMutableArray *_messages;
-    BOOL gomIsReady;
 }
 
 @synthesize gomRoot = _gomRoot;
@@ -47,7 +45,6 @@
     if (self) {
         _gomRoot = gomURI;
         _bindings = [[NSMutableDictionary alloc] init];
-        gomIsReady = NO;
     }
     return self;
 }
