@@ -296,7 +296,10 @@
         GOMBinding *binding = _bindings[path];
         if (binding) {
             for (GOMHandle *handle in binding.handles) {
-                [self _fireCallback:handle.callback withGomObject:payload];
+                if (handle.initialRetrieved == NO) {
+                    [self _fireCallback:handle.callback withGomObject:payload];
+                    handle.initialRetrieved = YES;
+                }
             }
         }
     }
@@ -337,17 +340,17 @@
 
 - (void)_retrieveInitial:(GOMBinding *)binding
 {
-    // TODO: check is gom ready?
-    
-    // retrieve gom path which was already bound.
-    
-    // get gom object
-    NSMutableDictionary *gomObject = nil;
-    
-    for (GOMHandle *handle in binding.handles) {
-        [self _fireCallback:handle.callback withGomObject:gomObject];
-    }
+    [self retrieve:binding.subscriptionUri completionBlock:^(NSDictionary *response) {
+        for (GOMHandle *handle in binding.handles) {
+            if (handle.initialRetrieved == NO) {
+                [self _fireCallback:handle.callback withGomObject:response];
+                handle.initialRetrieved = YES;
+            }
+        }
+    }];
 }
+
+
 
 - (void)_reconnectWebsocket
 {
