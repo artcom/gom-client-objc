@@ -69,6 +69,12 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
         value = 100;
     }}
     ```
+    
+    * Retrieve a non-existing attribute:
+    
+    ```
+    (null)
+    ```
 
     * Node retrieval:
   
@@ -122,6 +128,12 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
         mtime = "2013-09-16T16:34:53+02:00";
         uri = "/areas/home/audio";
     }}
+    ```
+    
+    * Retrieve a non-existing node:
+    
+    ```
+    (null)
     ```
 
 * POST/create
