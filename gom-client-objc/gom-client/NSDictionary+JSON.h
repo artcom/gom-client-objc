@@ -10,4 +10,6 @@
 
 @interface NSDictionary (JSON)
 
+- (id)convertToJSON;
+
 @end

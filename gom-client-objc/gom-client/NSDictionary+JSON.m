@@ -10,4 +10,10 @@
 
 @implementation NSDictionary (JSON)
 
+- (id)convertToJSON
+{
+    NSError *error = nil;
+    return [NSJSONSerialization dataWithJSONObject:self options:kNilOptions error:&error];
+}
+
 @end
