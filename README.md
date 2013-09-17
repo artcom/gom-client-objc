@@ -59,15 +59,69 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     }];
     ```
     
+    ```
+    {attribute =     {
+        ctime = "2013-09-17T20:30:45+02:00";
+        mtime = "2013-09-17T20:30:45+02:00";
+        name = volume;
+        node = "/areas/home/audio";
+        type = string;
+        value = 100;
+    }}
+    ```
+
     * Node retrieval:
   
     ```objective-c
     [gomClient retrieve:@"/areas/home/audio" completionBlock:^(NSDictionary *response) {
    
         // response will be nil here when retrieving a non-existing node
-
-    }];
-
+     }];
+     ```
+     
+     ```
+     {node =     {
+        ctime = "2013-09-16T16:34:53+02:00";
+        entries =         (
+                        {
+                ctime = "2013-09-10T17:11:35+02:00";
+                mtime = "2013-09-10T17:11:35+02:00";
+                node = "/areas/home/audio/presets";
+            },
+                        {
+                attribute =                 {
+                    ctime = "2013-09-15T03:24:17+02:00";
+                    mtime = "2013-09-15T03:24:17+02:00";
+                    name = "default_volume";
+                    node = "/areas/home/audio";
+                    type = string;
+                    value = 15;
+                };
+            },
+                        {
+                attribute =                 {
+                    ctime = "2013-09-17T16:31:58+02:00";
+                    mtime = "2013-09-17T16:31:58+02:00";
+                    name = preset;
+                    node = "/areas/home/audio";
+                    type = string;
+                    value = schweigen;
+                };
+            },
+                        {
+                attribute =                 {
+                    ctime = "2013-09-17T20:30:45+02:00";
+                    mtime = "2013-09-17T20:30:45+02:00";
+                    name = volume;
+                    node = "/areas/home/audio";
+                    type = string;
+                    value = 100;
+                };
+            }
+        );
+        mtime = "2013-09-16T16:34:53+02:00";
+        uri = "/areas/home/audio";
+    }}
     ```
 
 * POST/create
@@ -78,6 +132,16 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     gomClient create:@"/areas/home/audio" withAttributes:nil completionBlock:^(NSDictionary *response) {
         
     }];
+    ```
+    
+    ```
+    {node =     {
+        ctime = "2013-09-17T21:01:55+02:00";
+        entries =         (
+        );
+        mtime = "2013-09-17T21:01:55+02:00";
+        uri = "/areas/home/audio_test/1b418710-4d08-493f-a89d-0e31ffbd56eb";
+    }}
     ```
 
     * Create node with attributes:
@@ -98,7 +162,11 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     ```objective-c
     [gomClient updateAttribute:@"/areas/home/audio:volume" withValue:@"50" completionBlock:^(NSDictionary *response) {
         
-    }];
+    }];        
+    ```
+    
+    ```
+    {status = 200}
     ```
     
     * Node update:
@@ -122,6 +190,10 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     }];
     ```
     
+    ```
+    {"success " = 1}
+    ```
+    
     * Destroy existing node:
     
     ```objective-c
@@ -129,6 +201,8 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
         
     }];
     ```
+    
+    {"success " = 1}
     
     * Destroy non-existing attribute:
     
@@ -140,6 +214,10 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     }];
     ```
     
+    ```
+    (null)
+    ```
+    
     * Destroy non-existing node:
     
     ```objective-c
@@ -148,6 +226,10 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
         // response will be nil here when retrieving a non-existing node
         
     }];
+    ```
+    
+    ```
+    (null)
     ```
 
 ### Handling observers
@@ -163,15 +245,9 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
 * Unregister an observer:
 
     ```objective-c
-    [gomClient unregisterGOMObserverForPath:@"/areas/home/audio:volume" options:nil];
+   [gomClient unregisterGOMObserverForPath:@"/areas/home/audio:volume" options:nil];
     ```
 
-## TODO
-
-* Document content of response dictionaries.
-
 ## Demo app
-
-
 
 * Document usage of demo app.
