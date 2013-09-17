@@ -10,6 +10,11 @@
 
 @interface NSDictionary (JSON)
 
-- (id)convertToJSON;
+/**
+ Converts the dictionary to JSON data.
+ 
+ @return The resulting JSON data or nil
+ */
+- (NSData *)convertToJSON;
 
 @end

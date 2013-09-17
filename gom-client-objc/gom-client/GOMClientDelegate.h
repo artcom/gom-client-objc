@@ -11,22 +11,23 @@
 @class GOMClient;
 
 /**
- This protocol represents...
- 
+ The GOMClientDelegate protocol defines the messages sent to a GOM client delegate
+ from a GOM client as long it is alive.
  */
 @protocol GOMClientDelegate <NSObject>
 
 /**
+ Tells the delegate that the client has been fully initialized and set up.
  
- 
- @param gomClient
+ @param gomClient The GOM client which has become ready to use.
  */
 - (void)gomClientDidBecomeReady:(GOMClient *)gomClient;
 
 /**
+ Tells the delegate that the client has encountered an error.
  
- @param gomClient
- @param error
+ @param gomClient The GOM client that has encountered an error
+ @param error     The error object
  */
 - (void)gomClient:(GOMClient *)gomClient didFailWithError:(NSError *)error;
 

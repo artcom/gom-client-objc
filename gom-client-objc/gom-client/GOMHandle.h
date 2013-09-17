@@ -13,7 +13,7 @@
 typedef void (^GOMHandleCallback)(NSDictionary *);
 
 /**
- This class represents...
+ This class represents a handle on a given GOMBinding.
  
  */
 @interface GOMHandle : NSObject
@@ -23,7 +23,7 @@ typedef void (^GOMHandleCallback)(NSDictionary *);
 @property (nonatomic, unsafe_unretained) BOOL initialRetrieved;
 
 /**
- Custom initializer to create a GOMHandle with a given GOMBinding object and a callback function.
+ Custom initializer to create a handle on a given GOMBinding object.
  
  @param binding The given GOMBinding object
  @param callback The given callback function to  call

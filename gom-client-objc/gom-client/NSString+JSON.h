@@ -11,7 +11,7 @@
 @interface NSString (JSON)
 
 /**
- Parses the string object as JSON ans returns a Foundation object or nil.
+ Parses the string object as JSON and returns a Foundation object or nil.
  
  @return The resulting Foundation object or nil
  */
