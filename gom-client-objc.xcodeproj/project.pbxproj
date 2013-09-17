@@ -28,6 +28,8 @@
 		3B2A5FC517E31406009A4430 /* gom-client-objc.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 3B2A5FC417E31406009A4430 /* gom-client-objc.podspec */; };
 		3B52973C17E33209004BCF2A /* GOMClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B52973B17E33209004BCF2A /* GOMClient.m */; };
 		3B52974017E35040004BCF2A /* NSString+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B52973F17E35040004BCF2A /* NSString+JSON.m */; };
+		3B667A0B17E8512E001BE3CE /* NSData+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B667A0A17E8512E001BE3CE /* NSData+JSON.m */; };
+		3B667A0E17E8574F001BE3CE /* NSDictionary+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B667A0D17E8574F001BE3CE /* NSDictionary+JSON.m */; };
 		3BAF0F3E17E4FA1900BF6625 /* ObserverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BAF0F3D17E4FA1900BF6625 /* ObserverViewController.m */; };
 		3BBB534B17E49BBD00777BB6 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3BBB534A17E49BBD00777BB6 /* Settings.bundle */; };
 		FC06EB50CCD54191931C6B3C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 694C9E8687BC4122932CF915 /* libPods.a */; };
@@ -75,6 +77,10 @@
 		3B52973D17E33FEE004BCF2A /* GOMClientDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GOMClientDelegate.h; sourceTree = "<group>"; };
 		3B52973E17E35040004BCF2A /* NSString+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+JSON.h"; sourceTree = "<group>"; };
 		3B52973F17E35040004BCF2A /* NSString+JSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+JSON.m"; sourceTree = "<group>"; };
+		3B667A0917E8512E001BE3CE /* NSData+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+JSON.h"; sourceTree = "<group>"; };
+		3B667A0A17E8512E001BE3CE /* NSData+JSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+JSON.m"; sourceTree = "<group>"; };
+		3B667A0C17E8574F001BE3CE /* NSDictionary+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+JSON.h"; sourceTree = "<group>"; };
+		3B667A0D17E8574F001BE3CE /* NSDictionary+JSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+JSON.m"; sourceTree = "<group>"; };
 		3BAF0F3C17E4FA1900BF6625 /* ObserverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObserverViewController.h; sourceTree = "<group>"; };
 		3BAF0F3D17E4FA1900BF6625 /* ObserverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObserverViewController.m; sourceTree = "<group>"; };
 		3BBB534A17E49BBD00777BB6 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
@@ -201,6 +207,10 @@
 				3B52973D17E33FEE004BCF2A /* GOMClientDelegate.h */,
 				3B52973E17E35040004BCF2A /* NSString+JSON.h */,
 				3B52973F17E35040004BCF2A /* NSString+JSON.m */,
+				3B667A0917E8512E001BE3CE /* NSData+JSON.h */,
+				3B667A0A17E8512E001BE3CE /* NSData+JSON.m */,
+				3B667A0C17E8574F001BE3CE /* NSDictionary+JSON.h */,
+				3B667A0D17E8574F001BE3CE /* NSDictionary+JSON.m */,
 			);
 			path = "gom-client";
 			sourceTree = "<group>";
@@ -347,7 +357,9 @@
 				3B52974017E35040004BCF2A /* NSString+JSON.m in Sources */,
 				3B2A5FBF17E313A3009A4430 /* GOMBinding.m in Sources */,
 				3B2A5F9117E312FF009A4430 /* AppDelegate.m in Sources */,
+				3B667A0E17E8574F001BE3CE /* NSDictionary+JSON.m in Sources */,
 				3B2A5FC117E313A3009A4430 /* GOMHandle.m in Sources */,
+				3B667A0B17E8512E001BE3CE /* NSData+JSON.m in Sources */,
 				3B2A5F8D17E312FF009A4430 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
