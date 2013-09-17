@@ -193,7 +193,7 @@
         switch (httpResponse.statusCode) {
             case 200:
             {
-                responseData = [NSDictionary dictionaryWithObject:@YES forKey:@"success "];
+                responseData = [NSDictionary dictionaryWithObject:@YES forKey:@"success"];
             }
                 break;
             case 500:
