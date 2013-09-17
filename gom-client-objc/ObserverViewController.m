@@ -18,7 +18,6 @@
 @end
 
 @implementation ObserverViewController
-@synthesize observers = _observers;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -42,9 +41,9 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)setObservers:(NSMutableDictionary *)observers
+- (void)setGomClient:(GOMClient *)gomClient
 {
-    _observers = observers;
+    _gomClient = gomClient;
     [self.tableView reloadData];
 }
 
@@ -57,7 +56,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.observers.count;
+    return self.gomClient.bindings.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -67,11 +66,11 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"observerCell"];
     }
     
-    NSString *path = self.observers.allValues[indexPath.row];
-    GOMBinding *binding = self.gomClient.bindings[path];
+    GOMBinding *binding = self.gomClient.bindings.allValues[indexPath.row];
+    NSString *path = binding.subscriptionUri;
     
     cell.textLabel.text = path;
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", binding.handles.count];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)binding.handles.count];
     return cell;
 }
 
@@ -80,17 +79,11 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (UITableViewCellEditingStyleDelete) {
-        NSString *path = [self.observers.allValues objectAtIndex:indexPath.row];
-        [self.observers removeObjectForKey:path];
-        
-        [self.tableView beginUpdates];
-        [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.observers.count-1 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
-        [self.tableView endUpdates];
-        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.observers.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-        
+        GOMBinding *binding = [self.gomClient.bindings.allValues objectAtIndex:indexPath.row];
         if ([self.delegate respondsToSelector:@selector(observerViewController:didRemoveObserverWithPath:)]) {
-            [self.delegate observerViewController:self didRemoveObserverWithPath:path];
+            [self.delegate observerViewController:self didRemoveObserverWithPath:binding.subscriptionUri];
         }
+        [self.tableView reloadData];
     }
 }
 
@@ -150,17 +143,7 @@
     if ([self.delegate respondsToSelector:@selector(observerViewController:didAddObserverWithPath:)]) {
         [self.delegate observerViewController:self didAddObserverWithPath:self.observerPathField.text];
     }
-    
-    if (self.observers[self.observerPathField.text] == nil) {
-        [self.observers setObject:self.observerPathField.text forKey:self.observerPathField.text];
-        
-        [self.tableView beginUpdates];
-        [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.observers.count-1 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
-        [self.tableView endUpdates];
-        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.observers.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-    } else {
-        [self.tableView reloadData];
-    }
+    [self.tableView reloadData];
 }
 
 - (IBAction)done:(id)sender {

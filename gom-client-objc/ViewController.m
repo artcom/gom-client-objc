@@ -15,7 +15,6 @@
 }
 @property (nonatomic, strong) GOMClient *gomClient;
 @property (nonatomic, strong) NSURL *gomRoot;
-@property (nonatomic, strong) NSMutableDictionary *observers;
 
 
 - (void)registerObservers;
@@ -29,7 +28,6 @@
 @implementation ViewController
 @synthesize gomClient = _gomClient;
 @synthesize gomRoot = _gomRoot;
-@synthesize observers = _observers;
 
 - (void)viewDidLoad
 {
@@ -42,7 +40,6 @@
     self.inputContainer.alpha = 0.5;
     self.inputContainer.userInteractionEnabled = NO;
     
-    _observers = [[NSMutableDictionary alloc] init];
     [self registerObservers];
     [self resetGOMClient];
 }
@@ -196,7 +193,6 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"ManageObservers"]) {
         ObserverViewController *destViewController = segue.destinationViewController;
-        destViewController.observers = self.observers;
         destViewController.delegate = self;
         destViewController.gomClient = self.gomClient;
     }
