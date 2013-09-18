@@ -34,9 +34,6 @@
     NSString *_webSocketUri;
 }
 
-@synthesize gomRoot = _gomRoot;
-@synthesize bindings = _bindings;
-
 #define WEBSOCKETS_PROXY_PATH @"/services/websockets_proxy:url"
 
 - (id)initWithGomURI:(NSURL *)gomURI

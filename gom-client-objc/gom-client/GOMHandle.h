@@ -15,7 +15,7 @@ typedef void (^GOMHandleCallback)(NSDictionary *);
 
 @property (nonatomic, weak) GOMBinding *binding;
 @property (nonatomic, strong) GOMHandleCallback callback;
-@property (nonatomic, unsafe_unretained) BOOL initialRetrieved;
+@property (nonatomic, assign) BOOL initialRetrieved;
 
 - (id)initWithBinding:(GOMBinding *)binding callback:(GOMHandleCallback)callback;
 

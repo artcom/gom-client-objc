@@ -26,8 +26,6 @@
 @end
 
 @implementation ViewController
-@synthesize gomClient = _gomClient;
-@synthesize gomRoot = _gomRoot;
 
 - (void)viewDidLoad
 {

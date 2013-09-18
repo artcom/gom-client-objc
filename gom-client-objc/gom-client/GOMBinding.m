@@ -13,10 +13,6 @@
 @end
 
 @implementation GOMBinding
-@synthesize subscriptionUri = _subscriptionUri;
-@synthesize observerUri = _observerUri;
-@synthesize handles = _handles;
-@synthesize registered;
 
 - (id)initWithSubscriptionUri:(NSString *)subscriptionUri
 {
@@ -25,7 +21,7 @@
         _subscriptionUri = subscriptionUri;
         _observerUri = nil;
         _handles = [[NSMutableArray alloc] init];
-        registered = false;
+        _registered = false;
     }
     return self;
 }

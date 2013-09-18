@@ -15,7 +15,7 @@
 @property (nonatomic, strong) NSString *subscriptionUri;
 @property (nonatomic, strong) NSString *observerUri;
 @property (nonatomic, strong, readonly) NSMutableArray *handles;
-@property (nonatomic, unsafe_unretained) BOOL registered;
+@property (nonatomic, assign) BOOL registered;
 
 - (id)initWithSubscriptionUri:(NSString *)subscriptionUri;
 - (void)addHandle:(GOMHandle *)handle;
