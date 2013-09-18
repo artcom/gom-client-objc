@@ -264,7 +264,9 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
 * Register an observer:
 
     ```objective-c
-    [gomClient registerGOMObserverForPath:@"/areas/home/audio:volume" options:nil clientCallback:^(NSDictionary *dict) {    
+    [gomClient registerGOMObserverForPath:@"/areas/home/audio:volume" options:nil clientCallback:^(NSDictionary *dict) {
+
+        // Your code here
 
     }];
     ```
