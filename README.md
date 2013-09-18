@@ -214,7 +214,9 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     }];
     ```
     
+    ```
     {"success" = 1}
+    ```
     
     * Destroy non-existing attribute:
     
