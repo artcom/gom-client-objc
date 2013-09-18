@@ -22,7 +22,7 @@ All dependencies are defined in the file `Podfile`
 
 To use the Objective-C GOM client in your own project add the line
 
-```pod 'gom-client-objc', '~> 0.0.1'```
+```pod 'gom-client-objc', '~> 0.0.2'```
  
 to your own Podfile and install all necessary dependencies from the CocoaPods dependency manager.
 
