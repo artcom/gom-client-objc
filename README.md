@@ -171,11 +171,11 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     ```
     
     ```objective-c
-    {node =     {
+    {node = {
         ctime = "2013-09-20T20:05:57+02:00";
-        entries =         (
-                        {
-                attribute =                 {
+        entries = (
+            {
+                attribute = {
                     ctime = "2013-09-20T20:05:57+02:00";
                     mtime = "2013-09-20T20:05:57+02:00";
                     name = attribute1;
@@ -184,8 +184,8 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
                     value = value1;
                 };
             },
-                        {
-                attribute =                 {
+            {
+                attribute = {
                     ctime = "2013-09-20T20:05:57+02:00";
                     mtime = "2013-09-20T20:05:57+02:00";
                     name = attribute2;
@@ -194,8 +194,8 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
                     value = value2;
                 };
             },
-                        {
-                attribute =                 {
+            {
+                attribute = {
                     ctime = "2013-09-20T20:05:57+02:00";
                     mtime = "2013-09-20T20:05:57+02:00";
                     name = attribute3;
