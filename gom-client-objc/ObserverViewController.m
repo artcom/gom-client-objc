@@ -70,7 +70,7 @@
     NSString *path = binding.subscriptionUri;
     
     cell.textLabel.text = path;
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)binding.handles.count];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"Handles: %lu", (unsigned long)binding.handles.count];
     return cell;
 }
 
