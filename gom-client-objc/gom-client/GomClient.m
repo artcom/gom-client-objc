@@ -11,6 +11,7 @@
 #import "NSString+JSON.h"
 #import "NSData+JSON.h"
 #import "NSDictionary+JSON.h"
+#import "NSDictionary+XML.h"
 
 @interface GOMClient () <SRWebSocketDelegate>
 
@@ -99,12 +100,10 @@
     [request setAllHTTPHeaderFields:headers];
     [request setHTTPMethod:@"POST"];
     
-    
-    // TODO: add payload for attributes.
-    NSString *attributesXML = @"";
-    NSString *payload = [NSString stringWithFormat:@"<node>%@</node>", attributesXML];
-    
-    
+    if (attributes == nil) {
+        attributes = @{};
+    }
+    NSString *payload = [NSString stringWithFormat:@"<node>%@</node>", [attributes convertToXML]];
     NSData *payloadData = [payload dataUsingEncoding:NSUTF8StringEncoding];
     [request setHTTPBody:payloadData];
     
@@ -168,13 +167,41 @@
 
 - (void)updateNode:(NSString *)node withAttributes:(NSDictionary *)attributes completionBlock:(GOMClientCallback)block
 {
-    return;
+    NSURL *requestURL = [_gomRoot URLByAppendingPathComponent:node];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:requestURL];
+    NSDictionary *headers = @{@"Content-Type" : @"application/xml", @"Accept" : @"application/json"};
+    [request setAllHTTPHeaderFields:headers];
+    [request setHTTPMethod:@"PUT"];
     
-    //    NSMutableDictionary *headers = [[NSMutableDictionary alloc] init];
-    //    [headers setValue:@"application/json" forKey:@"Accept"];
-    //    [headers setValue:@"application/" forKey:@"Content-Type"];
-    //
-    //    [self performGOMRequestWithPath:node method:@"PUT" headers:headers payload:nil completionBlock:block];
+    if (attributes == nil) {
+        attributes = @{};
+    }
+    NSString *payload = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"UTF-8\"?><node>%@</node>", [attributes convertToXML]];
+    NSData *payloadData = [payload dataUsingEncoding:NSUTF8StringEncoding];
+    [request setHTTPBody:payloadData];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+        NSDictionary *responseData = nil;
+        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+        switch (httpResponse.statusCode) {
+            case 200:
+            {
+                if (data) {
+                    responseData = [data parseAsJSON];
+                }
+            }
+                break;
+            case 500:
+                responseData = nil;
+                break;
+            default:
+                break;
+        }
+        if (block) {
+            block(responseData);
+        }
+    }];
+    
 }
 
 - (void)destroy:(NSString *)path completionBlock:(GOMClientCallback)block

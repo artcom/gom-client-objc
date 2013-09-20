@@ -142,7 +142,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     * Create empty node:
     
     ```objective-c
-    gomClient create:@"/areas/home/audio_test" withAttributes:nil completionBlock:^(NSDictionary *response) {
+    gomClient create:@"/areas/home/audio/test" withAttributes:nil completionBlock:^(NSDictionary *response) {
 
         // Your code here
 
@@ -155,21 +155,59 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
         entries = (
         );
         mtime = "2013-09-17T21:01:55+02:00";
-        uri = "/areas/home/audio_test/1b418710-4d08-493f-a89d-0e31ffbd56eb";
+        uri = "/areas/home/audio/test/1b418710-4d08-493f-a89d-0e31ffbd56eb";
     }}
     ```
 
     * Create node with attributes:
     
-    Currently not supported
-    
     ```objective-c
-    NSDictionary *attributes = […];
-    gomClient create:@"/areas/home/audio_test" withAttributes:attributes completionBlock:^(NSDictionary *response) {
+    NSDictionary *attributes = @{@"attribute1": @"value1", @"attribute2" : @"value2", @"attribute3" : @"value3"};
+    gomClient create:@"/areas/home/audio/test" withAttributes:attributes completionBlock:^(NSDictionary *response) {
 
         // Your code here
 
     }];
+    ```
+    
+    ```objective-c
+    {node =     {
+        ctime = "2013-09-20T20:05:57+02:00";
+        entries =         (
+                        {
+                attribute =                 {
+                    ctime = "2013-09-20T20:05:57+02:00";
+                    mtime = "2013-09-20T20:05:57+02:00";
+                    name = attribute1;
+                    node = "/areas/home/audio/test/ef84fd8c-701c-46cf-9f3e-02cc06e62a22";
+                    type = string;
+                    value = value1;
+                };
+            },
+                        {
+                attribute =                 {
+                    ctime = "2013-09-20T20:05:57+02:00";
+                    mtime = "2013-09-20T20:05:57+02:00";
+                    name = attribute2;
+                    node = "/areas/home/audio/test/ef84fd8c-701c-46cf-9f3e-02cc06e62a22";
+                    type = string;
+                    value = value2;
+                };
+            },
+                        {
+                attribute =                 {
+                    ctime = "2013-09-20T20:05:57+02:00";
+                    mtime = "2013-09-20T20:05:57+02:00";
+                    name = attribute3;
+                    node = "/areas/home/audio/test/ef84fd8c-701c-46cf-9f3e-02cc06e62a22";
+                    type = string;
+                    value = value3;
+                };
+            }
+        );
+        mtime = "2013-09-20T20:05:57+02:00";
+        uri = "/areas/home/audio/test/ef84fd8c-701c-46cf-9f3e-02cc06e62a22";
+    }}
     ```
     
 * PUT/update
@@ -193,12 +231,16 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     Currently not supported
     
     ```objective-c
-    NSDictionary *attributes = […];
-    [gomClient updateNode:@"/areas/home/audio" withAttributesValue:attributes completionBlock:^(NSDictionary *response) {
+    NSDictionary *attributes = @{@"attribute1": @"100", @"attribute2" : @"200", @"attribute3" : @"300"};
+    [gomClient updateNode:@"/areas/home/audio/test/ef84fd8c-701c-46cf-9f3e-02cc06e62a22" withAttributesValue:attributes completionBlock:^(NSDictionary *response) {
 
         // Your code here
 
     }];
+    ```
+    
+    ```
+    {status = 200}
     ```
 
 * DELETE/destroy

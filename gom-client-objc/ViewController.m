@@ -149,6 +149,8 @@
 
 - (void)writeToConsole:(NSDictionary *)output
 {
+    NSLog(@"%@", output.description);
+    
     NSString *text = [NSString stringWithFormat:@"%@\n\n%@", output.description, self.consoleView.text];
     self.consoleView.text = text;
     NSRange range = NSMakeRange(0, 1);
