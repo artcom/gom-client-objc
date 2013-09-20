@@ -262,7 +262,7 @@
     NSLog(@"registering GOM observer at path: %@", binding.subscriptionUri);
     
     if (binding.registered == NO) {
-        NSDictionary *commands = commands = @{@"command" : @"subscribe", @"path" : binding.subscriptionUri};
+        NSDictionary *commands = @{@"command" : @"subscribe", @"path" : binding.subscriptionUri};
         [self _sendCommand:commands];
         binding.registered = YES;
     } else {
@@ -275,7 +275,7 @@
     NSLog(@"unregistering GNP at path: %@", binding.subscriptionUri);
     
     if (binding.registered) {
-        NSDictionary *commands = commands = @{@"command" : @"unsubscribe", @"path" : binding.subscriptionUri};
+        NSDictionary *commands = @{@"command" : @"unsubscribe", @"path" : binding.subscriptionUri};
         [self _sendCommand:commands];
         binding.registered = NO;
     }
