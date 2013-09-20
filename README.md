@@ -339,6 +339,7 @@ Accessing a GOM value - just enter the path to the node or attribute and tap 'Re
 
 ![Accessing GOM values](https://github.com/artcom/gom-client-objc/raw/master/Documentation/images/screenshots/3_accessing_gom_values.png)
 
+The response from the GOM will appear in the output field above:
 
 ![Retrieving GOM values](https://github.com/artcom/gom-client-objc/raw/master/Documentation/images/screenshots/4_retrieving_gom_values.png)
 
@@ -348,12 +349,12 @@ Adding an observer - Tap 'Manage Observers' to open the observer management view
 ![Adding a GOM observer](https://github.com/artcom/gom-client-objc/raw/master/Documentation/images/screenshots/5_adding_observer.png)
 
 
-List with observers - Registered observers will appear in the table above:
+List with observers - Registered observers will appear in the table above. Each additional observer on the same path will only increase the number of handles, shown as the item 'Handles':
 
 ![GOM observer added](https://github.com/artcom/gom-client-objc/raw/master/Documentation/images/screenshots/6_added_observer.png)
 
 
-Deleting an observer - Just swipe to the left and a 'Delete' button appears:
+Deleting an observer - Just swipe to the left and the 'Delete' button appears:
 
 ![Deleting a GOM observer](https://github.com/artcom/gom-client-objc/raw/master/Documentation/images/screenshots/7_deleting_observer.png)
 
