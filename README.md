@@ -228,8 +228,6 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     
     * Node update:
     
-    Currently not supported
-    
     ```objective-c
     NSDictionary *attributes = @{@"attribute1": @"100", @"attribute2" : @"200", @"attribute3" : @"300"};
     [gomClient updateNode:@"/areas/home/audio/test/ef84fd8c-701c-46cf-9f3e-02cc06e62a22" withAttributesValue:attributes completionBlock:^(NSDictionary *response) {
