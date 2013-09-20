@@ -32,6 +32,7 @@
 		3B667A0E17E8574F001BE3CE /* NSDictionary+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B667A0D17E8574F001BE3CE /* NSDictionary+JSON.m */; };
 		3BAF0F3E17E4FA1900BF6625 /* ObserverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BAF0F3D17E4FA1900BF6625 /* ObserverViewController.m */; };
 		3BBB534B17E49BBD00777BB6 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3BBB534A17E49BBD00777BB6 /* Settings.bundle */; };
+		3BC6AC4D17ECBF6100554D87 /* NSDictionary+XML.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BC6AC4C17ECBF6100554D87 /* NSDictionary+XML.m */; };
 		FC06EB50CCD54191931C6B3C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 694C9E8687BC4122932CF915 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -84,6 +85,8 @@
 		3BAF0F3C17E4FA1900BF6625 /* ObserverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObserverViewController.h; sourceTree = "<group>"; };
 		3BAF0F3D17E4FA1900BF6625 /* ObserverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObserverViewController.m; sourceTree = "<group>"; };
 		3BBB534A17E49BBD00777BB6 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		3BC6AC4B17ECBF6100554D87 /* NSDictionary+XML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+XML.h"; sourceTree = "<group>"; };
+		3BC6AC4C17ECBF6100554D87 /* NSDictionary+XML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+XML.m"; sourceTree = "<group>"; };
 		694C9E8687BC4122932CF915 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F7B628C805A4295A2750449 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -211,6 +214,8 @@
 				3B667A0A17E8512E001BE3CE /* NSData+JSON.m */,
 				3B667A0C17E8574F001BE3CE /* NSDictionary+JSON.h */,
 				3B667A0D17E8574F001BE3CE /* NSDictionary+JSON.m */,
+				3BC6AC4B17ECBF6100554D87 /* NSDictionary+XML.h */,
+				3BC6AC4C17ECBF6100554D87 /* NSDictionary+XML.m */,
 			);
 			path = "gom-client";
 			sourceTree = "<group>";
@@ -353,6 +358,7 @@
 			files = (
 				3B52973C17E33209004BCF2A /* GOMClient.m in Sources */,
 				3B2A5F9A17E312FF009A4430 /* ViewController.m in Sources */,
+				3BC6AC4D17ECBF6100554D87 /* NSDictionary+XML.m in Sources */,
 				3BAF0F3E17E4FA1900BF6625 /* ObserverViewController.m in Sources */,
 				3B52974017E35040004BCF2A /* NSString+JSON.m in Sources */,
 				3B2A5FBF17E313A3009A4430 /* GOMBinding.m in Sources */,
