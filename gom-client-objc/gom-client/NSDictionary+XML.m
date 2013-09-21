@@ -22,7 +22,7 @@
             
             
         } else {
-            [[NSException exceptionWithName:@"XMLConvertionException"
+            [[NSException exceptionWithName:@"XMLConversionException"
                                      reason:@"Conversion of collections to XML not supported."
                                    userInfo:nil]
              raise];
