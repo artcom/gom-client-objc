@@ -311,7 +311,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     }];
     ```
     
-    The first response is received immediately:
+    The first GOM notifcation is received immediately:
     
     ```
     {attribute = {
