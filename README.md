@@ -85,7 +85,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
 
      }];
      ```
-     
+
      ```
      {node =     {
         ctime = "2013-09-16T16:34:53+02:00";
@@ -309,6 +309,19 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
         // Your code here
 
     }];
+    ```
+    
+    The first response is received immediately:
+    
+    ```
+    {attribute = {
+        ctime = "2013-09-15T23:21:03+02:00";
+        mtime = "2013-09-15T23:21:03+02:00";
+        name = volume;
+        node = "/areas/home/audio";
+        type = string;
+        value = 60;
+    }}
     ```
 
 * Unregister an observer:
