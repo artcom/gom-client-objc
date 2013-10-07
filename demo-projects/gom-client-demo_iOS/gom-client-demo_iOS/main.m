@@ -1,8 +1,8 @@
 //
 //  main.m
-//  gom-client-objc
+//  gom-client-demo_iOS
 //
-//  Created by Julian Krumow on 13.09.13.
+//  Created by Julian Krumow on 07.10.13.
 //  Copyright (c) 2013 ART+COM AG. All rights reserved.
 //
 

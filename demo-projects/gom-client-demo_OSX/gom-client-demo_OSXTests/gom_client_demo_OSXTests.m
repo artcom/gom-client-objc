@@ -1,18 +1,18 @@
 //
-//  gom_client_objcTests.m
-//  gom-client-objcTests
+//  gom_client_demo_OSXTests.m
+//  gom-client-demo_OSXTests
 //
-//  Created by Julian Krumow on 13.09.13.
+//  Created by Julian Krumow on 07.10.13.
 //  Copyright (c) 2013 ART+COM AG. All rights reserved.
 //
 
 #import <XCTest/XCTest.h>
 
-@interface gom_client_objcTests : XCTestCase
+@interface gom_client_demo_OSXTests : XCTestCase
 
 @end
 
-@implementation gom_client_objcTests
+@implementation gom_client_demo_OSXTests
 
 - (void)setUp
 {
