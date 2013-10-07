@@ -12,7 +12,10 @@ To setup the project for GOM client development open the terminal and clone the 
 
 and install all necessary dependencies from the CocoaPods dependency manager:
 
-```$ pod install```
+```
+cd demo-projects/gom-client-demo_iOS
+$ pod install
+```
 
 You can use the demo app contained in this project to run and test your work.
 
