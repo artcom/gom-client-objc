@@ -11,6 +11,13 @@
 #import "GOMClientDelegate.h"
 #import "GOMBinding.h"
 
+extern NSString* const GOMClientErrorDomain;
+
+typedef enum {
+    GOMClientWebsocketProxyUrlNotFound,
+    GOMClientWebsocketNotOpen
+} GOMClientErrorCode;
+
 typedef void (^GOMClientCallback)(NSDictionary *);
 
 @interface GOMClient : NSObject

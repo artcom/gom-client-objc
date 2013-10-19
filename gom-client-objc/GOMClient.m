@@ -13,7 +13,12 @@
 #import "NSDictionary+JSON.h"
 #import "NSDictionary+XML.h"
 
+
+NSString* const GOMClientErrorDomain = @"de.artcom.gom-client-objc";
+
 @interface GOMClient () <SRWebSocketDelegate>
+
+- (NSURLRequest *)_requestWithPath:(NSString *)path method:(NSString *)method headerFields:(NSDictionary *)headerFields payloadData:(NSData *)payloadData;
 
 - (void)_registerGOMObserverForBinding:(GOMBinding *)binding;
 - (void)_unregisterGOMObserverForBinding:(GOMBinding *)binding;
@@ -24,13 +29,14 @@
 - (void)_handleGNPFromResponse:(NSDictionary *)response;
 - (void)_fireCallback:(GOMHandleCallback)callback withGomObject:(NSDictionary *)gomObject;
 - (void)_retrieveInitial:(GOMBinding *)binding;
+
 - (void)_reconnectWebsocket;
 - (void)_disconnectWebsocket;
+- (void)_returnError:(NSError *)error;
 
 @end
 
 @implementation GOMClient {
-    NSURLConnection *_urlConnection;
     SRWebSocket *_webSocket;
     NSString *_webSocketUri;
 }
@@ -60,12 +66,7 @@
 
 - (void)retrieve:(NSString *)path completionBlock:(GOMClientCallback)block
 {
-    NSURL *requestURL = [_gomRoot URLByAppendingPathComponent:path];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:requestURL];
-    NSDictionary *headers = @{@"Content-Type" : @"application/json", @"Accept" : @"application/json"};
-    [request setAllHTTPHeaderFields:headers];
-    [request setHTTPMethod:@"GET"];
-    
+    NSURLRequest *request = [self _requestWithPath:path method:@"GET" headerFields:@{@"Content-Type" : @"application/json", @"Accept" : @"application/json"} payloadData:nil];
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         NSDictionary *responseData = nil;
         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
@@ -94,18 +95,12 @@
 
 - (void)create:(NSString *)node withAttributes:(NSDictionary *)attributes completionBlock:(GOMClientCallback)block
 {
-    NSURL *requestURL = [_gomRoot URLByAppendingPathComponent:node];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:requestURL];
-    NSDictionary *headers = @{@"Content-Type" : @"application/xml", @"Accept" : @"application/json"};
-    [request setAllHTTPHeaderFields:headers];
-    [request setHTTPMethod:@"POST"];
-    
     if (attributes == nil) {
         attributes = @{};
     }
     NSString *payload = [NSString stringWithFormat:@"<node>%@</node>", [attributes convertToXML]];
     NSData *payloadData = [payload dataUsingEncoding:NSUTF8StringEncoding];
-    [request setHTTPBody:payloadData];
+    NSURLRequest *request = [self _requestWithPath:node method:@"POST" headerFields:@{@"Content-Type" : @"application/xml", @"Accept" : @"application/json"} payloadData:payloadData];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         NSDictionary *responseData = nil;
@@ -132,15 +127,9 @@
 
 - (void)updateAttribute:(NSString *)attribute withValue:(NSString *)value completionBlock:(GOMClientCallback)block
 {
-    NSURL *requestURL = [_gomRoot URLByAppendingPathComponent:attribute];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:requestURL];
-    NSDictionary *headers = @{@"Content-Type" : @"application/xml", @"Accept" : @"application/json"};
-    [request setAllHTTPHeaderFields:headers];
-    [request setHTTPMethod:@"PUT"];
-    
     NSString *payload = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"UTF-8\"?><attribute type=\"string\">%@</attribute>", value];
     NSData *payloadData = [payload dataUsingEncoding:NSUTF8StringEncoding];
-    [request setHTTPBody:payloadData];
+    NSURLRequest *request = [self _requestWithPath:attribute method:@"PUT" headerFields:@{@"Content-Type" : @"application/xml", @"Accept" : @"application/json"} payloadData:payloadData];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         NSDictionary *responseData = nil;
@@ -167,18 +156,12 @@
 
 - (void)updateNode:(NSString *)node withAttributes:(NSDictionary *)attributes completionBlock:(GOMClientCallback)block
 {
-    NSURL *requestURL = [_gomRoot URLByAppendingPathComponent:node];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:requestURL];
-    NSDictionary *headers = @{@"Content-Type" : @"application/xml", @"Accept" : @"application/json"};
-    [request setAllHTTPHeaderFields:headers];
-    [request setHTTPMethod:@"PUT"];
-    
     if (attributes == nil) {
         attributes = @{};
     }
     NSString *payload = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"UTF-8\"?><node>%@</node>", [attributes convertToXML]];
     NSData *payloadData = [payload dataUsingEncoding:NSUTF8StringEncoding];
-    [request setHTTPBody:payloadData];
+    NSURLRequest *request = [self _requestWithPath:node method:@"PUT" headerFields:@{@"Content-Type" : @"application/xml", @"Accept" : @"application/json"} payloadData:payloadData];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         NSDictionary *responseData = nil;
@@ -206,10 +189,7 @@
 
 - (void)destroy:(NSString *)path completionBlock:(GOMClientCallback)block
 {
-    NSURL *requestURL = [_gomRoot URLByAppendingPathComponent:path];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:requestURL];
-    [request setHTTPMethod:@"DELETE"];
-    
+    NSURLRequest *request = [self _requestWithPath:path method:@"DELETE" headerFields:nil payloadData:nil];
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         
         NSDictionary *responseData = nil;
@@ -233,6 +213,20 @@
             block(responseData);
         }
     }];
+}
+
+- (NSURLRequest *)_requestWithPath:(NSString *)path method:(NSString *)method headerFields:(NSDictionary *)headerFields payloadData:(NSData *)payloadData {
+    NSURL *requestURL = [_gomRoot URLByAppendingPathComponent:path];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:requestURL];
+    [request setHTTPMethod:method];
+    
+    if (headerFields) {
+        [request setAllHTTPHeaderFields:headerFields];
+    }
+    if (payloadData) {
+        [request setHTTPBody:payloadData];
+    }
+    return request;
 }
 
 #pragma mark - GOM observers
@@ -288,7 +282,8 @@
         [_webSocket send:jsonData];
         
     } else {
-        NSLog(@"Could not open socket.");
+        NSError *error = [NSError errorWithDomain:GOMClientErrorDomain code:GOMClientWebsocketNotOpen userInfo:nil];
+        [self _returnError:error];
     }
 }
 
@@ -364,8 +359,6 @@
     }];
 }
 
-
-
 - (void)_reconnectWebsocket
 {
     [self _disconnectWebsocket];
@@ -378,6 +371,9 @@
                 _webSocket.delegate = self;
                 [_webSocket open];
             }
+        } else {
+            NSError *error = [NSError errorWithDomain:GOMClientErrorDomain code:GOMClientWebsocketProxyUrlNotFound userInfo:nil];
+            [self _returnError:error];
         }
     }];
 }
@@ -390,6 +386,14 @@
     
     [_webSocket close];
     _webSocket = nil;
+}
+
+#pragma mark - Error handling
+
+- (void)_returnError:(NSError *)error {
+    if ([self.delegate respondsToSelector:@selector(gomClient:didFailWithError:)]) {
+        [self.delegate gomClient:self didFailWithError:error];
+    }
 }
 
 #pragma mark - SRWebSocketDelegate
@@ -407,9 +411,7 @@
     NSLog(@"Websocket Failed With Error %@", error);
     _webSocket = nil;
     
-    if ([self.delegate respondsToSelector:@selector(gomClient:didFailWithError:)]) {
-        [self.delegate gomClient:self didFailWithError:error];
-    }
+    [self _returnError:error];
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message;
