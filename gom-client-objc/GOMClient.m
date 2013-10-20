@@ -146,13 +146,12 @@ NSString* const GOMClientErrorDomain = @"de.artcom.gom-client-objc";
     } else {
         
         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+        NSLog(@"Received response with code: %ld", (long)httpResponse.statusCode);
         switch (httpResponse.statusCode) {
             case 200:
-            {
                 if (data) {
                     responseData = [data parseAsJSON];
                 }
-            }
                 break;
             case 404:
                 error = [NSError errorWithDomain:GOMClientErrorDomain code:GOMCLientOperationReturned_404 userInfo:nil];
