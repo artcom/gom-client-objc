@@ -35,6 +35,7 @@ NSString* const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
 - (void)_reconnectWebsocket;
 - (void)_disconnectWebsocket;
 - (void)_returnError:(NSError *)error;
+- (NSError *)_gomClientErrorForCode:(GOMClientErrorCode)code;
 
 @end
 
@@ -152,10 +153,10 @@ NSString* const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
                 }
                 break;
             case 404:
-                error = [NSError errorWithDomain:GOMClientErrorDomain code:GOMClientOperationReturned_404 userInfo:nil];
+                error = [self _gomClientErrorForCode:GOMClientOperationReturned_404];
                 break;
             case 500:
-                error = [NSError errorWithDomain:GOMClientErrorDomain code:GOMClientOperationReturned_500 userInfo:nil];
+                error = [self _gomClientErrorForCode:GOMClientOperationReturned_500];
                 break;
             default:
                 break;
@@ -220,7 +221,7 @@ NSString* const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
         [_webSocket send:jsonData];
         
     } else {
-        NSError *error = [NSError errorWithDomain:GOMClientErrorDomain code:GOMClientWebsocketNotOpen userInfo:nil];
+        NSError *error = [self _gomClientErrorForCode:GOMClientWebsocketNotOpen];
         [self _returnError:error];
     }
 }
@@ -310,7 +311,7 @@ NSString* const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
                 [_webSocket open];
             }
         } else {
-            NSError *error = [NSError errorWithDomain:GOMClientErrorDomain code:GOMClientWebsocketProxyUrlNotFound userInfo:nil];
+            NSError *error = [self _gomClientErrorForCode:GOMClientWebsocketProxyUrlNotFound];
             [self _returnError:error];
         }
     }];
@@ -332,6 +333,32 @@ NSString* const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
     if ([self.delegate respondsToSelector:@selector(gomClient:didFailWithError:)]) {
         [self.delegate gomClient:self didFailWithError:error];
     }
+}
+
+- (NSError *)_gomClientErrorForCode:(GOMClientErrorCode)code
+{
+    NSString *description = nil;
+    
+    switch (code) {
+        case GOMClientWebsocketProxyUrlNotFound:
+            description = @"Websocket proxy url not found.";
+            break;
+        case GOMClientWebsocketNotOpen:
+            description = @"Could not open websocket.";
+            break;
+        case GOMClientOperationReturned_404:
+            description = @"Request returned with code 404.";
+            break;
+        case GOMClientOperationReturned_500:
+            description = @"Request returned with code 500.";
+            break;
+        default:
+            description = @"Unknown error code.";
+            break;
+    }
+    
+    NSDictionary *userInfo = @{NSLocalizedDescriptionKey : NSLocalizedString(description, nil)};
+    return [NSError errorWithDomain:GOMClientErrorDomain code:code userInfo:userInfo];
 }
 
 #pragma mark - SRWebSocketDelegate
