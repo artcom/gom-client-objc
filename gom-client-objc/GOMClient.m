@@ -153,10 +153,10 @@ NSString* const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
                 }
                 break;
             case 404:
-                error = [NSError errorWithDomain:GOMClientErrorDomain code:GOMCLientOperationReturned_404 userInfo:nil];
+                error = [NSError errorWithDomain:GOMClientErrorDomain code:GOMClientOperationReturned_404 userInfo:nil];
                 break;
             case 500:
-                error = [NSError errorWithDomain:GOMClientErrorDomain code:GOMCLientOperationReturned_500 userInfo:nil];
+                error = [NSError errorWithDomain:GOMClientErrorDomain code:GOMClientOperationReturned_500 userInfo:nil];
                 break;
             default:
                 break;
