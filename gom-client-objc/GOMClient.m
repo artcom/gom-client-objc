@@ -134,7 +134,6 @@ NSString* const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
     return request;
 }
 
-
 - (void)_handleOperationResponse:(NSURLResponse *)response data:(NSData *)data error:(NSError *)connectionError completionBlock:(GOMClientOperationCallback)block
 {
     NSDictionary *responseData = nil;
