@@ -19,12 +19,13 @@ NSString* const GOMClientErrorDomain = @"de.artcom.gom-client-objc";
 @interface GOMClient () <SRWebSocketDelegate>
 
 - (NSURLRequest *)_requestWithPath:(NSString *)path method:(NSString *)method headerFields:(NSDictionary *)headerFields payloadData:(NSData *)payloadData;
+- (void)_handleOperationResponse:(NSURLResponse *)response data:(NSData *)data error:(NSError *)connectionError completionBlock:(GOMClientOperationCallback)block;
 
 - (void)_registerGOMObserverForBinding:(GOMBinding *)binding;
 - (void)_unregisterGOMObserverForBinding:(GOMBinding *)binding;
 - (void)_sendCommand:(NSDictionary *)commands;
 
-- (void)_handleResponse:(NSDictionary* )response;
+- (void)_handleGNPResponse:(NSDictionary* )response;
 - (void)_handleInitialResponse:(NSDictionary *)response;
 - (void)_handleGNPFromResponse:(NSDictionary *)response;
 - (void)_fireCallback:(GOMHandleCallback)callback withGomObject:(NSDictionary *)gomObject;
@@ -64,36 +65,15 @@ NSString* const GOMClientErrorDomain = @"de.artcom.gom-client-objc";
     [self _reconnectWebsocket];
 }
 
-- (void)retrieve:(NSString *)path completionBlock:(GOMClientCallback)block
+- (void)retrieve:(NSString *)path completionBlock:(GOMClientOperationCallback)block
 {
     NSURLRequest *request = [self _requestWithPath:path method:@"GET" headerFields:@{@"Content-Type" : @"application/json", @"Accept" : @"application/json"} payloadData:nil];
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-        NSDictionary *responseData = nil;
-        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-        switch (httpResponse.statusCode) {
-            case 200:
-            {
-                if (data) {
-                    responseData = [data parseAsJSON];
-                }
-            }
-                break;
-            case 500:
-                responseData = nil;
-                break;
-            case 404:
-                responseData = nil;
-                break;
-            default:
-                break;
-        }
-        if (block) {
-            block(responseData);
-        }
+        [self _handleOperationResponse:response data:data error:connectionError completionBlock:block];
     }];
 }
 
-- (void)create:(NSString *)node withAttributes:(NSDictionary *)attributes completionBlock:(GOMClientCallback)block
+- (void)create:(NSString *)node withAttributes:(NSDictionary *)attributes completionBlock:(GOMClientOperationCallback)block
 {
     if (attributes == nil) {
         attributes = @{};
@@ -103,58 +83,22 @@ NSString* const GOMClientErrorDomain = @"de.artcom.gom-client-objc";
     NSURLRequest *request = [self _requestWithPath:node method:@"POST" headerFields:@{@"Content-Type" : @"application/xml", @"Accept" : @"application/json"} payloadData:payloadData];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-        NSDictionary *responseData = nil;
-        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-        switch (httpResponse.statusCode) {
-            case 200:
-            {
-                if (data) {
-                    responseData = [data parseAsJSON];
-                }
-            }
-                break;
-            case 500:
-                responseData = nil;
-                break;
-            default:
-                break;
-        }
-        if (block) {
-            block(responseData);
-        }
+        [self _handleOperationResponse:response data:data error:connectionError completionBlock:block];
     }];
 }
 
-- (void)updateAttribute:(NSString *)attribute withValue:(NSString *)value completionBlock:(GOMClientCallback)block
+- (void)updateAttribute:(NSString *)attribute withValue:(NSString *)value completionBlock:(GOMClientOperationCallback)block
 {
     NSString *payload = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"UTF-8\"?><attribute type=\"string\">%@</attribute>", value];
     NSData *payloadData = [payload dataUsingEncoding:NSUTF8StringEncoding];
     NSURLRequest *request = [self _requestWithPath:attribute method:@"PUT" headerFields:@{@"Content-Type" : @"application/xml", @"Accept" : @"application/json"} payloadData:payloadData];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-        NSDictionary *responseData = nil;
-        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-        switch (httpResponse.statusCode) {
-            case 200:
-            {
-                if (data) {
-                    responseData = [data parseAsJSON];
-                }
-            }
-                break;
-            case 500:
-                responseData = nil;
-                break;
-            default:
-                break;
-        }
-        if (block) {
-            block(responseData);
-        }
+        [self _handleOperationResponse:response data:data error:connectionError completionBlock:block];
     }];
 }
 
-- (void)updateNode:(NSString *)node withAttributes:(NSDictionary *)attributes completionBlock:(GOMClientCallback)block
+- (void)updateNode:(NSString *)node withAttributes:(NSDictionary *)attributes completionBlock:(GOMClientOperationCallback)block
 {
     if (attributes == nil) {
         attributes = @{};
@@ -164,54 +108,16 @@ NSString* const GOMClientErrorDomain = @"de.artcom.gom-client-objc";
     NSURLRequest *request = [self _requestWithPath:node method:@"PUT" headerFields:@{@"Content-Type" : @"application/xml", @"Accept" : @"application/json"} payloadData:payloadData];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-        NSDictionary *responseData = nil;
-        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-        switch (httpResponse.statusCode) {
-            case 200:
-            {
-                if (data) {
-                    responseData = [data parseAsJSON];
-                }
-            }
-                break;
-            case 500:
-                responseData = nil;
-                break;
-            default:
-                break;
-        }
-        if (block) {
-            block(responseData);
-        }
+        [self _handleOperationResponse:response data:data error:connectionError completionBlock:block];
     }];
     
 }
 
-- (void)destroy:(NSString *)path completionBlock:(GOMClientCallback)block
+- (void)destroy:(NSString *)path completionBlock:(GOMClientOperationCallback)block
 {
     NSURLRequest *request = [self _requestWithPath:path method:@"DELETE" headerFields:nil payloadData:nil];
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-        
-        NSDictionary *responseData = nil;
-        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-        switch (httpResponse.statusCode) {
-            case 200:
-            {
-                responseData = [NSDictionary dictionaryWithObject:@YES forKey:@"success"];
-            }
-                break;
-            case 500:
-                responseData = nil;
-                break;
-            case 404:
-                responseData = nil;
-                break;
-            default:
-                break;
-        }
-        if (block) {
-            block(responseData);
-        }
+        [self _handleOperationResponse:response data:data error:connectionError completionBlock:block];
     }];
 }
 
@@ -229,9 +135,44 @@ NSString* const GOMClientErrorDomain = @"de.artcom.gom-client-objc";
     return request;
 }
 
+
+- (void)_handleOperationResponse:(NSURLResponse *)response data:(NSData *)data error:(NSError *)connectionError completionBlock:(GOMClientOperationCallback)block
+{
+    NSDictionary *responseData = nil;
+    NSError *error = nil;
+    
+    if (connectionError) {
+        error = connectionError;
+    } else {
+        
+        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+        switch (httpResponse.statusCode) {
+            case 200:
+            {
+                if (data) {
+                    responseData = [data parseAsJSON];
+                }
+            }
+                break;
+            case 404:
+                error = [NSError errorWithDomain:GOMClientErrorDomain code:GOMCLientOperationReturned_404 userInfo:nil];
+                break;
+            case 500:
+                error = [NSError errorWithDomain:GOMClientErrorDomain code:GOMCLientOperationReturned_500 userInfo:nil];
+                break;
+            default:
+                break;
+        }
+    }
+    
+    if (block) {
+        block(responseData, error);
+    }
+}
+
 #pragma mark - GOM observers
 
-- (void)registerGOMObserverForPath:(NSString *)path options:(NSDictionary *)options clientCallback:(GOMClientCallback)callback
+- (void)registerGOMObserverForPath:(NSString *)path options:(NSDictionary *)options clientCallback:(GOMClientGNPCallback)callback
 {
     GOMBinding *binding = _bindings[path];
     if (binding == nil) {
@@ -287,7 +228,7 @@ NSString* const GOMClientErrorDomain = @"de.artcom.gom-client-objc";
     }
 }
 
-- (void)_handleResponse:(NSDictionary* )response
+- (void)_handleGNPResponse:(NSDictionary* )response
 {
     if (response[@"initial"]) {
         [self _handleInitialResponse:response];
@@ -349,7 +290,7 @@ NSString* const GOMClientErrorDomain = @"de.artcom.gom-client-objc";
 
 - (void)_retrieveInitial:(GOMBinding *)binding
 {
-    [self retrieve:binding.subscriptionUri completionBlock:^(NSDictionary *response) {
+    [self retrieve:binding.subscriptionUri completionBlock:^(NSDictionary *response, NSError *error) {
         for (GOMHandle *handle in binding.handles) {
             if (handle.initialRetrieved == NO) {
                 [self _fireCallback:handle.callback withGomObject:response];
@@ -362,7 +303,7 @@ NSString* const GOMClientErrorDomain = @"de.artcom.gom-client-objc";
 - (void)_reconnectWebsocket
 {
     [self _disconnectWebsocket];
-    [self retrieve:WEBSOCKETS_PROXY_PATH completionBlock:^(NSDictionary *response) {
+    [self retrieve:WEBSOCKETS_PROXY_PATH completionBlock:^(NSDictionary *response, NSError *error) {
         NSDictionary *attribute = response[@"attribute"];
         if (attribute) {
             _webSocketUri = attribute[@"value"];
@@ -420,7 +361,7 @@ NSString* const GOMClientErrorDomain = @"de.artcom.gom-client-objc";
     NSMutableDictionary *response = [messageString parseAsJSON];
     
     if (response) {
-        [self _handleResponse:response];
+        [self _handleGNPResponse:response];
     }
 }
 

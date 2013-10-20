@@ -15,10 +15,13 @@ extern NSString* const GOMClientErrorDomain;
 
 typedef enum {
     GOMClientWebsocketProxyUrlNotFound,
-    GOMClientWebsocketNotOpen
+    GOMClientWebsocketNotOpen,
+    GOMCLientOperationReturned_404,
+    GOMCLientOperationReturned_500
 } GOMClientErrorCode;
 
-typedef void (^GOMClientCallback)(NSDictionary *);
+typedef void (^GOMClientOperationCallback)(NSDictionary *, NSError *);
+typedef void (^GOMClientGNPCallback)(NSDictionary *);
 
 @interface GOMClient : NSObject
 
@@ -28,13 +31,13 @@ typedef void (^GOMClientCallback)(NSDictionary *);
 
 - (id)initWithGomURI:(NSURL *)gomURI;
 
-- (void)retrieve:(NSString *)path completionBlock:(GOMClientCallback)block;
-- (void)create:(NSString *)node withAttributes:(NSDictionary *)attributes completionBlock:(GOMClientCallback)block;
-- (void)updateAttribute:(NSString *)attribute withValue:(NSString *)value completionBlock:(GOMClientCallback)block;
-- (void)updateNode:(NSString *)node withAttributes:(NSDictionary *)attributes completionBlock:(GOMClientCallback)block;
-- (void)destroy:(NSString *)path completionBlock:(GOMClientCallback)block;
+- (void)retrieve:(NSString *)path completionBlock:(GOMClientOperationCallback)block;
+- (void)create:(NSString *)node withAttributes:(NSDictionary *)attributes completionBlock:(GOMClientOperationCallback)block;
+- (void)updateAttribute:(NSString *)attribute withValue:(NSString *)value completionBlock:(GOMClientOperationCallback)block;
+- (void)updateNode:(NSString *)node withAttributes:(NSDictionary *)attributes completionBlock:(GOMClientOperationCallback)block;
+- (void)destroy:(NSString *)path completionBlock:(GOMClientOperationCallback)block;
 
-- (void)registerGOMObserverForPath:(NSString *)path options:(NSDictionary *)options clientCallback:(GOMClientCallback)callback;
+- (void)registerGOMObserverForPath:(NSString *)path options:(NSDictionary *)options clientCallback:(GOMClientGNPCallback)callback;
 - (void)unregisterGOMObserverForPath:(NSString *)path options:(NSDictionary *)options;
 
 @end

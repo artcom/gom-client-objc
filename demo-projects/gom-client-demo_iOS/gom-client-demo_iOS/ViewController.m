@@ -21,7 +21,7 @@
 - (void)removeObservers;
 - (void)slideUp;
 - (void)slideDown;
-- (void)writeToConsole:(NSDictionary *)output;
+- (void)writeToConsole:(NSDictionary *)output error:(NSError *)error;
 - (void)resetTextfields;
 @end
 
@@ -147,9 +147,15 @@
     }
 }
 
-- (void)writeToConsole:(NSDictionary *)output
+- (void)writeToConsole:(NSDictionary *)dictionary error:(NSError *)error
 {
-    NSLog(@"%@", output.description);
+    NSString *output = nil;
+    if (dictionary) {
+        output = dictionary.description;
+    } else {
+        output = error.description;
+    }
+    NSLog(@"%@", output);
     
     NSString *text = [NSString stringWithFormat:@"%@\n\n%@", output.description, self.consoleView.text];
     self.consoleView.text = text;
@@ -176,7 +182,7 @@
 - (void)observerViewController:(ObserverViewController *)observerViewController didAddObserverWithPath:(NSString *)path
 {
     [self.gomClient registerGOMObserverForPath:path options:nil clientCallback:^(NSDictionary *dict) {
-        [self writeToConsole:dict];
+        [self writeToConsole:dict error:nil];
     }];
 }
 
@@ -200,29 +206,29 @@
 
 - (IBAction)retrievePressed:(id)sender {
     [self resetTextfields];
-    [self.gomClient retrieve:self.attributeField.text completionBlock:^(NSDictionary *response) {
-        [self writeToConsole:response];
+    [self.gomClient retrieve:self.attributeField.text completionBlock:^(NSDictionary *response, NSError *error) {
+        [self writeToConsole:response error:error];
     }];
 }
 
 - (IBAction)createPressed:(id)sender {
     [self resetTextfields];
-    [self.gomClient create:self.attributeField.text withAttributes:nil completionBlock:^(NSDictionary *response) {
-        [self writeToConsole:response];
+    [self.gomClient create:self.attributeField.text withAttributes:nil completionBlock:^(NSDictionary *response, NSError *error) {
+        [self writeToConsole:response error:error];
     }];
 }
 
 - (IBAction)updatePressed:(id)sender {
     [self resetTextfields];
-    [self.gomClient updateAttribute:self.attributeField.text withValue:self.valueField.text completionBlock:^(NSDictionary *response) {
-        [self writeToConsole:response];
+    [self.gomClient updateAttribute:self.attributeField.text withValue:self.valueField.text completionBlock:^(NSDictionary *response, NSError *error) {
+        [self writeToConsole:response error:error];
     }];
 }
 
 - (IBAction)deletePressed:(id)sender {
     [self resetTextfields];
-    [self.gomClient destroy:self.attributeField.text completionBlock:^(NSDictionary *response) {
-        [self writeToConsole:response];
+    [self.gomClient destroy:self.attributeField.text completionBlock:^(NSDictionary *response, NSError *error) {
+        [self writeToConsole:response error:error];
     }];
 }
 
