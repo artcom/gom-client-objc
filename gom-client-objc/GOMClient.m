@@ -149,7 +149,7 @@ NSString* const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
                 responseData = [data parseAsJSON];
             }
             if (responseData == nil) {
-                responseData = responseData = @{@"success" : @YES};
+                responseData = @{@"success" : @YES};
             }
         } else if (statusCode >= 400) {
             
