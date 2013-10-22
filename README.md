@@ -25,7 +25,7 @@ All dependencies are defined in the file `Podfile`
 
 To use the Objective-C GOM client in your own project add the line
 
-```pod 'gom-client-objc', '~> 0.1.1'```
+```pod 'gom-client-objc', '~> 0.2.0'```
  
 to your own Podfile and install all necessary dependencies from the CocoaPods dependency manager.
 
@@ -55,7 +55,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     * Attribute retrieval:
     
     ```objective-c
-    [gomClient retrieve:@"/areas/home/audio:volume" completionBlock:^(NSDictionary *response) {
+    [gomClient retrieve:@"/areas/home/audio:volume" completionBlock:^(NSDictionary *response, NSError *error) {
 
         // Your code here
         
@@ -76,13 +76,13 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     * Retrieve a non-existing attribute:
     
     ```
-    (null)
+    NSError Domain=de.artcom.gom-client-objc Code=404 "not found"
     ```
 
     * Node retrieval:
   
     ```objective-c
-    [gomClient retrieve:@"/areas/home/audio" completionBlock:^(NSDictionary *response) {
+    [gomClient retrieve:@"/areas/home/audio" completionBlock:^(NSDictionary *response, NSError *error) {
    
         // Your code here
 
@@ -137,7 +137,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     * Retrieve a non-existing node:
     
     ```
-    (null)
+    NSError Domain=de.artcom.gom-client-objc Code=404 "not found"
     ```
 
 * POST/create
@@ -145,7 +145,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     * Create empty node:
     
     ```objective-c
-    gomClient create:@"/areas/home/audio/test" withAttributes:nil completionBlock:^(NSDictionary *response) {
+    gomClient create:@"/areas/home/audio/test" withAttributes:nil completionBlock:^(NSDictionary *response, NSError *error) {
 
         // Your code here
 
@@ -166,7 +166,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     
     ```objective-c
     NSDictionary *attributes = @{@"attribute1": @"value1", @"attribute2" : @"value2", @"attribute3" : @"value3"};
-    gomClient create:@"/areas/home/audio/test" withAttributes:attributes completionBlock:^(NSDictionary *response) {
+    gomClient create:@"/areas/home/audio/test" withAttributes:attributes completionBlock:^(NSDictionary *response, NSError *error) {
 
         // Your code here
 
@@ -218,7 +218,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     * Attribute update:
     
     ```objective-c
-    [gomClient updateAttribute:@"/areas/home/audio:volume" withValue:@"50" completionBlock:^(NSDictionary *response) {
+    [gomClient updateAttribute:@"/areas/home/audio:volume" withValue:@"50" completionBlock:^(NSDictionary *response, NSError *error) {
 
         // Your code here
 
@@ -233,7 +233,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     
     ```objective-c
     NSDictionary *attributes = @{@"attribute1": @"100", @"attribute2" : @"200", @"attribute3" : @"300"};
-    [gomClient updateNode:@"/areas/home/audio/test/ef84fd8c-701c-46cf-9f3e-02cc06e62a22" withAttributesValue:attributes completionBlock:^(NSDictionary *response) {
+    [gomClient updateNode:@"/areas/home/audio/test/ef84fd8c-701c-46cf-9f3e-02cc06e62a22" withAttributesValue:attributes completionBlock:^(NSDictionary *response, NSError *error) {
 
         // Your code here
 
@@ -249,7 +249,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     * Destroy existing attribute:
     
     ```objective-c
-    [gomClient destroy:@"/areas/home/audio:volume" completionBlock:^(NSDictionary *response) {
+    [gomClient destroy:@"/areas/home/audio:volume" completionBlock:^(NSDictionary *response, NSError *error) {
 
         // Your code here
 
@@ -263,7 +263,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     * Destroy existing node:
     
     ```objective-c
-    [gomClient destroy:@"/areas/home/audio" completionBlock:^(NSDictionary *response) {
+    [gomClient destroy:@"/areas/home/audio" completionBlock:^(NSDictionary *response, NSError *error) {
         
         // Your code here
 
@@ -277,7 +277,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     * Destroy non-existing attribute:
     
     ```objective-c
-    [gomClient destroy:@"/areas/home/audio:volume_x" completionBlock:^(NSDictionary *response) {
+    [gomClient destroy:@"/areas/home/audio:volume_x" completionBlock:^(NSDictionary *response, NSError *error) {
         
         // Your code here
         
@@ -285,13 +285,13 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     ```
     
     ```
-    (null)
+    NSError Domain=de.artcom.gom-client-objc Code=404 "not found"
     ```
     
     * Destroy non-existing node:
     
     ```objective-c
-    [gomClient destroy:@"/areas/home/audio_x" completionBlock:^(NSDictionary *response) {
+    [gomClient destroy:@"/areas/home/audio_x" completionBlock:^(NSDictionary *response, NSError *error) {
         
         // Your code here
         
@@ -299,7 +299,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     ```
     
     ```
-    (null)
+    NSError Domain=de.artcom.gom-client-objc Code=404 "not found"
     ```
 
 ### Handling observers
