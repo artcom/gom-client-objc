@@ -284,6 +284,9 @@ NSString* const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
 - (void)_retrieveInitial:(GOMBinding *)binding
 {
     [self retrieve:binding.subscriptionUri completionBlock:^(NSDictionary *response, NSError *error) {
+        
+        // TODO: handle error.
+        
         for (GOMHandle *handle in binding.handles) {
             if (handle.initialRetrieved == NO) {
                 [self _fireCallback:handle.callback withGomObject:response];
