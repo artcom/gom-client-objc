@@ -144,8 +144,6 @@ NSString* const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
         error = connectionError;
     } else {
         NSInteger statusCode = ((NSHTTPURLResponse *)response).statusCode;
-        NSLog(@"Received response with code: %ld", (long)statusCode);
-        
         if (statusCode == 200) {
             if (data) {
                 responseData = [data parseAsJSON];
