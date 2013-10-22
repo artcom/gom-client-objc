@@ -284,14 +284,15 @@ NSString* const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
 - (void)_retrieveInitial:(GOMBinding *)binding
 {
     [self retrieve:binding.subscriptionUri completionBlock:^(NSDictionary *response, NSError *error) {
-        
-        // TODO: handle error.
-        
-        for (GOMHandle *handle in binding.handles) {
-            if (handle.initialRetrieved == NO) {
-                [self _fireCallback:handle.callback withGomObject:response];
-                handle.initialRetrieved = YES;
+        if (response) {
+            for (GOMHandle *handle in binding.handles) {
+                if (handle.initialRetrieved == NO) {
+                    [self _fireCallback:handle.callback withGomObject:response];
+                    handle.initialRetrieved = YES;
+                }
             }
+        } else {
+            [self _returnError:error];
         }
     }];
 }
@@ -300,16 +301,20 @@ NSString* const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
 {
     [self _disconnectWebsocket];
     [self retrieve:WEBSOCKETS_PROXY_PATH completionBlock:^(NSDictionary *response, NSError *error) {
-        NSDictionary *attribute = response[@"attribute"];
-        if (attribute) {
-            _webSocketUri = attribute[@"value"];
-            if (_webSocketUri) {
-                _webSocket = [[SRWebSocket alloc] initWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:_webSocketUri]]];
-                _webSocket.delegate = self;
-                [_webSocket open];
+        if (response) {
+            NSDictionary *attribute = response[@"attribute"];
+            if (attribute) {
+                _webSocketUri = attribute[@"value"];
+                if (_webSocketUri) {
+                    _webSocket = [[SRWebSocket alloc] initWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:_webSocketUri]]];
+                    _webSocket.delegate = self;
+                    [_webSocket open];
+                }
+            } else {
+                NSError *error = [self _gomClientErrorForCode:GOMClientWebsocketProxyUrlNotFound];
+                [self _returnError:error];
             }
         } else {
-            NSError *error = [self _gomClientErrorForCode:GOMClientWebsocketProxyUrlNotFound];
             [self _returnError:error];
         }
     }];
