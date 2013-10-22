@@ -143,23 +143,20 @@ NSString* const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
     if (connectionError) {
         error = connectionError;
     } else {
+        NSInteger statusCode = ((NSHTTPURLResponse *)response).statusCode;
+        NSLog(@"Received response with code: %ld", (long)statusCode);
         
-        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-        NSLog(@"Received response with code: %ld", (long)httpResponse.statusCode);
-        switch (httpResponse.statusCode) {
-            case 200:
-                if (data) {
-                    responseData = [data parseAsJSON];
-                }
-                break;
-            case 404:
-                error = [self _gomClientErrorForCode:GOMClientOperationReturned_404];
-                break;
-            case 500:
-                error = [self _gomClientErrorForCode:GOMClientOperationReturned_500];
-                break;
-            default:
-                break;
+        if (statusCode == 200) {
+            if (data) {
+                responseData = [data parseAsJSON];
+            }
+            if (responseData == nil) {
+                responseData = @{@"success": @1};
+            }
+        } else if (statusCode >= 400) {
+            
+            NSDictionary *userInfo = @{NSLocalizedDescriptionKey : [NSHTTPURLResponse localizedStringForStatusCode:statusCode]};
+            error = [NSError errorWithDomain:GOMClientErrorDomain code:statusCode userInfo:userInfo];
         }
     }
     
@@ -219,10 +216,8 @@ NSString* const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
     if (_webSocket && _webSocket.readyState == SR_OPEN) {
         NSData *jsonData = [commands convertToJSON];
         [_webSocket send:jsonData];
-        
     } else {
-        NSError *error = [self _gomClientErrorForCode:GOMClientWebsocketNotOpen];
-        [self _returnError:error];
+        NSLog(@"Websocket not open.");
     }
 }
 
@@ -342,15 +337,6 @@ NSString* const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
     switch (code) {
         case GOMClientWebsocketProxyUrlNotFound:
             description = @"Websocket proxy url not found.";
-            break;
-        case GOMClientWebsocketNotOpen:
-            description = @"Could not open websocket.";
-            break;
-        case GOMClientOperationReturned_404:
-            description = @"Request returned with code 404.";
-            break;
-        case GOMClientOperationReturned_500:
-            description = @"Request returned with code 500.";
             break;
         default:
             description = @"Unknown error code.";

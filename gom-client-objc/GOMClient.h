@@ -14,10 +14,7 @@
 extern NSString* const GOMClientErrorDomain;
 
 typedef enum {
-    GOMClientWebsocketProxyUrlNotFound,
-    GOMClientWebsocketNotOpen,
-    GOMClientOperationReturned_404,
-    GOMClientOperationReturned_500
+    GOMClientWebsocketProxyUrlNotFound
 } GOMClientErrorCode;
 
 typedef void (^GOMClientOperationCallback)(NSDictionary *, NSError *);
