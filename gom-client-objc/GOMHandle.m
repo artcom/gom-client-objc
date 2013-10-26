@@ -16,7 +16,7 @@
     if (self) {
         _binding = binding;
         _callback = callback;
-        _initialRetrieved = false;
+        _initialRetrieved = NO;
     }
     return self;
 }

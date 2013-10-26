@@ -21,7 +21,7 @@
         _subscriptionUri = subscriptionUri;
         _observerUri = nil;
         _handles = [[NSMutableArray alloc] init];
-        _registered = false;
+        _registered = NO;
     }
     return self;
 }
