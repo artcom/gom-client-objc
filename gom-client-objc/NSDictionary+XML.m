@@ -23,7 +23,7 @@
             
         } else {
             [[NSException exceptionWithName:@"XMLConversionException"
-                                     reason:@"Conversion of collections to XML not supported."
+                                     reason:@"Attribute is not an NSString."
                                    userInfo:nil]
              raise];
         }
