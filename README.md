@@ -4,7 +4,17 @@
  * [CocoaPods dependency manager](http://cocoapods.org)
  * Xcode 4.5 or later
 
-### Setting up for development
+### Using the GOM client in your own app project 
+
+To use the Objective-C GOM client in your own project add the line
+
+```pod 'gom-client-objc', '~> 0.2.0'```
+ 
+to your own Podfile and install all necessary dependencies from the CocoaPods dependency manager.
+
+All dependencies are defined in the file ```gom-client-objc.podspec```
+
+### Setting up for Client development
 
 To setup the project for GOM client development open the terminal and clone the repo:
 
@@ -20,16 +30,6 @@ $ pod install
 You can use the demo app contained in this project to run and test your work.
 
 All dependencies are defined in the file `Podfile`
-
-### Using the GOM client in your own app project 
-
-To use the Objective-C GOM client in your own project add the line
-
-```pod 'gom-client-objc', '~> 0.2.0'```
- 
-to your own Podfile and install all necessary dependencies from the CocoaPods dependency manager.
-
-All dependencies are defined in the file ```gom-client-objc.podspec```
 
 ## Usage
 
