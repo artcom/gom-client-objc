@@ -19,7 +19,7 @@ NSString* const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
 
 @interface GOMClient () <SRWebSocketDelegate>
 
-- (NSURLRequest *)_requestWithPath:(NSString *)path method:(NSString *)method headerFields:(NSDictionary *)headerFields payloadData:(NSData *)payloadData;
+- (NSURLRequest *)_createRequestWithPath:(NSString *)path method:(NSString *)method headerFields:(NSDictionary *)headerFields payloadData:(NSData *)payloadData;
 - (void)_handleOperationResponse:(NSURLResponse *)response data:(NSData *)data error:(NSError *)connectionError completionBlock:(GOMClientOperationCallback)block;
 
 - (void)_registerGOMObserverForBinding:(GOMBinding *)binding;
@@ -67,7 +67,7 @@ NSString* const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
 
 - (void)retrieve:(NSString *)path completionBlock:(GOMClientOperationCallback)block
 {
-    NSURLRequest *request = [self _requestWithPath:path method:@"GET" headerFields:@{@"Content-Type" : @"application/json", @"Accept" : @"application/json"} payloadData:nil];
+    NSURLRequest *request = [self _createRequestWithPath:path method:@"GET" headerFields:@{@"Content-Type" : @"application/json", @"Accept" : @"application/json"} payloadData:nil];
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         [self _handleOperationResponse:response data:data error:connectionError completionBlock:block];
     }];
@@ -80,7 +80,7 @@ NSString* const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
     }
     NSString *payload = [NSString stringWithFormat:@"<node>%@</node>", [attributes convertToXML]];
     NSData *payloadData = [payload dataUsingEncoding:NSUTF8StringEncoding];
-    NSURLRequest *request = [self _requestWithPath:node method:@"POST" headerFields:@{@"Content-Type" : @"application/xml", @"Accept" : @"application/json"} payloadData:payloadData];
+    NSURLRequest *request = [self _createRequestWithPath:node method:@"POST" headerFields:@{@"Content-Type" : @"application/xml", @"Accept" : @"application/json"} payloadData:payloadData];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         [self _handleOperationResponse:response data:data error:connectionError completionBlock:block];
@@ -91,7 +91,7 @@ NSString* const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
 {
     NSString *payload = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"UTF-8\"?><attribute type=\"string\">%@</attribute>", value];
     NSData *payloadData = [payload dataUsingEncoding:NSUTF8StringEncoding];
-    NSURLRequest *request = [self _requestWithPath:attribute method:@"PUT" headerFields:@{@"Content-Type" : @"application/xml", @"Accept" : @"application/json"} payloadData:payloadData];
+    NSURLRequest *request = [self _createRequestWithPath:attribute method:@"PUT" headerFields:@{@"Content-Type" : @"application/xml", @"Accept" : @"application/json"} payloadData:payloadData];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         [self _handleOperationResponse:response data:data error:connectionError completionBlock:block];
@@ -105,7 +105,7 @@ NSString* const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
     }
     NSString *payload = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"UTF-8\"?><node>%@</node>", [attributes convertToXML]];
     NSData *payloadData = [payload dataUsingEncoding:NSUTF8StringEncoding];
-    NSURLRequest *request = [self _requestWithPath:node method:@"PUT" headerFields:@{@"Content-Type" : @"application/xml", @"Accept" : @"application/json"} payloadData:payloadData];
+    NSURLRequest *request = [self _createRequestWithPath:node method:@"PUT" headerFields:@{@"Content-Type" : @"application/xml", @"Accept" : @"application/json"} payloadData:payloadData];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         [self _handleOperationResponse:response data:data error:connectionError completionBlock:block];
@@ -115,13 +115,13 @@ NSString* const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
 
 - (void)destroy:(NSString *)path completionBlock:(GOMClientOperationCallback)block
 {
-    NSURLRequest *request = [self _requestWithPath:path method:@"DELETE" headerFields:nil payloadData:nil];
+    NSURLRequest *request = [self _createRequestWithPath:path method:@"DELETE" headerFields:nil payloadData:nil];
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         [self _handleOperationResponse:response data:data error:connectionError completionBlock:block];
     }];
 }
 
-- (NSURLRequest *)_requestWithPath:(NSString *)path method:(NSString *)method headerFields:(NSDictionary *)headerFields payloadData:(NSData *)payloadData {
+- (NSURLRequest *)_createRequestWithPath:(NSString *)path method:(NSString *)method headerFields:(NSDictionary *)headerFields payloadData:(NSData *)payloadData {
     NSURL *requestURL = [_gomRoot URLByAppendingPathComponent:path];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:requestURL];
     [request setHTTPMethod:method];
