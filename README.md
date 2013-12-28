@@ -14,23 +14,6 @@ to your own Podfile and install all necessary dependencies from the CocoaPods de
 
 All dependencies are defined in the file ```gom-client-objc.podspec```
 
-### Setting up for Client development
-
-To setup the project for GOM client development open the terminal and clone the repo:
-
-```$ git clone https://github.com/artcom/gom-client-objc.git```
-
-and install all necessary dependencies from the CocoaPods dependency manager:
-
-```
-cd demo-projects/gom-client-demo_iOS
-$ pod install
-```
-
-You can use the demo app contained in this project to run and test your work.
-
-All dependencies are defined in the file `Podfile`
-
 ## Usage
 
 ### Initialization
@@ -332,6 +315,23 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     ```objective-c
    [gomClient unregisterGOMObserverForPath:@"/areas/home/audio:volume" options:nil];
     ```
+
+## Setting up for Client development
+
+To setup the project for GOM client development open the terminal and clone the repo:
+
+```$ git clone https://github.com/artcom/gom-client-objc.git```
+
+and install all necessary dependencies from the CocoaPods dependency manager:
+
+```
+cd demo-projects/gom-client-demo_iOS
+$ pod install
+```
+
+You can use the demo app contained in this project to run and test your work.
+
+All dependencies are defined in the file `Podfile`
 
 ## Demo app
 Setting the GOM root address:
