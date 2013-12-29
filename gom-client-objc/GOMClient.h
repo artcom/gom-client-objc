@@ -27,7 +27,7 @@ typedef void (^GOMClientGNPCallback)(NSDictionary *);
 @property (nonatomic, weak) id<GOMClientDelegate> delegate;
 @property (nonatomic, strong, readonly) NSMutableDictionary *bindings;
 
-- (id)initWithGomURI:(NSURL *)gomURI;
+- (id)initWithGomURI:(NSURL *)gomURI delegate:(id<GOMClientDelegate>)delegate;
 
 - (void)retrieve:(NSString *)path completionBlock:(GOMClientOperationCallback)block;
 - (void)create:(NSString *)node withAttributes:(NSDictionary *)attributes completionBlock:(GOMClientOperationCallback)block;

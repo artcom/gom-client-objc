@@ -12,8 +12,7 @@
 
 - (NSData *)convertToJSON
 {
-    NSError *error = nil;
-    return [NSJSONSerialization dataWithJSONObject:self options:kNilOptions error:&error];
+    return [NSJSONSerialization dataWithJSONObject:self options:kNilOptions error:nil];
 }
 
 @end

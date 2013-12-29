@@ -75,8 +75,7 @@
     NSString *gomRootPath = [[NSUserDefaults standardUserDefaults] stringForKey:@"gom_address_preference"];
     if (gomRootPath && [gomRootPath isEqualToString:@""] == NO) {
         self.gomRoot = [NSURL URLWithString:gomRootPath];
-        _gomClient = [[GOMClient alloc] initWithGomURI:_gomRoot];
-        self.gomClient.delegate = self;
+        _gomClient = [[GOMClient alloc] initWithGomURI:_gomRoot delegate:self];
     }
 }
 

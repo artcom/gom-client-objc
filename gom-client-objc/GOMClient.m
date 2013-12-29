@@ -43,12 +43,14 @@ NSString* const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
     NSString *_webSocketUri;
 }
 
-- (id)initWithGomURI:(NSURL *)gomURI
+- (id)initWithGomURI:(NSURL *)gomURI delegate:(id<GOMClientDelegate>)delegate
 {
     self = [super init];
     if (self) {
         _gomRoot = gomURI;
         _bindings = [[NSMutableDictionary alloc] init];
+        _delegate = delegate;
+        [self _reconnectWebsocket];
     }
     return self;
 }
@@ -60,9 +62,12 @@ NSString* const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
 
 - (void)setDelegate:(id<GOMClientDelegate>)delegate
 {
+    [self _disconnectWebsocket];
     _delegate = delegate;
     [self _reconnectWebsocket];
 }
+
+#pragma mark - GOM operations
 
 - (void)retrieve:(NSString *)path completionBlock:(GOMClientOperationCallback)block
 {
