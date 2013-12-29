@@ -21,4 +21,21 @@
     return self;
 }
 
+- (void)fireCallbackWithObject:(id)object
+{
+    if (self.callback) {
+        self.callback(object);
+    }
+}
+
+- (void)fireInitialCallbackWithObject:(id)object
+{
+    if (self.initialRetrieved == NO) {
+        if (self.callback) {
+            self.callback(object);
+        }
+        self.initialRetrieved = YES;
+    }
+}
+
 @end

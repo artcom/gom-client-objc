@@ -19,4 +19,7 @@ typedef void (^GOMHandleCallback)(NSDictionary *);
 
 - (id)initWithBinding:(GOMBinding *)binding callback:(GOMHandleCallback)callback;
 
+- (void)fireCallbackWithObject:(id)object;
+- (void)fireInitialCallbackWithObject:(id)object;
+
 @end

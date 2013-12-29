@@ -13,11 +13,13 @@
 @interface GOMBinding : NSObject
 
 @property (nonatomic, strong) NSString *subscriptionUri;
-@property (nonatomic, strong) NSString *observerUri;
 @property (nonatomic, strong, readonly) NSMutableArray *handles;
 @property (nonatomic, assign) BOOL registered;
 
 - (id)initWithSubscriptionUri:(NSString *)subscriptionUri;
 - (void)addHandle:(GOMHandle *)handle;
+
+- (void)fireCallbacksWithObject:(id)object;
+- (void)fireInitialCallbacksWithObject:(id)object;
 
 @end

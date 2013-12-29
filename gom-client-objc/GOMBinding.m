@@ -19,7 +19,6 @@
     self = [super init];
     if (self) {
         _subscriptionUri = subscriptionUri;
-        _observerUri = nil;
         _handles = [[NSMutableArray alloc] init];
         _registered = NO;
     }
@@ -29,6 +28,20 @@
 - (void)addHandle:(GOMHandle *)handle
 {
     [_handles addObject:handle];
+}
+
+- (void)fireCallbacksWithObject:(id)object
+{
+    for (GOMHandle *handle in self.handles) {
+        [handle fireCallbackWithObject:object];
+    }
+}
+
+- (void)fireInitialCallbacksWithObject:(id)object
+{
+    for (GOMHandle *handle in self.handles) {
+        [handle fireInitialCallbackWithObject:object];
+    }
 }
 
 @end

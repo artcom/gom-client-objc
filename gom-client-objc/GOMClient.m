@@ -29,7 +29,6 @@ NSString* const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
 - (void)_handleGNPResponse:(NSDictionary* )response;
 - (void)_handleInitialResponse:(NSDictionary *)response;
 - (void)_handleGNPFromResponse:(NSDictionary *)response;
-- (void)_fireCallback:(GOMHandleCallback)callback withGomObject:(NSDictionary *)gomObject;
 - (void)_retrieveInitial:(GOMBinding *)binding;
 
 - (void)_reconnectWebsocket;
@@ -110,7 +109,6 @@ NSString* const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         [self _handleOperationResponse:response data:data error:connectionError completionBlock:block];
     }];
-    
 }
 
 - (void)destroy:(NSString *)path completionBlock:(GOMClientOperationCallback)block
@@ -215,7 +213,7 @@ NSString* const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
         NSData *jsonData = [commands convertToJSON];
         [_webSocket send:jsonData];
     } else {
-        NSLog(@"Websocket not open.");
+        [self _returnError:[self _gomClientErrorForCode:GOMClientWebsocketNotOpen]];
     }
 }
 
@@ -234,16 +232,10 @@ NSString* const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
     NSMutableDictionary *payload = [payloadString parseAsJSON];
     
     if (payloadString) {
-        
         NSString *path = response[@"path"];
         GOMBinding *binding = _bindings[path];
         if (binding) {
-            for (GOMHandle *handle in binding.handles) {
-                if (handle.initialRetrieved == NO) {
-                    [self _fireCallback:handle.callback withGomObject:payload];
-                    handle.initialRetrieved = YES;
-                }
-            }
+            [binding fireInitialCallbacksWithObject:payload];
         }
     }
 }
@@ -265,30 +257,17 @@ NSString* const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
         NSString *path = response[@"path"];
         GOMBinding *binding = _bindings[path];
         if (operation && binding) {
-            for (GOMHandle *handle in binding.handles) {
-                [self _fireCallback:handle.callback withGomObject:operation];
-            }
+            [binding fireCallbacksWithObject:operation];
         }
     }
 }
 
-- (void)_fireCallback:(GOMHandleCallback)callback withGomObject:(NSDictionary *)gomObject
-{
-    if (callback) {
-        callback(gomObject);
-    }
-}
 
 - (void)_retrieveInitial:(GOMBinding *)binding
 {
     [self retrieve:binding.subscriptionUri completionBlock:^(NSDictionary *response, NSError *error) {
         if (response) {
-            for (GOMHandle *handle in binding.handles) {
-                if (handle.initialRetrieved == NO) {
-                    [self _fireCallback:handle.callback withGomObject:response];
-                    handle.initialRetrieved = YES;
-                }
-            }
+            [binding fireInitialCallbacksWithObject:response];
         } else {
             [self _returnError:error];
         }
@@ -309,8 +288,7 @@ NSString* const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
                     [_webSocket open];
                 }
             } else {
-                NSError *error = [self _gomClientErrorForCode:GOMClientWebsocketProxyUrlNotFound];
-                [self _returnError:error];
+                [self _returnError:[self _gomClientErrorForCode:GOMClientWebsocketProxyUrlNotFound]];
             }
         } else {
             [self _returnError:error];
@@ -344,6 +322,8 @@ NSString* const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
         case GOMClientWebsocketProxyUrlNotFound:
             description = @"Websocket proxy url not found.";
             break;
+        case GOMClientWebsocketNotOpen:
+            description = @"Websocket not open.";
         default:
             description = @"Unknown error code.";
             break;
