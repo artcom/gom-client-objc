@@ -291,13 +291,11 @@ NSString* const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
                     _webSocket = [[SRWebSocket alloc] initWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:_webSocketUri]]];
                     _webSocket.delegate = self;
                     [_webSocket open];
+                    return;
                 }
-            } else {
-                [self _returnError:[self _gomClientErrorForCode:GOMClientWebsocketProxyUrlNotFound]];
             }
-        } else {
-            [self _returnError:error];
         }
+        [self _returnError:[self _gomClientErrorForCode:GOMClientWebsocketProxyUrlNotFound]];
     }];
 }
 
