@@ -37,7 +37,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     * Attribute retrieval:
     
     ```objective-c
-    [gomClient retrieve:@"/areas/home/audio:volume" completionBlock:^(NSDictionary *response, NSError *error) {
+    [gomClient retrieve:@"/tests/node_1:attribute_1" completionBlock:^(NSDictionary *response, NSError *error) {
 
         // Your code here
         
@@ -46,13 +46,14 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     
     ```
     {attribute = {
-        ctime = "2013-09-17T20:30:45+02:00";
-        mtime = "2013-09-17T20:30:45+02:00";
-        name = volume;
-        node = "/areas/home/audio";
+        ctime = "2013-12-29T17:48:52+01:00";
+        mtime = "2013-12-29T17:48:52+01:00";
+        name = "attribute_1";
+        node = "/tests/node_1";
         type = string;
         value = 100;
     }}
+
     ```
     
     * Retrieve a non-existing attribute:
@@ -64,7 +65,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     * Node retrieval:
   
     ```objective-c
-    [gomClient retrieve:@"/areas/home/audio" completionBlock:^(NSDictionary *response, NSError *error) {
+    [gomClient retrieve:@"/tests/node_1" completionBlock:^(NSDictionary *response, NSError *error) {
    
         // Your code here
 
@@ -72,47 +73,42 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
      ```
 
      ```
-     {node =     {
-        ctime = "2013-09-16T16:34:53+02:00";
+     {node = {
+        ctime = "2013-12-29T17:49:07+01:00";
         entries = (
             {
-                ctime = "2013-09-10T17:11:35+02:00";
-                mtime = "2013-09-10T17:11:35+02:00";
-                node = "/areas/home/audio/presets";
-            },
-            {
-                attribute = {
-                    ctime = "2013-09-15T03:24:17+02:00";
-                    mtime = "2013-09-15T03:24:17+02:00";
-                    name = "default_volume";
-                    node = "/areas/home/audio";
-                    type = string;
-                    value = 15;
-                };
-            },
-            {
-                attribute = {
-                    ctime = "2013-09-17T16:31:58+02:00";
-                    mtime = "2013-09-17T16:31:58+02:00";
-                    name = preset;
-                    node = "/areas/home/audio";
-                    type = string;
-                    value = schweigen;
-                };
-            },
-            {
-                attribute = {
-                    ctime = "2013-09-17T20:30:45+02:00";
-                    mtime = "2013-09-17T20:30:45+02:00";
-                    name = volume;
-                    node = "/areas/home/audio";
+                attribute =                 {
+                    ctime = "2013-12-29T17:48:52+01:00";
+                    mtime = "2013-12-29T17:48:52+01:00";
+                    name = "attribute_1";
+                    node = "/tests/node_1";
                     type = string;
                     value = 100;
                 };
+            },
+            {
+                attribute = {
+                    ctime = "2013-12-29T17:49:00+01:00";
+                    mtime = "2013-12-29T17:49:00+01:00";
+                    name = "attribute_2";
+                    node = "/tests/node_1";
+                    type = string;
+                    value = 20;
+                };
+            },
+            {
+                attribute = {
+                    ctime = "2013-12-29T17:49:07+01:00";
+                    mtime = "2013-12-29T17:49:07+01:00";
+                    name = "attribute_3";
+                    node = "/tests/node_1";
+                    type = string;
+                    value = 50;
+                };
             }
         );
-        mtime = "2013-09-16T16:34:53+02:00";
-        uri = "/areas/home/audio";
+        mtime = "2013-12-29T17:49:07+01:00";
+        uri = "/tests/node_1";
     }}
     ```
     
@@ -127,7 +123,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     * Create empty node:
     
     ```objective-c
-    gomClient create:@"/areas/home/audio/test" withAttributes:nil completionBlock:^(NSDictionary *response, NSError *error) {
+    gomClient create:@"/tests/node_1/test" withAttributes:nil completionBlock:^(NSDictionary *response, NSError *error) {
 
         // Your code here
 
@@ -136,11 +132,11 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     
     ```
     {node = {
-        ctime = "2013-09-17T21:01:55+02:00";
+        ctime = "2013-12-29T17:54:16+01:00";
         entries = (
         );
-        mtime = "2013-09-17T21:01:55+02:00";
-        uri = "/areas/home/audio/test/1b418710-4d08-493f-a89d-0e31ffbd56eb";
+        mtime = "2013-12-29T17:54:16+01:00";
+        uri = "/tests/node_1/test/75d4fb2d-6b4d-4bc0-9e12-91817f90da1d";
     }}
     ```
 
@@ -148,7 +144,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     
     ```objective-c
     NSDictionary *attributes = @{@"attribute1": @"value1", @"attribute2" : @"value2", @"attribute3" : @"value3"};
-    gomClient create:@"/areas/home/audio/test" withAttributes:attributes completionBlock:^(NSDictionary *response, NSError *error) {
+    gomClient create:@"/tests/node_1/test" withAttributes:attributes completionBlock:^(NSDictionary *response, NSError *error) {
 
         // Your code here
 
@@ -157,41 +153,41 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     
     ```
     {node = {
-        ctime = "2013-09-20T20:05:57+02:00";
+        ctime = "2013-12-29T17:56:04+01:00";
         entries = (
             {
                 attribute = {
-                    ctime = "2013-09-20T20:05:57+02:00";
-                    mtime = "2013-09-20T20:05:57+02:00";
+                    ctime = "2013-12-29T17:56:04+01:00";
+                    mtime = "2013-12-29T17:56:04+01:00";
                     name = attribute1;
-                    node = "/areas/home/audio/test/ef84fd8c-701c-46cf-9f3e-02cc06e62a22";
+                    node = "/tests/node_1/test/b382502c-6732-46ae-bef4-31d9d77ad97b";
                     type = string;
                     value = value1;
                 };
             },
             {
                 attribute = {
-                    ctime = "2013-09-20T20:05:57+02:00";
-                    mtime = "2013-09-20T20:05:57+02:00";
+                    ctime = "2013-12-29T17:56:04+01:00";
+                    mtime = "2013-12-29T17:56:04+01:00";
                     name = attribute2;
-                    node = "/areas/home/audio/test/ef84fd8c-701c-46cf-9f3e-02cc06e62a22";
+                    node = "/tests/node_1/test/b382502c-6732-46ae-bef4-31d9d77ad97b";
                     type = string;
                     value = value2;
                 };
             },
             {
                 attribute = {
-                    ctime = "2013-09-20T20:05:57+02:00";
-                    mtime = "2013-09-20T20:05:57+02:00";
+                    ctime = "2013-12-29T17:56:04+01:00";
+                    mtime = "2013-12-29T17:56:04+01:00";
                     name = attribute3;
-                    node = "/areas/home/audio/test/ef84fd8c-701c-46cf-9f3e-02cc06e62a22";
+                    node = "/tests/node_1/test/b382502c-6732-46ae-bef4-31d9d77ad97b";
                     type = string;
                     value = value3;
                 };
             }
         );
-        mtime = "2013-09-20T20:05:57+02:00";
-        uri = "/areas/home/audio/test/ef84fd8c-701c-46cf-9f3e-02cc06e62a22";
+        mtime = "2013-12-29T17:56:04+01:00";
+        uri = "/tests/node_1/test/b382502c-6732-46ae-bef4-31d9d77ad97b";
     }}
     ```
     
@@ -200,7 +196,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     * Attribute update:
     
     ```objective-c
-    [gomClient updateAttribute:@"/areas/home/audio:volume" withValue:@"50" completionBlock:^(NSDictionary *response, NSError *error) {
+    [gomClient updateAttribute:@"/tests/node_1:attribute_1" withValue:@"50" completionBlock:^(NSDictionary *response, NSError *error) {
 
         // Your code here
 
@@ -215,7 +211,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     
     ```objective-c
     NSDictionary *attributes = @{@"attribute1": @"100", @"attribute2" : @"200", @"attribute3" : @"300"};
-    [gomClient updateNode:@"/areas/home/audio/test/ef84fd8c-701c-46cf-9f3e-02cc06e62a22" withAttributesValue:attributes completionBlock:^(NSDictionary *response, NSError *error) {
+    [gomClient updateNode:@"/tests/node_1/test/b382502c-6732-46ae-bef4-31d9d77ad97b" withAttributesValue:attributes completionBlock:^(NSDictionary *response, NSError *error) {
 
         // Your code here
 
@@ -231,7 +227,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     * Destroy existing attribute:
     
     ```objective-c
-    [gomClient destroy:@"/areas/home/audio:volume" completionBlock:^(NSDictionary *response, NSError *error) {
+    [gomClient destroy:@"/tests/node_1:attribute_3" completionBlock:^(NSDictionary *response, NSError *error) {
 
         // Your code here
 
@@ -245,7 +241,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     * Destroy existing node:
     
     ```objective-c
-    [gomClient destroy:@"/areas/home/audio" completionBlock:^(NSDictionary *response, NSError *error) {
+    [gomClient destroy:@"/tests/node_1" completionBlock:^(NSDictionary *response, NSError *error) {
         
         // Your code here
 
@@ -259,7 +255,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     * Destroy non-existing attribute:
     
     ```objective-c
-    [gomClient destroy:@"/areas/home/audio:volume_x" completionBlock:^(NSDictionary *response, NSError *error) {
+    [gomClient destroy:@"/tests/node_1:attribute_x" completionBlock:^(NSDictionary *response, NSError *error) {
         
         // Your code here
         
@@ -273,7 +269,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     * Destroy non-existing node:
     
     ```objective-c
-    [gomClient destroy:@"/areas/home/audio_x" completionBlock:^(NSDictionary *response, NSError *error) {
+    [gomClient destroy:@"/tests/node_x" completionBlock:^(NSDictionary *response, NSError *error) {
         
         // Your code here
         
@@ -289,7 +285,7 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
 * Register an observer:
 
     ```objective-c
-    [gomClient registerGOMObserverForPath:@"/areas/home/audio:volume" options:nil clientCallback:^(NSDictionary *dict) {
+    [gomClient registerGOMObserverForPath:@"/tests/node_1:attribute_2" options:nil clientCallback:^(NSDictionary *dict) {
 
         // Your code here
 
@@ -300,19 +296,19 @@ Fundamental errors are returned to the delegate through the GOMClientDelegate me
     
     ```
     {attribute = {
-        ctime = "2013-09-15T23:21:03+02:00";
-        mtime = "2013-09-15T23:21:03+02:00";
-        name = volume;
-        node = "/areas/home/audio";
+        ctime = "2013-12-29T18:00:27+01:00";
+        mtime = "2013-12-29T18:00:27+01:00";
+        name = "attribute_2";
+        node = "/tests/node_1";
         type = string;
-        value = 60;
+        value = 20;
     }}
     ```
 
 * Unregister an observer:
 
     ```objective-c
-   [gomClient unregisterGOMObserverForPath:@"/areas/home/audio:volume" options:nil];
+   [gomClient unregisterGOMObserverForPath:@"/tests/node_1:attribute_2" options:nil];
     ```
 
 ## Setting up for client development
