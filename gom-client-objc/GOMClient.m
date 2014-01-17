@@ -327,6 +327,7 @@ NSString* const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
             break;
         case GOMClientWebsocketNotOpen:
             description = @"Websocket not open.";
+            break;
         default:
             description = @"Unknown error code.";
             break;
