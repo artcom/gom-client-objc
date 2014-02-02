@@ -8,7 +8,9 @@
 
 To use the Objective-C GOM client in your project add the line
 
-```pod 'gom-client-objc', '~> 0.3.1'```
+<pre>
+pod 'gom-client-objc', '~> 0.3.1'
+</pre>
  
 to your Podfile and install all necessary dependencies from the CocoaPods dependency manager.
 
@@ -23,12 +25,12 @@ NSURL *gomURI = [NSURL URLWithString:@"http://<ip-or-name>:<port>"];
 GOMClient *gomClient = [[GOMClient alloc] initWithGomURI:gomURI delegate:self];
 ```
 
-As soon as the GOMClient object is initialized and completely set up it will communicate its state through the `GOMClientDelegateProtocol` message ```- (void)gomClientDidBecomeReady:(GOMClient *)gomClient``` returning a reference of the GOMClient object in question.
+As soon as the GOMClient object is initialized and completely set up it will communicate its state through the `GOMClientDelegate` protocol message ```- (void)gomClientDidBecomeReady:(GOMClient *)gomClient``` returning a reference of the GOMClient object in question.
 
 #### Errorhandling
 Errors that occur during GOM requests are passed to the sender through the completion blocks of the respective methods.
 
-Fundamental errors are returned to the delegate through the `GOMClientDelegateProtocol` message ```- (void)gomClient:(GOMClient *)gomClient didFailWithError:(NSError *)error```
+Fundamental errors are returned to the delegate through the `GOMClientDelegate` protocol message ```- (void)gomClient:(GOMClient *)gomClient didFailWithError:(NSError *)error```
 
 ### RESTful operations
 
@@ -77,7 +79,7 @@ Fundamental errors are returned to the delegate through the `GOMClientDelegatePr
         ctime = "2013-12-29T17:49:07+01:00";
         entries = (
             {
-                attribute =                 {
+                attribute = {
                     ctime = "2013-12-29T17:48:52+01:00";
                     mtime = "2013-12-29T17:48:52+01:00";
                     name = "attribute_1";
@@ -315,14 +317,16 @@ Fundamental errors are returned to the delegate through the `GOMClientDelegatePr
 
 To setup the project for GOM client development open the terminal and clone the repo:
 
-```$ git clone https://github.com/artcom/gom-client-objc.git```
+<pre>
+$ git clone https://github.com/artcom/gom-client-objc.git
+</pre>
 
 and install all necessary dependencies from the CocoaPods dependency manager:
 
-```
-cd demo-projects/gom-client-demo_iOS
+<pre>
+$ cd demo-projects/gom-client-demo_iOS
 $ pod install
-```
+</pre>
 
 You can use the demo app contained in this project to run and test your work.
 
