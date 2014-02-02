@@ -23,12 +23,12 @@ NSURL *gomURI = [NSURL URLWithString:@"http://<ip-or-name>:<port>"];
 GOMClient *gomClient = [[GOMClient alloc] initWithGomURI:gomURI delegate:self];
 ```
 
-As soon as the GOMClient object is initialized and completely set up the delegate will receive the message ```- (void)gomClientDidBecomeReady:(GOMClient *)gomClient``` returning a reference of the GOMClient object in question.
+As soon as the GOMClient object is initialized and completely set up it will communicate its state through the `GOMClientDelegateProtocol` message ```- (void)gomClientDidBecomeReady:(GOMClient *)gomClient``` returning a reference of the GOMClient object in question.
 
 #### Errorhandling
 Errors that occur during GOM requests are passed to the sender through the completion blocks of the respective methods.
 
-Fundamental errors are returned to the delegate through the GOMClientDelegate message ```- (void)gomClient:(GOMClient *)gomClient didFailWithError:(NSError *)error```
+Fundamental errors are returned to the delegate through the `GOMClientDelegateProtocol` message ```- (void)gomClient:(GOMClient *)gomClient didFailWithError:(NSError *)error```
 
 ### RESTful operations
 
