@@ -1,5 +1,8 @@
 # Objective-C GOM Client
 
+[![Version](http://cocoapod-badges.herokuapp.com/v/gom-client-objc/badge.png)](http://cocoadocs.org/docsets/gom-client-objc)
+[![Platform](http://cocoapod-badges.herokuapp.com/p/gom-client-objc/badge.png)](http://cocoadocs.org/docsets/gom-client-objc)
+
 ##Requirements
  * [CocoaPods dependency manager](http://cocoapods.org)
  * Xcode 4.5 or later
