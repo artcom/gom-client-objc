@@ -12,7 +12,7 @@
 To use the Objective-C GOM client in your project add the line
 
 <pre>
-pod 'gom-client-objc', '~> 0.3.1'
+pod "gom-client-objc"
 </pre>
  
 to your Podfile and install all necessary dependencies from the CocoaPods dependency manager.
