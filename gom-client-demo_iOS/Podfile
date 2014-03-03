@@ -1,0 +1,1 @@
+pod "gom-client-objc", :path => "../gom-client-objc.podspec"
