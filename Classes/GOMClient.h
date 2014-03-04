@@ -10,6 +10,8 @@
 
 #import "GOMClientDelegate.h"
 #import "GOMBinding.h"
+#import "GOMNode.h"
+#import "GOMAttribute.h"
 
 extern NSString* const GOMClientErrorDomain;
 
