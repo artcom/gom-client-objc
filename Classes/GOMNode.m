@@ -12,7 +12,7 @@
 @interface GOMNode()
 
 @property (nonatomic, strong) NSMutableArray *privEntries;
-
+@property (nonatomic, strong) NSDictionary *privNodeData;
 @end
 
 @implementation GOMNode
@@ -48,6 +48,7 @@
 
 - (void)initializeWithDictionary:(NSDictionary *)dictionary
 {
+    _privNodeData = dictionary;
     _privEntries = [[NSMutableArray alloc] init];
     
     NSDictionary *nodeDictionary = dictionary[@"node"];
@@ -70,6 +71,11 @@
             }
         }
     }
+}
+
+- (id)valueForKeyPath:(NSString *)keyPath
+{
+    return [_privNodeData valueForKeyPath:keyPath];
 }
 
 @end
