@@ -60,7 +60,7 @@
         NSArray *entries = nodeDictionary[@"entries"];
         for (NSDictionary *entry in entries) {
             if ([GOMAttribute isAttribute:entry]) {
-                GOMAttribute *attribute = [GOMAttribute attibuteFromDictionary:entry];
+                GOMAttribute *attribute = [GOMAttribute attributeFromDictionary:entry];
                 [_privEntries addObject:attribute];
             } else {
                 GOMNode *node = [[GOMNode alloc] init];

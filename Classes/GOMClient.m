@@ -284,7 +284,7 @@ NSString* const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
     [self _disconnectWebsocket];
     [self retrieve:WEBSOCKETS_PROXY_PATH completionBlock:^(NSDictionary *response, NSError *error) {
         if (response) {
-            GOMAttribute *attribute = [GOMAttribute attibuteFromDictionary:response];
+            GOMAttribute *attribute = [GOMAttribute attributeFromDictionary:response];
             if (attribute) {
                 _webSocketUri = attribute.value;
                 if (_webSocketUri) {

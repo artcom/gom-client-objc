@@ -20,6 +20,6 @@
 @property (nonatomic, strong) NSString *value;
 
 + (BOOL)isAttribute:(NSDictionary *)dictionary;
-+ (GOMAttribute *)attibuteFromDictionary:(NSDictionary *)dictionary;
++ (GOMAttribute *)attributeFromDictionary:(NSDictionary *)dictionary;
 
 @end

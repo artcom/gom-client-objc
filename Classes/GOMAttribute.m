@@ -10,7 +10,7 @@
 
 @implementation GOMAttribute
 
-+ (GOMAttribute *)attibuteFromDictionary:(NSDictionary *)dictionary
++ (GOMAttribute *)attributeFromDictionary:(NSDictionary *)dictionary
 {
     GOMAttribute *attribute = nil;
     if ([GOMAttribute isAttribute:dictionary]) {
