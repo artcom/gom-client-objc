@@ -314,7 +314,6 @@ Fundamental errors are returned to the delegate through the `GOMClientDelegate` 
 
     ```objective-c
    [gomClient unregisterGOMObserverForPath:@"/tests/node_1:attribute_2" options:nil];
-   
     ```
 
 ### Mapping response dictionaries to data objects
