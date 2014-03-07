@@ -325,18 +325,13 @@ If the response dictionaries from the GOM are to cumbersome to handle you can us
 * When receiving an attribute:
 
     ```objective-c
-    
     GOMAttribute *attribute = [GOMAttribute attributeFromDictionary:response];
-    
     ```
-    
 
 * When receiving a node:
     
     ```objective-c
-    
     GOMNode *node = [GOMNode nodeFromDictionary:response];
-    
     ```
 
 ## Setting up for client development
