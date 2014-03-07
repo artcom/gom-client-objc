@@ -313,7 +313,6 @@ Fundamental errors are returned to the delegate through the `GOMClientDelegate` 
 * Unregister an observer:
 
     ```objective-c
-    
    [gomClient unregisterGOMObserverForPath:@"/tests/node_1:attribute_2" options:nil];
    
     ```
