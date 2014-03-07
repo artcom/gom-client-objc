@@ -320,13 +320,13 @@ Fundamental errors are returned to the delegate through the `GOMClientDelegate` 
 
 If the response dictionaries from the GOM are to cumbersome to handle you can use the following classes to map the dictionaries to data objects.
 
-When receiving an attribute:
+* When receiving an attribute:
 
     ```objective-c
     GOMAttribute *attribute = [GOMAttribute attributeFromDictionary:response];
     ```
 
-When receiving a node:
+* When receiving a node:
     
     ```objective-c
     GOMNode *node = [GOMNode nodeFromDictionary:response];
