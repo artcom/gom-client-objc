@@ -11,8 +11,6 @@
 
 @interface GOMNode()
 
-@property (nonatomic, strong) NSMutableArray *privEntries;
-@property (nonatomic, strong) NSDictionary *privNodeData;
 @end
 
 @implementation GOMNode
@@ -31,51 +29,68 @@
     return (dictionary[@"node"] != nil);
 }
 
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        _entries = [[NSMutableArray alloc] init];
+    }
+    return self;
+}
+
 - (id)initWithDictionary:(NSDictionary *)dictionary
 {
     self = [super init];
     if (self) {
-        
+        _entries = [[NSMutableArray alloc] init];
         [self initializeWithDictionary:dictionary];
     }
     return self;
 }
 
-- (NSArray *)entries
-{
-    return (NSArray *)_privEntries;
-}
-
 - (void)initializeWithDictionary:(NSDictionary *)dictionary
 {
-    _privNodeData = dictionary;
-    _privEntries = [[NSMutableArray alloc] init];
-    
-    NSDictionary *nodeDictionary = dictionary[@"node"];
-    if (nodeDictionary) {
-        _ctime = nodeDictionary[@"ctime"];
-        _mtime = nodeDictionary[@"mtime"];
-        _uri = nodeDictionary[@"uri"];
-        
-        NSArray *entries = nodeDictionary[@"entries"];
-        for (NSDictionary *entry in entries) {
+    [self setValuesForKeysWithDictionary:dictionary[@"node"]];
+}
+
+
+#pragma mark - KVC implementations
+
+- (void)setValue:(id)value forKey:(NSString *)key
+{
+    if ([key isEqualToString:@"node"]) {
+        self.uri = value;
+    } else if ([key isEqualToString:@"entries"]) {
+        for (NSDictionary *entry in value) {
             if ([GOMAttribute isAttribute:entry]) {
                 GOMAttribute *attribute = [GOMAttribute attributeFromDictionary:entry];
-                [_privEntries addObject:attribute];
-            } else {
-                GOMNode *node = [[GOMNode alloc] init];
-                node.ctime = entry[@"ctime"];
-                node.mtime = entry[@"mtime"];
-                node.uri = entry[@"node"];
-                [_privEntries addObject:node];
+                [_entries addObject:attribute];
+            } else if ([GOMNode isNode:entry]) {
+                GOMNode *node = [GOMNode nodeFromDictionary:@{@"node" : entry}];
+                [_entries addObject:node];
             }
         }
+    } else {
+        [super setValue:value forKey:key];
     }
 }
 
-- (id)valueForKeyPath:(NSString *)keyPath
+- (void)setValue:(id)value forUndefinedKey:(NSString *)key
 {
-    return [_privNodeData valueForKeyPath:keyPath];
+    // we do nothing here.
+}
+
+- (void)setValue:(id)value forKeyPath:(NSString *)keyPath
+{
+    [super setValue:value forKeyPath:keyPath];
+}
+
+- (id)valueForUndefinedKey:(NSString *)key
+{
+    if ([key isEqualToString:@"node"]) {
+        return _uri;
+    }
+    return nil;
 }
 
 @end

@@ -316,6 +316,22 @@ Fundamental errors are returned to the delegate through the `GOMClientDelegate` 
    [gomClient unregisterGOMObserverForPath:@"/tests/node_1:attribute_2" options:nil];
     ```
 
+### Mapping response dictionaries to data objects
+
+If the response dictionaries from the GOM are to cumbersome to handle you can use the following classes to map the dictionaries to data objects.
+
+When receiving an attribute:
+
+    ```objective-c
+    GOMAttribute *attribute = [GOMAttribute attributeFromDictionary:response];
+    ```
+
+When receiving a node:
+    
+    ```objective-c
+    GOMNode *node = [GOMNode nodeFromDictionary:response];
+    ```
+
 ## Setting up for client development
 
 To setup the project for GOM client development open the terminal and clone the repo:

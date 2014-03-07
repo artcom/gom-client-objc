@@ -39,4 +39,12 @@
     [self setValuesForKeysWithDictionary:dictionary[@"attribute"]];
 }
 
+- (id)valueForUndefinedKey:(NSString *)key
+{
+    if ([key isEqualToString:@"entries"]) {
+        return nil;
+    }
+    return nil;
+}
+
 @end

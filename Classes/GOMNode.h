@@ -15,7 +15,7 @@
 
 @property (nonatomic, strong) NSString *uri;
 
-@property (nonatomic, strong, readonly) NSArray *entries;
+@property (nonatomic, strong) NSMutableArray *entries;
 
 + (BOOL)isNode:(NSDictionary *)dictionary;
 + (GOMNode *)nodeFromDictionary:(NSDictionary *)dictionary;
