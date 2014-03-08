@@ -28,7 +28,6 @@
 {
     self = [super init];
     if (self) {
-        
         [self initializeWithDictionary:dictionary];
     }
     return self;
@@ -41,9 +40,6 @@
 
 - (id)valueForUndefinedKey:(NSString *)key
 {
-    if ([key isEqualToString:@"entries"]) {
-        return nil;
-    }
     return nil;
 }
 
