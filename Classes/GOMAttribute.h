@@ -10,8 +10,8 @@
 
 @interface GOMAttribute : NSObject
 
-@property (nonatomic, strong) NSString *ctime;
-@property (nonatomic, strong) NSString *mtime;
+@property (nonatomic, strong) NSDate *ctime;
+@property (nonatomic, strong) NSDate *mtime;
 
 @property (nonatomic, strong) NSString *node;
 @property (nonatomic, strong) NSString *type;

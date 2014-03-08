@@ -8,6 +8,7 @@
 
 #import "GOMNode.h"
 #import "GOMAttribute.h"
+#import "NSDate+XSDTime.h"
 
 @interface GOMNode()
 
@@ -71,18 +72,11 @@
             }
         }
     } else {
+        if ([key isEqualToString:@"ctime"] || [key isEqualToString:@"mtime"]) {
+            value = [NSDate dateFromXSDTimeString:value];
+        }
         [super setValue:value forKey:key];
     }
-}
-
-- (void)setValue:(id)value forUndefinedKey:(NSString *)key
-{
-    // we do nothing here.
-}
-
-- (void)setValue:(id)value forKeyPath:(NSString *)keyPath
-{
-    [super setValue:value forKeyPath:keyPath];
 }
 
 - (id)valueForUndefinedKey:(NSString *)key
@@ -91,6 +85,11 @@
         return _uri;
     }
     return nil;
+}
+
+- (void)setValue:(id)value forUndefinedKey:(NSString *)key
+{
+    // we do nothing here.
 }
 
 @end

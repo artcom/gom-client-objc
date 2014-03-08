@@ -7,6 +7,7 @@
 //
 
 #import "GOMAttribute.h"
+#import "NSDate+XSDTime.h"
 
 @implementation GOMAttribute
 
@@ -38,9 +39,26 @@
     [self setValuesForKeysWithDictionary:dictionary[@"attribute"]];
 }
 
+#pragma mark - KVC implementations
+
+- (void)setValue:(id)value forKey:(NSString *)key
+{
+    if ([key isEqualToString:@"ctime"] || [key isEqualToString:@"mtime"]) {
+        value = [NSDate dateFromXSDTimeString:value];
+    }
+    [super setValue:value forKey:key];
+}
+
 - (id)valueForUndefinedKey:(NSString *)key
 {
     return nil;
 }
+
+- (void)setValue:(id)value forUndefinedKey:(NSString *)key
+{
+    // we do nothing here.
+}
+
+
 
 @end
