@@ -22,9 +22,11 @@
 		3B779D271802B262007207B0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B779D031802B262007207B0 /* Foundation.framework */; };
 		3B779D281802B262007207B0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B779D071802B262007207B0 /* UIKit.framework */; };
 		3B779D301802B262007207B0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3B779D2E1802B262007207B0 /* InfoPlist.strings */; };
-		3B779D321802B262007207B0 /* gom_client_demo_iOSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B779D311802B262007207B0 /* gom_client_demo_iOSTests.m */; };
 		3B779D3E1802B305007207B0 /* ObserverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B779D3C1802B305007207B0 /* ObserverViewController.m */; };
 		3B779D3F1802B305007207B0 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3B779D3D1802B305007207B0 /* Settings.bundle */; };
+		3B893BC618CCA4C400F15B25 /* GOMAttributeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B893BC418CCA4C400F15B25 /* GOMAttributeTest.m */; };
+		3B893BC718CCA4C400F15B25 /* GOMNodeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B893BC518CCA4C400F15B25 /* GOMNodeTest.m */; };
+		3B893BC918CCABFD00F15B25 /* DictionaryXMLTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B893BC818CCABFD00F15B25 /* DictionaryXMLTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,10 +60,13 @@
 		3B779D251802B262007207B0 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		3B779D2D1802B262007207B0 /* gom-client-demo_iOSTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "gom-client-demo_iOSTests-Info.plist"; sourceTree = "<group>"; };
 		3B779D2F1802B262007207B0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		3B779D311802B262007207B0 /* gom_client_demo_iOSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = gom_client_demo_iOSTests.m; sourceTree = "<group>"; };
 		3B779D3B1802B305007207B0 /* ObserverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObserverViewController.h; sourceTree = "<group>"; };
 		3B779D3C1802B305007207B0 /* ObserverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObserverViewController.m; sourceTree = "<group>"; };
 		3B779D3D1802B305007207B0 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		3B893BC418CCA4C400F15B25 /* GOMAttributeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GOMAttributeTest.m; sourceTree = "<group>"; };
+		3B893BC518CCA4C400F15B25 /* GOMNodeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GOMNodeTest.m; sourceTree = "<group>"; };
+		3B893BC818CCABFD00F15B25 /* DictionaryXMLTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DictionaryXMLTests.m; sourceTree = "<group>"; };
+		3B893BCA18CCACEA00F15B25 /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Debug-iphoneos/libPods.a"; sourceTree = "<group>"; };
 		574A6296A73D4DABA8C575A8 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -113,6 +118,7 @@
 		3B779D021802B262007207B0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3B893BCA18CCACEA00F15B25 /* libPods.a */,
 				3B779D031802B262007207B0 /* Foundation.framework */,
 				3B779D051802B262007207B0 /* CoreGraphics.framework */,
 				3B779D071802B262007207B0 /* UIKit.framework */,
@@ -154,7 +160,9 @@
 		3B779D2B1802B262007207B0 /* gom-client-demo_iOSTests */ = {
 			isa = PBXGroup;
 			children = (
-				3B779D311802B262007207B0 /* gom_client_demo_iOSTests.m */,
+				3B893BC418CCA4C400F15B25 /* GOMAttributeTest.m */,
+				3B893BC518CCA4C400F15B25 /* GOMNodeTest.m */,
+				3B893BC818CCABFD00F15B25 /* DictionaryXMLTests.m */,
 				3B779D2C1802B262007207B0 /* Supporting Files */,
 			);
 			path = "gom-client-demo_iOSTests";
@@ -314,7 +322,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3B779D321802B262007207B0 /* gom_client_demo_iOSTests.m in Sources */,
+				3B893BC618CCA4C400F15B25 /* GOMAttributeTest.m in Sources */,
+				3B893BC918CCABFD00F15B25 /* DictionaryXMLTests.m in Sources */,
+				3B893BC718CCA4C400F15B25 /* GOMNodeTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -468,6 +478,7 @@
 		};
 		3B779D391802B262007207B0 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2B1CE8DAE74F438DB3A24B15 /* Pods.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/gom-client-demo_iOS.app/gom-client-demo_iOS";
