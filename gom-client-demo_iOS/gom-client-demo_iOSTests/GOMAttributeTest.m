@@ -10,7 +10,7 @@
 #import "GOMAttribute.h"
 
 NSString * const ATTRIB_CTIME = @"2014-03-09T15:00:20+01:00";
-NSString * const ATTRIB_MTIME = @"2014-03-09T15:00:20+01:00";
+NSString * const ATTRIB_MTIME = @"2014-03-09T15:01:20+01:00";
 NSString * const ATTRIB_NODE = @"/tests/node1";
 NSString * const ATTRIB_TYPE = @"string";
 NSString * const ATTRIB_NAME = @"name1";
@@ -71,7 +71,7 @@ NSString * const ATTRIB_VALUE = @"value1";
 - (void)testGOMAttributeCheckIsAttributeSuccess
 {
     BOOL result = [GOMAttribute isAttribute:self.attributeDictionary];
-    XCTAssertTrue(result, @"The result should be false");
+    XCTAssertTrue(result, @"The result should be true");
 }
 
 - (void)testGOMAttributeNoAttribute
@@ -84,11 +84,11 @@ NSString * const ATTRIB_VALUE = @"value1";
 {
     GOMAttribute *attribute = [GOMAttribute attributeFromDictionary:self.falseAttributeDictionary];
     XCTAssertNil(attribute.ctime, @"attribute.ctime should be nil.");
-    XCTAssertNil(attribute.mtime, @"attribute.ctime should be nil.");
-    XCTAssertNil(attribute.node, @"attribute.ctime should be nil.");
-    XCTAssertNil(attribute.type, @"attribute.ctime should be nil.");
-    XCTAssertNil(attribute.name, @"attribute.ctime should be nil.");
-    XCTAssertNil(attribute.value, @"attribute.ctime should be nil.");
+    XCTAssertNil(attribute.mtime, @"attribute.mtime should be nil.");
+    XCTAssertNil(attribute.node, @"attribute.node should be nil.");
+    XCTAssertNil(attribute.type, @"attribute.type should be nil.");
+    XCTAssertNil(attribute.name, @"attribute.name should be nil.");
+    XCTAssertNil(attribute.value, @"attribute.value should be nil.");
 }
 
 
@@ -96,11 +96,11 @@ NSString * const ATTRIB_VALUE = @"value1";
 {
     GOMAttribute *attribute = [GOMAttribute attributeFromDictionary:self.attributeDictionary];
     XCTAssertNotNil(attribute.ctime, @"attribute.ctime should not be nil.");
-    XCTAssertNotNil(attribute.mtime, @"attribute.ctime should not be nil.");
-    XCTAssertTrue([attribute.node isEqualToString:ATTRIB_NODE], @"attribute.node should be equal to reference value.");
-    XCTAssertTrue([attribute.type isEqualToString:ATTRIB_TYPE], @"attribute.type should be equal to reference value.");
-    XCTAssertTrue([attribute.name isEqualToString:ATTRIB_NAME], @"attribute.name should be equal to reference value.");
-    XCTAssertTrue([attribute.value isEqualToString:ATTRIB_VALUE], @"attribute.value should be equal to reference value.");
+    XCTAssertNotNil(attribute.mtime, @"attribute.mtime should not be nil.");
+    XCTAssertTrue([attribute.node isEqualToString:ATTRIB_NODE], @"attribute.node should be equal to the reference value.");
+    XCTAssertTrue([attribute.type isEqualToString:ATTRIB_TYPE], @"attribute.type should be equal to the reference value.");
+    XCTAssertTrue([attribute.name isEqualToString:ATTRIB_NAME], @"attribute.name should be equal to the reference value.");
+    XCTAssertTrue([attribute.value isEqualToString:ATTRIB_VALUE], @"attribute.value should be equal to the reference value.");
 }
 
 @end
