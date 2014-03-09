@@ -11,6 +11,10 @@
 
 @interface DictionaryXMLTests : XCTestCase
 
+@property (nonatomic, strong) NSString *XML;
+@property (nonatomic, strong) NSDictionary *attributes;
+@property (nonatomic, strong) NSDictionary *attributesBroken;
+
 @end
 
 @implementation DictionaryXMLTests
@@ -18,6 +22,10 @@
 - (void)setUp
 {
     [super setUp];
+    
+    _XML = @"<attribute name=\"attribute2\" type=\"string\">value2</attribute><attribute name=\"attribute1\" type=\"string\">value1</attribute>";
+    _attributes = @{@"attribute1" : @"value1", @"attribute2" : @"value2"};
+    _attributesBroken = @{@"attribute1" : @"value1", @"attribute2" : @NO};
 }
 
 - (void)tearDown
@@ -27,16 +35,13 @@
 
 - (void)testConvertAttributeToXMLFail
 {
-    NSDictionary *attributesBroken = @{@"attribute1" : @"value1", @"attribute2" : @NO};
-    XCTAssertThrowsSpecificNamed([attributesBroken convertToXML], NSException, @"XMLConversionException", @"should throw Exception named XMLConversionException stating: 'Attribute is not an NSString.'");
+    XCTAssertThrowsSpecificNamed([self.attributesBroken convertToXML], NSException, @"XMLConversionException", @"should throw Exception named XMLConversionException stating: 'Attribute is not an NSString.'");
 }
 
 - (void)testConvertAttributeToXMLSuccess
 {
-    NSString *XML = @"<attribute name=\"attribute2\" type=\"string\">value2</attribute><attribute name=\"attribute1\" type=\"string\">value1</attribute>";
-    NSDictionary *attributes = @{@"attribute1" : @"value1", @"attribute2" : @"value2"};
-    NSString *result = [attributes convertToXML];
-    XCTAssertTrue([result isEqualToString:XML], @"XML output should conform to specification.");
+    NSString *result = [self.attributes convertToXML];
+    XCTAssertTrue([result isEqualToString:self.XML], @"XML output should conform to specification.");
 }
 
 @end
