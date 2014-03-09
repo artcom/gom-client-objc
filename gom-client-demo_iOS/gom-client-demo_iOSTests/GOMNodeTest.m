@@ -10,17 +10,17 @@
 #import "GOMNode.h"
 #import "GOMAttribute.h"
 
-NSString *NODE_CTIME = @"2014-03-09T16:50:20+01:00";
-NSString *NODE_MTIME = @"2014-03-09T16:56:20+01:00";
-NSString *NODE_URI = @"/tests/node1";
+NSString * const NODE_CTIME = @"2014-03-09T16:50:20+01:00";
+NSString * const NODE_MTIME = @"2014-03-09T16:56:20+01:00";
+NSString * const NODE_URI = @"/tests/node1";
 
-NSString *NODE_ATTRIBUTE_1_CTIME = @"2014-03-09T18:00:10+01:00";
-NSString *NODE_ATTRIBUTE_1_MTIME = @"2014-03-09T19:00:30+01:00";
-NSString *NODE_ATTRIBUTE_1_NODE = @"/tests/node1";
+NSString * const NODE_ATTRIBUTE_1_CTIME = @"2014-03-09T18:00:10+01:00";
+NSString * const NODE_ATTRIBUTE_1_MTIME = @"2014-03-09T19:00:30+01:00";
+NSString * const NODE_ATTRIBUTE_1_NODE = @"/tests/node1";
 
-NSString *NODE_ATTRIBUTE_1_TYPE = @"string";
-NSString *NODE_ATTRIBUTE_1_NAME = @"name1";
-NSString *NODE_ATTRIBUTE_1_VALUE = @"value1";
+NSString * const NODE_ATTRIBUTE_1_TYPE = @"string";
+NSString * const NODE_ATTRIBUTE_1_NAME = @"name1";
+NSString * const NODE_ATTRIBUTE_1_VALUE = @"value1";
 
 @interface GOMNodeTest : XCTestCase
 

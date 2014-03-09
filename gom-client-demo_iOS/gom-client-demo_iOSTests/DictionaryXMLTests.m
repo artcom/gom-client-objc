@@ -9,6 +9,12 @@
 #import <XCTest/XCTest.h>
 #import "NSDictionary+XML.h"
 
+NSString * const XML_ATTRIBUTE_NAME_1 = @"attribute1";
+NSString * const XML_ATTRIBUTE_NAME_2 = @"attribute2";
+
+NSString * const XML_ATTRIBUTE_VALUE_1 = @"value1";
+NSString * const XML_ATTRIBUTE_VALUE_2 = @"value2";
+
 @interface DictionaryXMLTests : XCTestCase
 
 @property (nonatomic, strong) NSString *XML;
@@ -23,9 +29,9 @@
 {
     [super setUp];
     
-    _XML = @"<attribute name=\"attribute2\" type=\"string\">value2</attribute><attribute name=\"attribute1\" type=\"string\">value1</attribute>";
-    _attributes = @{@"attribute1" : @"value1", @"attribute2" : @"value2"};
-    _attributesBroken = @{@"attribute1" : @"value1", @"attribute2" : @NO};
+    _XML = [NSString stringWithFormat:@"<attribute name=\"%@\" type=\"string\">%@</attribute><attribute name=\"%@\" type=\"string\">%@</attribute>", XML_ATTRIBUTE_NAME_2, XML_ATTRIBUTE_VALUE_2, XML_ATTRIBUTE_NAME_1, XML_ATTRIBUTE_VALUE_1];
+    _attributes = @{XML_ATTRIBUTE_NAME_1 : XML_ATTRIBUTE_VALUE_1, XML_ATTRIBUTE_NAME_2 : XML_ATTRIBUTE_VALUE_2};
+    _attributesBroken = @{XML_ATTRIBUTE_NAME_1 : XML_ATTRIBUTE_VALUE_1, XML_ATTRIBUTE_NAME_2 : @NO};
 }
 
 - (void)tearDown
