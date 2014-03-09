@@ -13,7 +13,7 @@
 #import "GOMNode.h"
 #import "GOMAttribute.h"
 
-extern NSString* const GOMClientErrorDomain;
+extern NSString * const GOMClientErrorDomain;
 
 typedef enum {
     GOMClientWebsocketProxyUrlNotFound,

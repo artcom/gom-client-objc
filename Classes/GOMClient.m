@@ -14,8 +14,8 @@
 #import "NSDictionary+XML.h"
 
 
-NSString* const GOMClientErrorDomain = @"de.artcom.gom-client-objc";
-NSString* const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
+NSString * const GOMClientErrorDomain = @"de.artcom.gom-client-objc";
+NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
 
 @interface GOMClient () <SRWebSocketDelegate>
 
