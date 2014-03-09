@@ -12,7 +12,7 @@
 
 @interface GOMBinding : NSObject
 
-@property (nonatomic, strong) NSString *subscriptionUri;
+@property (nonatomic, strong, readonly) NSString *subscriptionUri;
 @property (nonatomic, strong, readonly) NSMutableArray *handles;
 @property (nonatomic, assign) BOOL registered;
 

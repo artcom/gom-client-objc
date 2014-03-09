@@ -30,11 +30,11 @@
 
 - (void)fireInitialCallbackWithObject:(id)object
 {
-    if (self.initialRetrieved == NO) {
+    if (_initialRetrieved == NO) {
         if (self.callback) {
             self.callback(object);
         }
-        self.initialRetrieved = YES;
+        _initialRetrieved = YES;
     }
 }
 
