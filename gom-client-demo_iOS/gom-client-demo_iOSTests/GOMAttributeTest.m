@@ -9,12 +9,6 @@
 #import <XCTest/XCTest.h>
 #import "GOMAttribute.h"
 
-NSString * const ATTRIB_CTIME = @"2014-03-09T15:00:20+01:00";
-NSString * const ATTRIB_MTIME = @"2014-03-09T15:01:20+01:00";
-NSString * const ATTRIB_NODE = @"/tests/node1";
-NSString * const ATTRIB_TYPE = @"string";
-NSString * const ATTRIB_NAME = @"name1";
-NSString * const ATTRIB_VALUE = @"value1";
 
 @interface GOMAttributeTest : XCTestCase
 
@@ -26,6 +20,13 @@ NSString * const ATTRIB_VALUE = @"value1";
 
 @implementation GOMAttributeTest
 
+NSString * const ATTRIB_CTIME = @"2014-03-09T15:00:20+01:00";
+NSString * const ATTRIB_MTIME = @"2014-03-09T15:01:20+01:00";
+NSString * const ATTRIB_NODE = @"/tests/node1";
+NSString * const ATTRIB_TYPE = @"string";
+NSString * const ATTRIB_NAME = @"name1";
+NSString * const ATTRIB_VALUE = @"value1";
+
 - (void)setUp
 {
     [super setUp];
@@ -34,20 +35,20 @@ NSString * const ATTRIB_VALUE = @"value1";
                              @"attribute" : @{
                                      @"ctime" : ATTRIB_CTIME,
                                      @"mtime" : ATTRIB_MTIME,
-                                     @"node" : ATTRIB_NODE,
-                                     @"type" : ATTRIB_TYPE,
-                                     @"name" : ATTRIB_NAME,
+                                     @"node"  : ATTRIB_NODE,
+                                     @"type"  : ATTRIB_TYPE,
+                                     @"name"  : ATTRIB_NAME,
                                      @"value" : ATTRIB_VALUE
                                      }
                              };
     
     _falseAttributeDictionary = @{
                                   @"attribute" : @{
-                                          @"ctme" : ATTRIB_CTIME,
-                                          @"mime" : ATTRIB_MTIME,
-                                          @"noodle" : ATTRIB_NODE,
-                                          @"typo" : ATTRIB_TYPE,
-                                          @"bob" : ATTRIB_NAME,
+                                          @"ctme"    : ATTRIB_CTIME,
+                                          @"mime"    : ATTRIB_MTIME,
+                                          @"noodle"  : ATTRIB_NODE,
+                                          @"typo"    : ATTRIB_TYPE,
+                                          @"bob"     : ATTRIB_NAME,
                                           @"valerie" : ATTRIB_VALUE
                                           }
                                   };
@@ -65,13 +66,13 @@ NSString * const ATTRIB_VALUE = @"value1";
 - (void)testGOMAttributeCheckIsAttributeFail
 {
     BOOL result = [GOMAttribute isAttribute:self.noAttributeDictionary];
-    XCTAssertFalse(result, @"The result should be false");
+    XCTAssertFalse(result, @"The result should be false.");
 }
 
 - (void)testGOMAttributeCheckIsAttributeSuccess
 {
     BOOL result = [GOMAttribute isAttribute:self.attributeDictionary];
-    XCTAssertTrue(result, @"The result should be true");
+    XCTAssertTrue(result, @"The result should be true.");
 }
 
 - (void)testGOMAttributeNoAttribute

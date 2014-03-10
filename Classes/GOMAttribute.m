@@ -7,7 +7,7 @@
 //
 
 #import "GOMAttribute.h"
-#import "NSDate+XSDTime.h"
+#import "NSDate+XSDDateTime.h"
 
 @implementation GOMAttribute
 

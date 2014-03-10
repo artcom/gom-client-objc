@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 ART+COM AG. All rights reserved.
 //
 
-#import "NSDate+XSDTime.h"
+#import "NSDate+XSDDateTime.h"
 
-@implementation NSDate (XSDTime)
+@implementation NSDate (XSDDateTime)
 
 + (NSDate *)dateFromXSDTimeString:(NSString *)dateString
 {

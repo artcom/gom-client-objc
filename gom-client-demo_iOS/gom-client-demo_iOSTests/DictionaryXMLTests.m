@@ -11,7 +11,6 @@
 
 NSString * const XML_ATTRIBUTE_NAME_1 = @"attribute1";
 NSString * const XML_ATTRIBUTE_NAME_2 = @"attribute2";
-
 NSString * const XML_ATTRIBUTE_VALUE_1 = @"value1";
 NSString * const XML_ATTRIBUTE_VALUE_2 = @"value2";
 

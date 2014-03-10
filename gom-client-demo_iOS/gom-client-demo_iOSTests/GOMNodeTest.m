@@ -10,17 +10,6 @@
 #import "GOMNode.h"
 #import "GOMAttribute.h"
 
-NSString * const NODE_CTIME = @"2014-03-09T16:50:20+01:00";
-NSString * const NODE_MTIME = @"2014-03-09T16:56:20+01:00";
-NSString * const NODE_URI = @"/tests/node1";
-
-NSString * const NODE_ATTRIBUTE_1_CTIME = @"2014-03-09T18:00:10+01:00";
-NSString * const NODE_ATTRIBUTE_1_MTIME = @"2014-03-09T19:00:30+01:00";
-NSString * const NODE_ATTRIBUTE_1_NODE = @"/tests/node1";
-
-NSString * const NODE_ATTRIBUTE_1_TYPE = @"string";
-NSString * const NODE_ATTRIBUTE_1_NAME = @"name1";
-NSString * const NODE_ATTRIBUTE_1_VALUE = @"value1";
 
 @interface GOMNodeTest : XCTestCase
 
@@ -32,6 +21,18 @@ NSString * const NODE_ATTRIBUTE_1_VALUE = @"value1";
 @end
 
 @implementation GOMNodeTest
+
+NSString * const NODE_CTIME = @"2014-03-09T16:50:20+01:00";
+NSString * const NODE_MTIME = @"2014-03-09T16:56:20+01:00";
+NSString * const NODE_URI = @"/tests/node1";
+
+NSString * const NODE_ATTRIBUTE_1_CTIME = @"2014-03-09T18:00:10+01:00";
+NSString * const NODE_ATTRIBUTE_1_MTIME = @"2014-03-09T19:00:30+01:00";
+NSString * const NODE_ATTRIBUTE_1_NODE = @"/tests/node1";
+
+NSString * const NODE_ATTRIBUTE_1_TYPE = @"string";
+NSString * const NODE_ATTRIBUTE_1_NAME = @"name1";
+NSString * const NODE_ATTRIBUTE_1_VALUE = @"value1";
 
 - (void)setUp
 {
@@ -58,6 +59,7 @@ NSString * const NODE_ATTRIBUTE_1_VALUE = @"value1";
                                         ]
                                 }
                         };
+    
     _falseNodeDictionary = @{
                              @"node" : @{
                                      @"cime" : NODE_CTIME,
@@ -68,6 +70,7 @@ NSString * const NODE_ATTRIBUTE_1_VALUE = @"value1";
                                              ]
                                      }
                              };
+    
     _noNodeDictionary = @{
                           @"foo" : @NO
                           };
@@ -81,13 +84,13 @@ NSString * const NODE_ATTRIBUTE_1_VALUE = @"value1";
 - (void)testGOMNodeCheckIsNodeFail
 {
     BOOL result = [GOMNode isNode:self.noNodeDictionary];
-    XCTAssertFalse(result, @"The result should be false");
+    XCTAssertFalse(result, @"The result should be false.");
 }
 
 - (void)testGOMNodeCheckIsNodeSuccess
 {
     BOOL result = [GOMNode isNode:self.nodeDictionary];
-    XCTAssertTrue(result, @"The result should be true");
+    XCTAssertTrue(result, @"The result should be true.");
 }
 
 - (void)testGOMNodeNoNode
@@ -127,7 +130,7 @@ NSString * const NODE_ATTRIBUTE_1_VALUE = @"value1";
     XCTAssertTrue([attribute.value isEqualToString:NODE_ATTRIBUTE_1_VALUE], @"attribute.value should be equal to the reference value.");
 }
 
-- (void)testGOMNodeKeypathSearch
+- (void)testGOMNodeKeyPathSearch
 {
     GOMNode *node = [GOMNode nodeFromDictionary:self.nodeDictionary];
     NSArray *attributeNames = [node valueForKeyPath:@"entries.name"];

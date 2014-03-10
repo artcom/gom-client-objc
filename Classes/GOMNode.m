@@ -8,7 +8,7 @@
 
 #import "GOMNode.h"
 #import "GOMAttribute.h"
-#import "NSDate+XSDTime.h"
+#import "NSDate+XSDDateTime.h"
 
 @interface GOMNode()
 

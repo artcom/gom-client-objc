@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSDate (XSDTime)
+@interface NSDate (XSDDateTime)
 
 + (NSDate *)dateFromXSDTimeString:(NSString *)dateString;
 
