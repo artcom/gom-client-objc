@@ -16,10 +16,6 @@ NSString * const XML_ATTRIBUTE_VALUE_2 = @"value2";
 
 @interface DictionaryXMLTests : XCTestCase
 
-@property (nonatomic, strong) NSString *XML;
-@property (nonatomic, strong) NSDictionary *attributes;
-@property (nonatomic, strong) NSDictionary *attributesBroken;
-
 @end
 
 @implementation DictionaryXMLTests
@@ -27,10 +23,6 @@ NSString * const XML_ATTRIBUTE_VALUE_2 = @"value2";
 - (void)setUp
 {
     [super setUp];
-    
-    _XML = [NSString stringWithFormat:@"<attribute name=\"%@\" type=\"string\">%@</attribute><attribute name=\"%@\" type=\"string\">%@</attribute>", XML_ATTRIBUTE_NAME_2, XML_ATTRIBUTE_VALUE_2, XML_ATTRIBUTE_NAME_1, XML_ATTRIBUTE_VALUE_1];
-    _attributes = @{XML_ATTRIBUTE_NAME_1 : XML_ATTRIBUTE_VALUE_1, XML_ATTRIBUTE_NAME_2 : XML_ATTRIBUTE_VALUE_2};
-    _attributesBroken = @{XML_ATTRIBUTE_NAME_1 : XML_ATTRIBUTE_VALUE_1, XML_ATTRIBUTE_NAME_2 : @NO};
 }
 
 - (void)tearDown
@@ -40,13 +32,20 @@ NSString * const XML_ATTRIBUTE_VALUE_2 = @"value2";
 
 - (void)testConvertAttributeToXMLFail
 {
-    XCTAssertThrowsSpecificNamed([self.attributesBroken convertToXML], NSException, @"XMLConversionException", @"should throw Exception named XMLConversionException stating: 'Attribute is not an NSString.'");
+    NSDictionary *attributesBroken = @{XML_ATTRIBUTE_NAME_1 : XML_ATTRIBUTE_VALUE_1, XML_ATTRIBUTE_NAME_2 : @NO};
+    XCTAssertThrowsSpecificNamed([attributesBroken convertToXML], NSException, @"XMLConversionException", @"should throw Exception named XMLConversionException stating: 'Attribute is not an NSString.'");
 }
 
 - (void)testConvertAttributeToXMLSuccess
 {
-    NSString *result = [self.attributes convertToXML];
-    XCTAssertTrue([result isEqualToString:self.XML], @"XML output should conform to specification.");
+    NSString *XML_1 = [NSString stringWithFormat:@"<attribute name=\"%@\" type=\"string\">%@</attribute>", XML_ATTRIBUTE_NAME_1, XML_ATTRIBUTE_VALUE_1];
+    NSString *XML_2 = [NSString stringWithFormat:@"<attribute name=\"%@\" type=\"string\">%@</attribute>", XML_ATTRIBUTE_NAME_2, XML_ATTRIBUTE_VALUE_2];
+    
+    NSDictionary *attributes = @{XML_ATTRIBUTE_NAME_1 : XML_ATTRIBUTE_VALUE_1, XML_ATTRIBUTE_NAME_2 : XML_ATTRIBUTE_VALUE_2};
+    NSString *result = [attributes convertToXML];
+    
+    XCTAssertTrue([result rangeOfString:XML_1].location != NSNotFound, @"XML output should conform to specification.");
+    XCTAssertTrue([result rangeOfString:XML_2].location != NSNotFound, @"XML output should conform to specification.");
 }
 
 @end
