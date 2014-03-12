@@ -26,6 +26,10 @@ NSString * const NODE_CTIME = @"2014-03-09T16:50:20+01:00";
 NSString * const NODE_MTIME = @"2014-03-09T16:56:20+01:00";
 NSString * const NODE_URI = @"/tests/node1";
 
+NSString * const NODE_SUB_CTIME = @"2014-03-10T12:00:00+01:00";
+NSString * const NODE_SUB_MTIME = @"2014-03-11T12:00:00+01:00";
+NSString * const NODE_SUB_URI = @"/tests/node1/node2";
+
 NSString * const NODE_ATTRIBUTE_1_CTIME = @"2014-03-09T18:00:10+01:00";
 NSString * const NODE_ATTRIBUTE_1_MTIME = @"2014-03-09T19:00:30+01:00";
 NSString * const NODE_ATTRIBUTE_1_NODE = @"/tests/node1";
@@ -55,6 +59,11 @@ NSString * const NODE_ATTRIBUTE_1_VALUE = @"value1";
                                 @"mtime" : NODE_MTIME,
                                 @"uri" : NODE_URI,
                                 @"entries" :@[
+                                        @{
+                                            @"ctime" : NODE_SUB_CTIME,
+                                            @"mtime" : NODE_SUB_MTIME,
+                                            @"node" : NODE_SUB_URI
+                                            },
                                         self.attributeDictionary
                                         ]
                                 }
@@ -117,11 +126,20 @@ NSString * const NODE_ATTRIBUTE_1_VALUE = @"value1";
     XCTAssertTrue([node.uri isEqualToString:NODE_URI], @"node.uri should be equal to the reference value.");
     
     // check entry array
-    XCTAssertTrue(node.entries.count == 1, @"There should be one object in the node's entries list.");
-    XCTAssertTrue([node.entries[0] isKindOfClass:[GOMAttribute class]], @"There should be one object of class GOMAttribute in the node's entries list.");
+    XCTAssertTrue(node.entries.count == 2, @"There should be two objects in the node's entries list.");
+    
+    XCTAssertTrue([node.entries[0] isKindOfClass:[GOMNode class]],  @"There should be one object of class GOMNode in the node's entries list.");
+    XCTAssertTrue([node.entries[1] isKindOfClass:[GOMAttribute class]], @"There should be one object of class GOMAttribute in the node's entries list.");
+    
+    // check node entry
+    GOMNode *nodeSub = node.entries[0];
+    XCTAssertNotNil(nodeSub.ctime, @"nodeSub.ctime should not be nil.");
+    XCTAssertNotNil(nodeSub.mtime, @"nodeSub.mtime should not be nil.");
+    XCTAssertTrue([nodeSub.uri isEqualToString:NODE_SUB_URI], @"nodeSub.uri should be equal to the reference value.");
+    XCTAssertTrue(nodeSub.entries.count == 0, @"There should be no object in the nodeSub's entries list.");
     
     // check attribute entry
-    GOMAttribute *attribute = node.entries[0];
+    GOMAttribute *attribute = node.entries[1];
     XCTAssertNotNil(attribute.ctime, @"attribute.ctime should not be nil.");
     XCTAssertNotNil(attribute.mtime, @"attribute.mtime should not be nil.");
     XCTAssertTrue([attribute.node isEqualToString:NODE_ATTRIBUTE_1_NODE], @"attribute.node should be equal to the reference value.");
@@ -130,13 +148,24 @@ NSString * const NODE_ATTRIBUTE_1_VALUE = @"value1";
     XCTAssertTrue([attribute.value isEqualToString:NODE_ATTRIBUTE_1_VALUE], @"attribute.value should be equal to the reference value.");
 }
 
-- (void)testGOMNodeKeyPathSearch
+- (void)testGOMNodeKeyPathSearchNames
 {
     GOMNode *node = [GOMNode nodeFromDictionary:self.nodeDictionary];
     NSArray *attributeNames = [node valueForKeyPath:@"entries.name"];
-    XCTAssertTrue(attributeNames.count == 1, @"There should be one object in the result set.");
-    XCTAssertTrue([attributeNames[0] isKindOfClass:[NSString class]], @"There should be one object of class NSString in the result list.");
-    XCTAssertTrue([attributeNames[0] isEqualToString:NODE_ATTRIBUTE_1_NAME], @"The retrieved value should be equal to the reference value.");
+    XCTAssertTrue(attributeNames.count == 2, @"There should be two objects in the result set.");
+    XCTAssertTrue([attributeNames[0] isKindOfClass:[NSNull class]], @"There should be one object of class NSNull in the result list.");
+    XCTAssertTrue([attributeNames[1] isKindOfClass:[NSString class]], @"There should be one object of class NSString in the result list.");
+    XCTAssertTrue([attributeNames[1] isEqualToString:NODE_ATTRIBUTE_1_NAME], @"The retrieved value should be equal to the reference value.");
+}
+
+- (void)testGOMNodeKeyPathSearchNodes
+{
+    GOMNode *node = [GOMNode nodeFromDictionary:self.nodeDictionary];
+    NSArray *subNodeUris = [node valueForKeyPath:@"entries.node"];
+    XCTAssertTrue(subNodeUris.count == 2, @"There should be two objects in the result set.");
+    XCTAssertTrue([subNodeUris[0] isKindOfClass:[NSNull class]], @"There should be one object of class NSNull in the result list.");
+    XCTAssertTrue([subNodeUris[1] isKindOfClass:[NSString class]], @"There should be one object of class NSString in the result list.");
+    XCTAssertTrue([subNodeUris[1] isEqualToString:NODE_URI], @"The retrieved value should be equal to the reference value.");
 }
 
 @end

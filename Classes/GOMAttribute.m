@@ -51,7 +51,7 @@
 
 - (id)valueForUndefinedKey:(NSString *)key
 {
-    return nil;
+    return [NSNull null];
 }
 
 - (void)setValue:(id)value forUndefinedKey:(NSString *)key

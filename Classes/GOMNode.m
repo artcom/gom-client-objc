@@ -81,10 +81,7 @@
 
 - (id)valueForUndefinedKey:(NSString *)key
 {
-    if ([key isEqualToString:@"node"]) {
-        return _uri;
-    }
-    return nil;
+    return [NSNull null];
 }
 
 - (void)setValue:(id)value forUndefinedKey:(NSString *)key
