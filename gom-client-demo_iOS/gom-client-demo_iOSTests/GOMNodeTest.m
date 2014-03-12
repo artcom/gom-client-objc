@@ -15,6 +15,7 @@
 
 @property (nonatomic, strong) NSDictionary *attributeDictionary;
 @property (nonatomic, strong) NSDictionary *nodeDictionary;
+@property (nonatomic, strong) NSDictionary *subNodeDictionary;
 @property (nonatomic, strong) NSDictionary *falseNodeDictionary;
 @property (nonatomic, strong) NSDictionary *noNodeDictionary;
 
@@ -53,17 +54,19 @@ NSString * const NODE_ATTRIBUTE_1_VALUE = @"value1";
                                      }
                              };
     
+    _subNodeDictionary = @{
+                           @"ctime" : NODE_SUB_CTIME,
+                           @"mtime" : NODE_SUB_MTIME,
+                           @"node" : NODE_SUB_URI
+                           };
+    
     _nodeDictionary = @{
                         @"node" : @{
                                 @"ctime" : NODE_CTIME,
                                 @"mtime" : NODE_MTIME,
                                 @"uri" : NODE_URI,
                                 @"entries" :@[
-                                        @{
-                                            @"ctime" : NODE_SUB_CTIME,
-                                            @"mtime" : NODE_SUB_MTIME,
-                                            @"node" : NODE_SUB_URI
-                                            },
+                                        self.subNodeDictionary,
                                         self.attributeDictionary
                                         ]
                                 }
@@ -75,6 +78,7 @@ NSString * const NODE_ATTRIBUTE_1_VALUE = @"value1";
                                      @"mime" : NODE_MTIME,
                                      @"yuri" : NODE_URI,
                                      @"enties" :@[
+                                             @{},
                                              self.attributeDictionary
                                              ]
                                      }
@@ -132,11 +136,11 @@ NSString * const NODE_ATTRIBUTE_1_VALUE = @"value1";
     XCTAssertTrue([node.entries[1] isKindOfClass:[GOMAttribute class]], @"There should be one object of class GOMAttribute in the node's entries list.");
     
     // check node entry
-    GOMNode *nodeSub = node.entries[0];
-    XCTAssertNotNil(nodeSub.ctime, @"nodeSub.ctime should not be nil.");
-    XCTAssertNotNil(nodeSub.mtime, @"nodeSub.mtime should not be nil.");
-    XCTAssertTrue([nodeSub.uri isEqualToString:NODE_SUB_URI], @"nodeSub.uri should be equal to the reference value.");
-    XCTAssertTrue(nodeSub.entries.count == 0, @"There should be no object in the nodeSub's entries list.");
+    GOMNode *subNode = node.entries[0];
+    XCTAssertNotNil(subNode.ctime, @"subNode.ctime should not be nil.");
+    XCTAssertNotNil(subNode.mtime, @"subNode.mtime should not be nil.");
+    XCTAssertTrue([subNode.uri isEqualToString:NODE_SUB_URI], @"subNode.uri should be equal to the reference value.");
+    XCTAssertTrue(subNode.entries.count == 0, @"There should be no object in the subNode's entries list.");
     
     // check attribute entry
     GOMAttribute *attribute = node.entries[1];
