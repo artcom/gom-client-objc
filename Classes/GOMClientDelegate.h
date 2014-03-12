@@ -9,10 +9,16 @@
 #import <Foundation/Foundation.h>
 
 @class GOMClient;
+@class GOMBinding;
 
 @protocol GOMClientDelegate <NSObject>
 
 - (void)gomClientDidBecomeReady:(GOMClient *)gomClient;
 - (void)gomClient:(GOMClient *)gomClient didFailWithError:(NSError *)error;
+
+@optional
+
+- (BOOL)gomClientShouldReconnect:(GOMClient *)gomClient;
+- (BOOL)gomClient:(GOMClient *)gomClient shouldReRegisterObserverWithBinding:(GOMBinding *)binding;
 
 @end
