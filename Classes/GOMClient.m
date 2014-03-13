@@ -33,7 +33,7 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
 - (void)_handleGNPFromResponse:(NSDictionary *)response;
 - (void)_retrieveInitial:(GOMBinding *)binding;
 
-- (void)_disconnectWebsocket;
+- (void)_reRegisterObservers;
 - (void)_returnError:(NSError *)error;
 - (NSError *)_gomClientErrorForCode:(GOMClientErrorCode)code;
 
@@ -58,12 +58,12 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
 
 - (void)dealloc
 {
-    [self _disconnectWebsocket];
+    [self disconnectWebsocket];
 }
 
 - (void)setDelegate:(id<GOMClientDelegate>)delegate
 {
-    [self _disconnectWebsocket];
+    [self disconnectWebsocket];
     _delegate = delegate;
     [self reconnectWebsocket];
 }
@@ -287,7 +287,7 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
 
 - (void)reconnectWebsocket
 {
-    [self _disconnectWebsocket];
+    [self disconnectWebsocket];
     [self retrieve:WEBSOCKETS_PROXY_PATH completionBlock:^(NSDictionary *response, NSError *error) {
         if (response) {
             GOMAttribute *attribute = [GOMAttribute attributeFromDictionary:response];
@@ -305,11 +305,9 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
     }];
 }
 
-- (void)_disconnectWebsocket
+- (void)disconnectWebsocket
 {
     _webSocket.delegate = nil;
-    
-    [_priv_bindings removeAllObjects];
     
     [_webSocket close];
     _webSocket = nil;
@@ -343,7 +341,7 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
     return [NSError errorWithDomain:GOMClientErrorDomain code:code userInfo:userInfo];
 }
 
-- (void)_checkReRegisterObservers
+- (void)_reRegisterObservers
 {
     if ([self.delegate respondsToSelector:@selector(gomClient:shouldReRegisterObserverWithBinding:)]) {
         for (GOMBinding *binding in _priv_bindings.allValues) {
@@ -352,6 +350,8 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
                 [self _registerGOMObserverForBinding:binding];
             }
         }
+    } else {
+        [_priv_bindings removeAllObjects];
     }
 }
 
@@ -365,7 +365,7 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
     }
     
     if (self.bindings.count > 0) {
-        [self _checkReRegisterObservers];
+        [self _reRegisterObservers];
     }
 }
 

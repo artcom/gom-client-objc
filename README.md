@@ -38,7 +38,8 @@ Fundamental errors are returned to the delegate through the `GOMClientDelegate` 
 
 #### Reconnects
 
-When the GOMClient reconnects and finds existing `GOMBinding` objects in his `bindings` dictionary it sends the delegate the message ```- (BOOL)gomClient:(GOMClient *)gomClient shouldReRegisterObserverWithBinding:(GOMBinding *)binding```. Return `YES` to re-register an observer for the path in question.
+If re-connects of the websocket connection become necessary call ```- (void)reconnectWebSocket```.
+When the gom client reconnects and finds existing bindings it sends the delegate the message ```- (BOOL)gomClient:(GOMClient *)gomClient shouldReRegisterObserverWithBinding:(GOMBinding *)binding```. Return `YES` to re-register an observer for the path in question. Re-registration will be silent, no initial GNP will be received.
 
 ### RESTful operations
 

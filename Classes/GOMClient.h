@@ -31,6 +31,7 @@ typedef void (^GOMClientGNPCallback)(NSDictionary *);
 
 - (id)initWithGomURI:(NSURL *)gomURI delegate:(id<GOMClientDelegate>)delegate;
 - (void)reconnectWebsocket;
+- (void)disconnectWebsocket;
 
 - (void)retrieve:(NSString *)path completionBlock:(GOMClientOperationCallback)block;
 - (void)create:(NSString *)node withAttributes:(NSDictionary *)attributes completionBlock:(GOMClientOperationCallback)block;

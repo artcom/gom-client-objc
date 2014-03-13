@@ -10,9 +10,10 @@
 
     which get called when the client reconnects to the GOM through its websocket.
 
-- Private method is public now:
+- Private methods are public now:
     
     ```objective-c
+    - (void)disconnectWebSocket
     - (void)reconnectWebSocket
     ```
 
