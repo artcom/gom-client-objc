@@ -31,9 +31,14 @@ GOMClient *gomClient = [[GOMClient alloc] initWithGomURI:gomURI delegate:self];
 As soon as the GOMClient object is initialized and completely set up it will communicate its state through the `GOMClientDelegate` protocol method ```- (void)gomClientDidBecomeReady:(GOMClient *)gomClient``` returning a reference of the GOMClient object in question.
 
 #### Errorhandling
+
 Errors that occur during GOM requests are passed to the sender through the completion blocks of the respective methods.
 
 Fundamental errors are returned to the delegate through the `GOMClientDelegate` protocol method ```- (void)gomClient:(GOMClient *)gomClient didFailWithError:(NSError *)error```
+
+#### Reconnects
+
+When the GOMClient reconnects and finds existing `GOMBinding` objects in his `bindings` dictionary it sends the delegate the message ```- (BOOL)gomClient:(GOMClient *)gomClient shouldReRegisterObserverWithBinding:(GOMBinding *)binding```. Return `YES` to re-register an observer for the path in question.
 
 ### RESTful operations
 

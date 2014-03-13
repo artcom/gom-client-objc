@@ -19,6 +19,8 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
 
 @interface GOMClient () <SRWebSocketDelegate>
 
+@property (nonatomic, strong) NSMutableDictionary *priv_bindings;
+
 - (NSURLRequest *)_createRequestWithPath:(NSString *)path method:(NSString *)method headerFields:(NSDictionary *)headerFields payloadData:(NSData *)payloadData;
 - (void)_handleOperationResponse:(NSURLResponse *)response data:(NSData *)data error:(NSError *)connectionError completionBlock:(GOMClientOperationCallback)block;
 
@@ -47,7 +49,7 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
     self = [super init];
     if (self) {
         _gomRoot = gomURI;
-        _bindings = [[NSMutableDictionary alloc] init];
+        _priv_bindings = [[NSMutableDictionary alloc] init];
         _delegate = delegate;
         [self reconnectWebsocket];
     }
@@ -64,6 +66,11 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
     [self _disconnectWebsocket];
     _delegate = delegate;
     [self reconnectWebsocket];
+}
+
+- (NSDictionary *)bindings
+{
+    return (NSDictionary *)_priv_bindings;
 }
 
 #pragma mark - GOM operations
@@ -169,10 +176,10 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
 
 - (void)registerGOMObserverForPath:(NSString *)path options:(NSDictionary *)options clientCallback:(GOMClientGNPCallback)callback
 {
-    GOMBinding *binding = _bindings[path];
+    GOMBinding *binding = _priv_bindings[path];
     if (binding == nil) {
         binding = [[GOMBinding alloc] initWithSubscriptionUri:path];
-        _bindings[path] = binding;
+        _priv_bindings[path] = binding;
     }
     GOMHandle *handle = [[GOMHandle alloc] initWithBinding:binding callback:callback];
     [binding addHandle:handle];
@@ -182,9 +189,9 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
 
 - (void)unregisterGOMObserverForPath:(NSString *)path options:(NSDictionary *)options
 {
-    GOMBinding *binding = _bindings[path];
+    GOMBinding *binding = _priv_bindings[path];
     [self _unregisterGOMObserverForBinding:binding];
-    [_bindings removeObjectForKey:path];
+    [_priv_bindings removeObjectForKey:path];
 }
 
 - (void)_registerGOMObserverForBinding:(GOMBinding *)binding
@@ -237,7 +244,7 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
     
     if (payloadString) {
         NSString *path = response[@"path"];
-        GOMBinding *binding = _bindings[path];
+        GOMBinding *binding = _priv_bindings[path];
         if (binding) {
             [binding fireInitialCallbacksWithObject:payload];
         }
@@ -259,7 +266,7 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
             operation = payload[@"delete"];
         }
         NSString *path = response[@"path"];
-        GOMBinding *binding = _bindings[path];
+        GOMBinding *binding = _priv_bindings[path];
         if (operation && binding) {
             [binding fireCallbacksWithObject:operation];
         }
@@ -302,7 +309,7 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
 {
     _webSocket.delegate = nil;
     
-    [_bindings removeAllObjects];
+    [_priv_bindings removeAllObjects];
     
     [_webSocket close];
     _webSocket = nil;
@@ -336,21 +343,10 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
     return [NSError errorWithDomain:GOMClientErrorDomain code:code userInfo:userInfo];
 }
 
-- (void)_checkReconnect
-{
-    if (_webSocket.readyState == SR_CLOSED) {
-        if ([self.delegate respondsToSelector:@selector(gomClientShouldReconnect:)]) {
-            if ([self.delegate gomClientShouldReconnect:self]) {
-                [self reconnectWebsocket];
-            }
-        }
-    }
-}
-
 - (void)_checkReRegisterObservers
 {
     if ([self.delegate respondsToSelector:@selector(gomClient:shouldReRegisterObserverWithBinding:)]) {
-        for (GOMBinding *binding in _bindings.allValues) {
+        for (GOMBinding *binding in _priv_bindings.allValues) {
             if ([self.delegate gomClient:self shouldReRegisterObserverWithBinding:binding]) {
                 binding.registered = NO;
                 [self _registerGOMObserverForBinding:binding];
@@ -378,11 +374,6 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
     NSLog(@"Websocket Failed With Error %@", error);
     [self _returnError:error];
     
-    // TODO: check more error codes?
-    if (_webSocket.readyState == SR_CLOSED) {
-        [self _checkReconnect];
-    }
-    
     _webSocket = nil;
 }
 
@@ -399,11 +390,8 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
 - (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean;
 {
     NSLog(@"WebSocket closed with code: %ld\n%@\nclean: %d", (long)code, reason, wasClean);
-    _webSocket = nil;
     
-    if (code != 0) {
-        [self _checkReconnect];
-    }
+    _webSocket = nil;
 }
 
 @end
