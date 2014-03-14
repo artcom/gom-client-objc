@@ -65,10 +65,10 @@
         for (NSDictionary *entry in value) {
             if ([GOMAttribute isAttribute:entry]) {
                 GOMAttribute *attribute = [GOMAttribute attributeFromDictionary:entry];
-                [_entries addObject:attribute];
+                [self.entries addObject:attribute];
             } else if ([GOMNode isNode:entry]) {
                 GOMNode *node = [GOMNode nodeFromDictionary:@{@"node" : entry}];
-                [_entries addObject:node];
+                [self.entries addObject:node];
             }
         }
     } else {

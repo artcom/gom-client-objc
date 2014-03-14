@@ -27,7 +27,7 @@
 
 - (void)addHandle:(GOMHandle *)handle
 {
-    [_handles addObject:handle];
+    [self.handles addObject:handle];
 }
 
 - (void)fireCallbacksWithObject:(id)object

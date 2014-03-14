@@ -19,8 +19,6 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
 
 @interface GOMClient () <SRWebSocketDelegate>
 
-@property (nonatomic, strong) NSMutableDictionary *priv_bindings;
-
 - (NSURLRequest *)_createRequestWithPath:(NSString *)path method:(NSString *)method headerFields:(NSDictionary *)headerFields payloadData:(NSData *)payloadData;
 - (void)_handleOperationResponse:(NSURLResponse *)response data:(NSData *)data error:(NSError *)connectionError completionBlock:(GOMClientOperationCallback)block;
 
@@ -28,9 +26,9 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
 - (void)_unregisterGOMObserverForBinding:(GOMBinding *)binding;
 - (void)_sendCommand:(NSDictionary *)commands;
 
-- (void)_handleGNPResponse:(NSDictionary* )response;
+- (void)_handleWebSocketMessage:(NSDictionary* )response;
 - (void)_handleInitialResponse:(NSDictionary *)response;
-- (void)_handleGNPFromResponse:(NSDictionary *)response;
+- (void)_handleGNPResponse:(NSDictionary *)response;
 - (void)_retrieveInitial:(GOMBinding *)binding;
 
 - (void)_reRegisterObservers;
@@ -42,6 +40,7 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
 @implementation GOMClient {
     SRWebSocket *_webSocket;
     NSString *_webSocketUri;
+    NSMutableDictionary *_priv_bindings;
 }
 
 - (id)initWithGomURI:(NSURL *)gomURI delegate:(id<GOMClientDelegate>)delegate
@@ -59,11 +58,6 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
 - (void)dealloc
 {
     [self disconnectWebsocket];
-}
-
-- (void)setDelegate:(id<GOMClientDelegate>)delegate
-{
-    _delegate = delegate;
 }
 
 - (NSDictionary *)bindings
@@ -129,7 +123,7 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
 }
 
 - (NSURLRequest *)_createRequestWithPath:(NSString *)path method:(NSString *)method headerFields:(NSDictionary *)headerFields payloadData:(NSData *)payloadData {
-    NSURL *requestURL = [_gomRoot URLByAppendingPathComponent:path];
+    NSURL *requestURL = [self.gomRoot URLByAppendingPathComponent:path];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:requestURL];
     [request setHTTPMethod:method];
     
@@ -226,21 +220,21 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
     }
 }
 
-- (void)_handleGNPResponse:(NSDictionary* )response
+- (void)_handleWebSocketMessage:(NSDictionary* )response
 {
     if (response[@"initial"]) {
         [self _handleInitialResponse:response];
     } else if (response[@"payload"]) {
-        [self _handleGNPFromResponse:response];
+        [self _handleGNPResponse:response];
     }
 }
 
 - (void)_handleInitialResponse:(NSDictionary *)response
 {
     NSString *payloadString = response[@"initial"];
-    NSMutableDictionary *payload = [payloadString parseAsJSON];
     
     if (payloadString) {
+        NSMutableDictionary *payload = [payloadString parseAsJSON];
         NSString *path = response[@"path"];
         GOMBinding *binding = _priv_bindings[path];
         if (binding) {
@@ -249,12 +243,12 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
     }
 }
 
-- (void)_handleGNPFromResponse:(NSDictionary *)response
+- (void)_handleGNPResponse:(NSDictionary *)response
 {
-    NSMutableDictionary *operation = nil;
     NSString *payloadString = response[@"payload"];
     
     if (payloadString) {
+        NSMutableDictionary *operation = nil;
         NSMutableDictionary *payload = [payloadString parseAsJSON];
         if (payload[@"create"]) {
             operation = payload [@"create"];
@@ -270,7 +264,6 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
         }
     }
 }
-
 
 - (void)_retrieveInitial:(GOMBinding *)binding
 {
@@ -374,7 +367,7 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
         [self.delegate gomClientDidBecomeReady:self];
     }
     
-    if (self.bindings.count > 0) {
+    if (_priv_bindings.count > 0) {
         [self _reRegisterObservers];
     }
 }
@@ -392,10 +385,10 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message;
 {
     NSString *messageString = (NSString *)message;
-    NSMutableDictionary *response = [messageString parseAsJSON];
+    NSMutableDictionary *messageDictionary = [messageString parseAsJSON];
     
-    if (response) {
-        [self _handleGNPResponse:response];
+    if (messageDictionary) {
+        [self _handleWebSocketMessage:messageDictionary];
     }
 }
 

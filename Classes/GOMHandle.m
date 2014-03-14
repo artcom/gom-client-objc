@@ -30,7 +30,7 @@
 
 - (void)fireInitialCallbackWithObject:(id)object
 {
-    if (_initialRetrieved == NO) {
+    if (self.initialRetrieved == NO) {
         if (self.callback) {
             self.callback(object);
         }
