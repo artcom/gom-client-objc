@@ -1,5 +1,25 @@
 # gom-client-objc CHANGELOG
 
+## 0.5.0
+
+- Added new methods to `GOMClientDelegate` protocol:
+
+    ```objective-c
+    - (BOOL)gomClientShouldReconnect:(GOMClient *)gomClient
+    - (BOOL)gomClient:(GOMClient *)gomClient shouldReRegisterObserverWithBinding:(GOMBinding *)binding;
+    ```
+
+    which get called when the client's websocket fails / reconnects to the GOM.
+
+- Private methods are public now:
+    
+    ```objective-c
+    - (void)disconnectWebSocket
+    - (void)reconnectWebSocket
+    ```
+
+- Improved unit tests
+
 
 ## 0.3.7
 

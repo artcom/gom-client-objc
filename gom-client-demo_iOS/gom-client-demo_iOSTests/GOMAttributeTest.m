@@ -66,13 +66,13 @@ NSString * const ATTRIB_VALUE = @"value1";
 - (void)testGOMAttributeCheckIsAttributeFail
 {
     BOOL result = [GOMAttribute isAttribute:self.noAttributeDictionary];
-    XCTAssertFalse(result, @"The result should be false.");
+    XCTAssertFalse(result, @"The dictionary should contain no valid gom attribute data.");
 }
 
 - (void)testGOMAttributeCheckIsAttributeSuccess
 {
     BOOL result = [GOMAttribute isAttribute:self.attributeDictionary];
-    XCTAssertTrue(result, @"The result should be true.");
+    XCTAssertTrue(result, @"The dictionary should contain valid gom attribute data.");
 }
 
 - (void)testGOMAttributeNoAttribute

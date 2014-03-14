@@ -97,13 +97,13 @@ NSString * const NODE_ATTRIBUTE_1_VALUE = @"value1";
 - (void)testGOMNodeCheckIsNodeFail
 {
     BOOL result = [GOMNode isNode:self.noNodeDictionary];
-    XCTAssertFalse(result, @"The result should be false.");
+    XCTAssertFalse(result, @"The dictionary should contain no valid gom node data.");
 }
 
 - (void)testGOMNodeCheckIsNodeSuccess
 {
     BOOL result = [GOMNode isNode:self.nodeDictionary];
-    XCTAssertTrue(result, @"The result should be true.");
+    XCTAssertTrue(result, @"The dictionary should contain valid gom node data.");
 }
 
 - (void)testGOMNodeNoNode

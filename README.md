@@ -31,9 +31,11 @@ GOMClient *gomClient = [[GOMClient alloc] initWithGomURI:gomURI delegate:self];
 As soon as the GOMClient object is initialized and completely set up it will communicate its state through the `GOMClientDelegate` protocol method ```- (void)gomClientDidBecomeReady:(GOMClient *)gomClient``` returning a reference of the GOMClient object in question.
 
 #### Errorhandling
+
 Errors that occur during GOM requests are passed to the sender through the completion blocks of the respective methods.
 
 Fundamental errors are returned to the delegate through the `GOMClientDelegate` protocol method ```- (void)gomClient:(GOMClient *)gomClient didFailWithError:(NSError *)error```
+
 
 ### RESTful operations
 
@@ -331,6 +333,15 @@ If the response dictionaries from the GOM are to cumbersome to handle you can us
     ```objective-c
     GOMNode *node = [GOMNode nodeFromDictionary:response];
     ```
+
+### Handling websocket reconnects
+
+If the gom client's websocket fails it sends the delegate the message ```- (BOOL)gomClientShouldReconnect:(GOMClient *)gomClient```. Return `YES` to reconnect. You can also trigger the reconnect later by calling ```- (void)reconnectWebSocket```.
+
+When the gom client reconnects and finds existing bindings it sends the delegate the message ```- (BOOL)gomClient:(GOMClient *)gomClient shouldReRegisterObserverWithBinding:(GOMBinding *)binding```. Return `YES` to re-register an observer for the path in question.
+Re-registration will be silent, no initial GNP will be received. Return `NO`to discard all existing bindings.
+If the method is not implemented all bindings will be discarded.
+
 
 ## Setting up for client development
 
