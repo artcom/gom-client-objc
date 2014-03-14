@@ -341,7 +341,7 @@ If the gom client's websocket fails it sends the delegate the message ```- (BOOL
 When the gom client reconnects and finds existing bindings it sends the delegate the message ```- (BOOL)gomClient:(GOMClient *)gomClient shouldReRegisterObserverWithBinding:(GOMBinding *)binding```. 
 
 Return `YES` to re-register an observer for the path in question.
-Re-registration will be silent, no initial GNP will be received. Return `NO`to discard the existing binding.
+Re-registration will be silent, no initial GNP will be received. Return `NO` to discard the existing binding.
 
 If the method is not implemented all bindings will be discarded.
 
