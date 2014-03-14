@@ -18,6 +18,7 @@
 
 @optional
 
+- (BOOL)gomClientShouldReconnect:(GOMClient *)gomClient;
 - (BOOL)gomClient:(GOMClient *)gomClient shouldReRegisterObserverWithBinding:(GOMBinding *)binding;
 
 @end
