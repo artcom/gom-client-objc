@@ -1,6 +1,6 @@
 # gom-client-objc CHANGELOG
 
-## X.X.X
+## 0.5.0
 
 - Added methods to `GOMClientDelegate` protocol:
 
