@@ -248,14 +248,14 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
     NSString *payloadString = response[@"payload"];
     
     if (payloadString) {
-        NSMutableDictionary *operation = nil;
+        NSDictionary *operation = nil;
         NSMutableDictionary *payload = [payloadString parseAsJSON];
         if (payload[@"create"]) {
-            operation = payload [@"create"];
+            operation = @{@"create" : payload [@"create"]};
         } else if (payload[@"update"]) {
-            operation = payload[@"update"];
+            operation = @{@"update" : payload[@"update"]};
         } else if (payload[@"delete"]) {
-            operation = payload[@"delete"];
+            operation = @{@"delete" : payload[@"delete"]};
         }
         NSString *path = response[@"path"];
         GOMBinding *binding = _priv_bindings[path];

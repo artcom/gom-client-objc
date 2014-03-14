@@ -1,5 +1,12 @@
 # gom-client-objc CHANGELOG
 
+## 0.5.1
+
+- Fixed GNP handling. Response dictionaries have top-level key named after operation:
+    - create
+    - update
+    - delete
+
 ## 0.5.0
 
 - Added new methods to `GOMClientDelegate` protocol:
