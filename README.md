@@ -338,8 +338,11 @@ If the response dictionaries from the GOM are to cumbersome to handle you can us
 
 If the gom client's websocket fails it sends the delegate the message ```- (BOOL)gomClientShouldReconnect:(GOMClient *)gomClient```. Return `YES` to reconnect. You can also trigger the reconnect later by calling ```- (void)reconnectWebSocket```.
 
-When the gom client reconnects and finds existing bindings it sends the delegate the message ```- (BOOL)gomClient:(GOMClient *)gomClient shouldReRegisterObserverWithBinding:(GOMBinding *)binding```. Return `YES` to re-register an observer for the path in question.
-Re-registration will be silent, no initial GNP will be received. Return `NO`to discard all existing bindings.
+When the gom client reconnects and finds existing bindings it sends the delegate the message ```- (BOOL)gomClient:(GOMClient *)gomClient shouldReRegisterObserverWithBinding:(GOMBinding *)binding```. 
+
+Return `YES` to re-register an observer for the path in question.
+Re-registration will be silent, no initial GNP will be received. Return `NO`to discard the existing binding.
+
 If the method is not implemented all bindings will be discarded.
 
 
