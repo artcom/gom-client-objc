@@ -63,9 +63,7 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
 
 - (void)setDelegate:(id<GOMClientDelegate>)delegate
 {
-    [self disconnectWebsocket];
     _delegate = delegate;
-    [self reconnectWebsocket];
 }
 
 - (NSDictionary *)bindings
