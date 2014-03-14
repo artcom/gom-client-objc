@@ -2,7 +2,7 @@
 
 ## 0.5.0
 
-- Added methods to `GOMClientDelegate` protocol:
+- Added new methods to `GOMClientDelegate` protocol:
 
     ```objective-c
     - (BOOL)gomClientShouldReconnect:(GOMClient *)gomClient
