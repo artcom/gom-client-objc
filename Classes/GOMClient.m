@@ -251,11 +251,11 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
         NSDictionary *operation = nil;
         NSMutableDictionary *payload = [payloadString parseAsJSON];
         if (payload[@"create"]) {
-            operation = @{@"create" : payload [@"create"]};
+            operation = [payload dictionaryWithValuesForKeys:@[@"create"]];
         } else if (payload[@"update"]) {
-            operation = @{@"update" : payload[@"update"]};
+            operation = [payload dictionaryWithValuesForKeys:@[@"update"]];
         } else if (payload[@"delete"]) {
-            operation = @{@"delete" : payload[@"delete"]};
+            operation = [payload dictionaryWithValuesForKeys:@[@"delete"]];
         }
         NSString *path = response[@"path"];
         GOMBinding *binding = _priv_bindings[path];
