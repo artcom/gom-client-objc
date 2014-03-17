@@ -234,11 +234,17 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
     NSString *payloadString = response[@"initial"];
     
     if (payloadString) {
-        NSMutableDictionary *payload = [payloadString parseAsJSON];
+        NSMutableDictionary *gnpDictionary = [[NSMutableDictionary alloc] init];
+        NSDictionary *parsedPayload = [payloadString parseAsJSON];
+        gnpDictionary[@"payload"] = parsedPayload;
+        gnpDictionary[@"event_type"] = @"initial";
+        
         NSString *path = response[@"path"];
+        gnpDictionary[@"path"] = path;
+        
         GOMBinding *binding = _priv_bindings[path];
         if (binding) {
-            [binding fireInitialCallbacksWithObject:payload];
+            [binding fireInitialCallbacksWithObject:gnpDictionary];
         }
     }
 }
@@ -248,19 +254,25 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
     NSString *payloadString = response[@"payload"];
     
     if (payloadString) {
-        NSDictionary *operation = nil;
-        NSMutableDictionary *payload = [payloadString parseAsJSON];
-        if (payload[@"create"]) {
-            operation = [payload dictionaryWithValuesForKeys:@[@"create"]];
-        } else if (payload[@"update"]) {
-            operation = [payload dictionaryWithValuesForKeys:@[@"update"]];
-        } else if (payload[@"delete"]) {
-            operation = [payload dictionaryWithValuesForKeys:@[@"delete"]];
+        NSMutableDictionary *gnpDictionary = [[NSMutableDictionary alloc] init];
+        NSDictionary *parsedPayload = [payloadString parseAsJSON];
+        if (parsedPayload[@"create"]) {
+            gnpDictionary[@"payload"] = parsedPayload[@"create"];
+            gnpDictionary[@"event_type"] = @"create";
+        } else if (parsedPayload[@"update"]) {
+            gnpDictionary[@"payload"] = parsedPayload[@"update"];
+            gnpDictionary[@"event_type"] = @"update";
+        } else if (parsedPayload[@"delete"]) {
+            gnpDictionary[@"payload"] = parsedPayload[@"delete"];
+            gnpDictionary[@"event_type"] = @"delete";
         }
+                   
         NSString *path = response[@"path"];
+        gnpDictionary[@"path"] = path;
+                   
         GOMBinding *binding = _priv_bindings[path];
-        if (operation && binding) {
-            [binding fireCallbacksWithObject:operation];
+        if (gnpDictionary[@"payload"] && binding) {
+            [binding fireCallbacksWithObject:gnpDictionary];
         }
     }
 }

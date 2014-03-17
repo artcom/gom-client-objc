@@ -302,13 +302,19 @@ Fundamental errors are returned to the delegate through the `GOMClientDelegate` 
     The first GOM notifcation is received immediately:
     
     ```
-    {attribute = {
-        ctime = "2013-12-29T18:00:27+01:00";
-        mtime = "2013-12-29T18:00:27+01:00";
-        name = "attribute_2";
-        node = "/tests/node_1";
-        type = string;
-        value = 20;
+    {
+        event_type = "initial"
+        path = "/tests/node_1:attribute_2"
+        payload = {
+            attribute = {
+                ctime = "2013-12-29T18:00:27+01:00";
+                mtime = "2013-12-29T18:00:27+01:00";
+                name = "attribute_2";
+                node = "/tests/node_1";
+                type = string;
+                value = 20;
+            }
+        }
     }}
     ```
 
@@ -405,8 +411,3 @@ List with observers - registered observers will appear in the table above. Each 
 Deleting an observer - just swipe to the left and the 'Delete' button appears:
 
 ![Deleting a GOM observer](https://github.com/artcom/gom-client-objc/raw/master/documentation/images/screenshots/7_deleting_observer.png)
-
-
-Receiving GNP data - when ever a GOM value changes the demo app will receive and display the GNP data:
-
-![Displaying received GNP data](https://github.com/artcom/gom-client-objc/raw/master/documentation/images/screenshots/8_receiving_GNP_data.png)
