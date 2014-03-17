@@ -145,17 +145,17 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
         error = connectionError;
     } else {
         NSInteger statusCode = ((NSHTTPURLResponse *)response).statusCode;
-        if (statusCode == 200) {
+        
+        if (statusCode >= 400) {
+            NSDictionary *userInfo = @{NSLocalizedDescriptionKey : [NSHTTPURLResponse localizedStringForStatusCode:statusCode]};
+            error = [NSError errorWithDomain:GOMClientErrorDomain code:statusCode userInfo:userInfo];
+        } else if (statusCode >= 200) {
             if (data) {
                 responseData = [data parseAsJSON];
             }
             if (responseData == nil) {
                 responseData = @{@"success" : @YES};
             }
-        } else if (statusCode >= 400) {
-            
-            NSDictionary *userInfo = @{NSLocalizedDescriptionKey : [NSHTTPURLResponse localizedStringForStatusCode:statusCode]};
-            error = [NSError errorWithDomain:GOMClientErrorDomain code:statusCode userInfo:userInfo];
         }
     }
     
@@ -266,10 +266,10 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
             gnpDictionary[@"payload"] = parsedPayload[@"delete"];
             gnpDictionary[@"event_type"] = @"delete";
         }
-                   
+        
         NSString *path = response[@"path"];
         gnpDictionary[@"path"] = path;
-                   
+        
         GOMBinding *binding = _priv_bindings[path];
         if (gnpDictionary[@"payload"] && binding) {
             [binding fireCallbacksWithObject:gnpDictionary];
