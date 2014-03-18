@@ -281,7 +281,11 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
 {
     [self retrieve:binding.subscriptionUri completionBlock:^(NSDictionary *response, NSError *error) {
         if (response) {
-            [binding fireInitialCallbacksWithObject:response];
+            NSMutableDictionary *gnpDictionary = [[NSMutableDictionary alloc] init];
+            gnpDictionary[@"payload"] = response;
+            gnpDictionary[@"event_type"] = @"initial";
+            gnpDictionary[@"path"] = binding.subscriptionUri;
+            [binding fireInitialCallbacksWithObject:gnpDictionary];
         } else {
             [self _returnError:error];
         }
