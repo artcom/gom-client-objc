@@ -1,6 +1,6 @@
 //
 //  NSDate+XSDTIme.m
-//  Pods
+//  gom-client-objc
 //
 //  Created by Julian Krumow on 08.03.14.
 //  Copyright (c) 2014 ART+COM AG. All rights reserved.

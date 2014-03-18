@@ -1,6 +1,6 @@
 //
 //  GOMNode.h
-//  Pods
+//  gom-client-objc
 //
 //  Created by Julian Krumow on 04.03.14.
 //  Copyright (c) 2014 ART+COM AG. All rights reserved.
