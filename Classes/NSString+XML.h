@@ -1,15 +1,15 @@
 //
-//  NSDictionary+XML.h
+//  NSString+XML.h
 //  gom-client-objc
 //
-//  Created by Julian Krumow on 20.09.13.
+//  Created by Julian Krumow on 03.04.14.
 //  Copyright (c) 2013 ART+COM AG. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 
-@interface NSDictionary (XML)
+@interface NSString (XML)
 
-- (NSString *)convertToNodeXML;
+- (NSString *)convertToAttributeXML;
 
 @end

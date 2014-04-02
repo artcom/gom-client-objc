@@ -10,7 +10,7 @@
 
 @implementation NSDictionary (XML)
 
-- (NSString *)convertToXML
+- (NSString *)convertToNodeXML
 {
     NSString *result = @"";
     
@@ -28,6 +28,7 @@
              raise];
         }
     }
-    return result;
+    
+    return [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"UTF-8\"?><node>%@</node>", result];
 }
 @end
