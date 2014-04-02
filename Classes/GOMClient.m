@@ -80,7 +80,7 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
     if (attributes == nil) {
         attributes = @{};
     }
-    NSString *payload = [NSString stringWithFormat:@"<node>%@</node>", [attributes convertToXML]];
+    NSString *payload = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"UTF-8\"?><node>%@</node>", [attributes convertToXML]];
     NSData *payloadData = [payload dataUsingEncoding:NSUTF8StringEncoding];
     NSURLRequest *request = [self _createRequestWithPath:node method:@"POST" headerFields:@{@"Content-Type" : @"application/xml", @"Accept" : @"application/json"} payloadData:payloadData];
     
