@@ -12,10 +12,10 @@
 
 - (NSString *)convertToAttributeXML
 {
-    return [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"UTF-8\"?><attribute type=\"string\">%@</attribute>", [self xmlEscape]];
+    return [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"UTF-8\"?><attribute type=\"string\">%@</attribute>", [self escapedString]];
 }
 
-- (NSString *)xmlEscape
+- (NSString *)escapedString
 {
     NSMutableString *escapedString = [self mutableCopy];
     [escapedString replaceOccurrencesOfString:@"&"  withString:@"&amp;"  options:NSLiteralSearch range:NSMakeRange(0, [escapedString length])];

@@ -11,5 +11,5 @@
 @interface NSString (XML)
 
 - (NSString *)convertToAttributeXML;
-
+- (NSString *)escapedString;
 @end
