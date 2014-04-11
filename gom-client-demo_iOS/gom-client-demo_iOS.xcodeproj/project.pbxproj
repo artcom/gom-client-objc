@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1AB8C6774C084F6FBA106322 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 574A6296A73D4DABA8C575A8 /* libPods.a */; };
+		3B6CFCCE18F8771500F22551 /* GomClientTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B6CFCCD18F8771500F22551 /* GomClientTest.m */; };
 		3B779D041802B262007207B0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B779D031802B262007207B0 /* Foundation.framework */; };
 		3B779D061802B262007207B0 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B779D051802B262007207B0 /* CoreGraphics.framework */; };
 		3B779D081802B262007207B0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B779D071802B262007207B0 /* UIKit.framework */; };
@@ -41,6 +42,7 @@
 
 /* Begin PBXFileReference section */
 		2B1CE8DAE74F438DB3A24B15 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		3B6CFCCD18F8771500F22551 /* GomClientTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GomClientTest.m; sourceTree = "<group>"; };
 		3B779D001802B262007207B0 /* gom-client-demo_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "gom-client-demo_iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B779D031802B262007207B0 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		3B779D051802B262007207B0 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -160,6 +162,7 @@
 		3B779D2B1802B262007207B0 /* gom-client-demo_iOSTests */ = {
 			isa = PBXGroup;
 			children = (
+				3B6CFCCD18F8771500F22551 /* GomClientTest.m */,
 				3B893BC418CCA4C400F15B25 /* GOMAttributeTest.m */,
 				3B893BC518CCA4C400F15B25 /* GOMNodeTest.m */,
 				3B893BC818CCABFD00F15B25 /* DictionaryXMLTests.m */,
@@ -322,6 +325,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3B6CFCCE18F8771500F22551 /* GomClientTest.m in Sources */,
 				3B893BC618CCA4C400F15B25 /* GOMAttributeTest.m in Sources */,
 				3B893BC918CCABFD00F15B25 /* DictionaryXMLTests.m in Sources */,
 				3B893BC718CCA4C400F15B25 /* GOMNodeTest.m in Sources */,
