@@ -11,7 +11,6 @@
 #import "GOMClient.h"
 
 
-
 @interface GomClientTest : XCTAsyncTestCase
 
 @property (nonatomic, strong) NSURL *gomUri;
@@ -43,6 +42,9 @@ NSUInteger const STATUS_200 = 200;
 NSUInteger const STATUS_201 = 201;
 NSUInteger const STATUS_404 = 404;
 
+float const SLEEP = 1.0;
+float const TIMEOUT = 2.0;
+
 - (void)setUp
 {
     [super setUp];
@@ -67,7 +69,7 @@ NSUInteger const STATUS_404 = 404;
     static NSDictionary *_response = nil;
     
     [_gomClient updateAttribute:ATTRIBUTE_1_PATH withValue:ATTRIBUTE_1_VALUE completionBlock:^(NSDictionary *response, NSError *error) {
-        sleep(1.0);
+        sleep(SLEEP);
         
         _response = response;
         _error = error;
@@ -75,7 +77,7 @@ NSUInteger const STATUS_404 = 404;
         [self notify:kXCTUnitWaitStatusSuccess];
     }];
     
-    [self waitForStatus:kXCTUnitWaitStatusSuccess timeout:2.0];
+    [self waitForStatus:kXCTUnitWaitStatusSuccess timeout:TIMEOUT];
     
     XCTAssertNil(_error, @"Error object must be nil.");
     XCTAssertNotNil(_response, @"Response dictionary must not be nil.");
@@ -94,7 +96,7 @@ NSUInteger const STATUS_404 = 404;
     
     NSDictionary *attributes = @{ ATTRIBUTE_2_NAME : ATTRIBUTE_2_VALUE };
     [_gomClient updateNode:NODE_1_PATH withAttributes:attributes completionBlock:^(NSDictionary *response, NSError *error) {
-        sleep(1.0);
+        sleep(SLEEP);
         
         _response = response;
         _error = error;
@@ -102,7 +104,7 @@ NSUInteger const STATUS_404 = 404;
         [self notify:kXCTUnitWaitStatusSuccess];
     }];
     
-    [self waitForStatus:kXCTUnitWaitStatusSuccess timeout:2.0];
+    [self waitForStatus:kXCTUnitWaitStatusSuccess timeout:TIMEOUT];
     
     XCTAssertNil(_error, @"Error object must be nil.");
     XCTAssertNotNil(_response, @"Response dictionary must not be nil.");
@@ -120,7 +122,7 @@ NSUInteger const STATUS_404 = 404;
     static NSDictionary *_response = nil;
     
     [_gomClient retrieve:NODE_1_PATH completionBlock:^(NSDictionary *response, NSError *error) {
-        sleep(1.0);
+        sleep(SLEEP);
         
         _response = response;
         _error = error;
@@ -128,7 +130,7 @@ NSUInteger const STATUS_404 = 404;
         [self notify:kXCTUnitWaitStatusSuccess];
     }];
     
-    [self waitForStatus:kXCTUnitWaitStatusSuccess timeout:2.0];
+    [self waitForStatus:kXCTUnitWaitStatusSuccess timeout:TIMEOUT];
     
     XCTAssertNil(_error, @"Error object must be nil.");
     XCTAssertNotNil(_response, @"Response dictionary must not be nil.");
@@ -148,7 +150,7 @@ NSUInteger const STATUS_404 = 404;
     static NSDictionary *_response = nil;
     
     [_gomClient retrieve:NODE_X_PATH completionBlock:^(NSDictionary *response, NSError *error) {
-        sleep(1.0);
+        sleep(SLEEP);
         
         _response = response;
         _error = error;
@@ -156,7 +158,7 @@ NSUInteger const STATUS_404 = 404;
         [self notify:kXCTUnitWaitStatusSuccess];
     }];
     
-    [self waitForStatus:kXCTUnitWaitStatusSuccess timeout:2.0];
+    [self waitForStatus:kXCTUnitWaitStatusSuccess timeout:TIMEOUT];
     
     XCTAssertNil(_response, @"Response dictionary must be nil.");
     XCTAssertNotNil(_error, @"Error object must not be nil.");
@@ -171,7 +173,7 @@ NSUInteger const STATUS_404 = 404;
     [self prepare];
     
     [_gomClient retrieve:ATTRIBUTE_1_PATH completionBlock:^(NSDictionary *response, NSError *error) {
-        sleep(1.0);
+        sleep(SLEEP);
         
         _response = response;
         _error = error;
@@ -179,7 +181,7 @@ NSUInteger const STATUS_404 = 404;
         [self notify:kXCTUnitWaitStatusSuccess];
     }];
     
-    [self waitForStatus:kXCTUnitWaitStatusSuccess timeout:2.0];
+    [self waitForStatus:kXCTUnitWaitStatusSuccess timeout:TIMEOUT];
     
     XCTAssertNil(_error, @"Error object must be nil.");
     XCTAssertNotNil(_response, @"Response dictionary must not be nil.");
@@ -201,7 +203,7 @@ NSUInteger const STATUS_404 = 404;
     [self prepare];
     
     [_gomClient retrieve:ATTRIBUTE_X_PATH completionBlock:^(NSDictionary *response, NSError *error) {
-        sleep(1.0);
+        sleep(SLEEP);
         
         _response = response;
         _error = error;
@@ -209,7 +211,7 @@ NSUInteger const STATUS_404 = 404;
         [self notify:kXCTUnitWaitStatusSuccess];
     }];
     
-    [self waitForStatus:kXCTUnitWaitStatusSuccess timeout:2.0];
+    [self waitForStatus:kXCTUnitWaitStatusSuccess timeout:TIMEOUT];
     
     XCTAssertNil(_response, @"Response dictionary must be nil.");
     XCTAssertNotNil(_error, @"Error object must not be nil.");
@@ -224,7 +226,7 @@ NSUInteger const STATUS_404 = 404;
     [self prepare];
 
     [_gomClient destroy:ATTRIBUTE_2_PATH completionBlock:^(NSDictionary *response, NSError *error) {
-        sleep(1.0);
+        sleep(SLEEP);
         
         _response = response;
         _error = error;
@@ -232,7 +234,7 @@ NSUInteger const STATUS_404 = 404;
         [self notify:kXCTUnitWaitStatusSuccess];
     }];
     
-    [self waitForStatus:kXCTUnitWaitStatusSuccess timeout:2.0];
+    [self waitForStatus:kXCTUnitWaitStatusSuccess timeout:TIMEOUT];
     
     XCTAssertNil(_error, @"Error object must be nil.");
     XCTAssertNotNil(_response, @"Response dictionary must not be nil.");
@@ -249,7 +251,7 @@ NSUInteger const STATUS_404 = 404;
     [self prepare];
     
     [_gomClient destroy:NODE_1_PATH completionBlock:^(NSDictionary *response, NSError *error) {
-        sleep(1.0);
+        sleep(SLEEP);
         
         _response = response;
         _error = error;
@@ -257,7 +259,7 @@ NSUInteger const STATUS_404 = 404;
         [self notify:kXCTUnitWaitStatusSuccess];
     }];
     
-    [self waitForStatus:kXCTUnitWaitStatusSuccess timeout:2.0];
+    [self waitForStatus:kXCTUnitWaitStatusSuccess timeout:TIMEOUT];
     
     XCTAssertNil(_error, @"Error object must be nil.");
     XCTAssertNotNil(_response, @"Response dictionary must not be nil.");
