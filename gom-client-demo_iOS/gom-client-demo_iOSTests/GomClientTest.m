@@ -41,6 +41,7 @@ NSString * const ATTRIBUTE_X_PATH = @"/tests/node_1:attribute_x";
 
 NSUInteger const STATUS_200 = 200;
 NSUInteger const STATUS_201 = 201;
+NSUInteger const STATUS_404 = 404;
 
 - (void)setUp
 {
@@ -159,7 +160,7 @@ NSUInteger const STATUS_201 = 201;
     
     XCTAssertNil(_response, @"Response dictionary must be nil.");
     XCTAssertNotNil(_error, @"Error object must not be nil.");
-    XCTAssertTrue(_error.code == 404, @"Error code must be 404");
+    XCTAssertTrue(_error.code == STATUS_404, @"Error code must be 404");
 }
 
 - (void)testRetrieveAttribute
@@ -212,7 +213,7 @@ NSUInteger const STATUS_201 = 201;
     
     XCTAssertNil(_response, @"Response dictionary must be nil.");
     XCTAssertNotNil(_error, @"Error object must not be nil.");
-    XCTAssertTrue(_error.code == 404, @"Error code must be 404");
+    XCTAssertTrue(_error.code == STATUS_404, @"Error code must be 404");
 }
 
 - (void)testDeleteAttribute
