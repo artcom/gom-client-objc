@@ -84,76 +84,29 @@ float const TIMEOUT = 2.0;
     [super tearDown];
 }
 
-- (void)testUpdateAttribute
+- (void)testUpdateRetrieveNode
 {
     [self prepare];
     
-    static NSError *_error = nil;
-    static NSDictionary *_response = nil;
-    
-    [_gomClient updateAttribute:ATTRIBUTE_1_1_PATH withValue:ATTRIBUTE_1_1_VALUE completionBlock:^(NSDictionary *response, NSError *error) {
-        sleep(SLEEP);
-        
-        _response = response;
-        _error = error;
-        
-        [self notify:kXCTUnitWaitStatusSuccess];
-    }];
-    
-    [self waitForStatus:kXCTUnitWaitStatusSuccess timeout:TIMEOUT];
-    
-    XCTAssertNil(_error, @"Error object must be nil.");
-    XCTAssertNotNil(_response, @"Response dictionary must not be nil.");
-    XCTAssertNotNil(_response[@"status"], @"There must be a status entry in the response dictionary.");
-    NSNumber *statusCode = _response[@"status"];
-    NSUInteger code = statusCode.integerValue;
-    XCTAssertTrue(code == STATUS_200 || code == STATUS_201, @"Status code must be 200 or 201.");
-}
+    static NSError *_retrieveError = nil;
+    static NSDictionary *_retrieveResponse = nil;
+    static NSError *_updateError = nil;
+    static NSDictionary *_updateResponse = nil;
 
-- (void)testUpdateNodeWithAttribute
-{
-    [self prepare];
-    
-    static NSError *_error = nil;
-    static NSDictionary *_response = nil;
     
     NSDictionary *attributes = @{ ATTRIBUTE_1_2_NAME : ATTRIBUTE_1_2_VALUE };
     [_gomClient updateNode:NODE_1_PATH withAttributes:attributes completionBlock:^(NSDictionary *response, NSError *error) {
-        sleep(SLEEP);
         
-        _response = response;
-        _error = error;
-        
-        [self notify:kXCTUnitWaitStatusSuccess];
-    }];
-    
-    [self waitForStatus:kXCTUnitWaitStatusSuccess timeout:TIMEOUT];
-    
-    XCTAssertNil(_error, @"Error object must be nil.");
-    XCTAssertNotNil(_response, @"Response dictionary must not be nil.");
-    XCTAssertNotNil(_response[@"status"], @"There must be a status entry in the response dictionary.");
-    NSNumber *statusCode = _response[@"status"];
-    NSUInteger code = statusCode.integerValue;
-    XCTAssertTrue(code == STATUS_200 || code == STATUS_201, @"Status code must be 200 or 201.");
-}
-
-- (void)testRetrieveNode
-{
-    [self prepare];
-    
-    static NSError *_error = nil;
-    static NSDictionary *_response = nil;
-    
-    NSDictionary *attributes = @{ ATTRIBUTE_1_2_NAME : ATTRIBUTE_1_2_VALUE };
-    [_gomClient updateNode:NODE_1_PATH withAttributes:attributes completionBlock:^(NSDictionary *response, NSError *error) {
+        _updateResponse = response;
+        _updateError = error;
         
         if (response) {
             
             [_gomClient retrieve:NODE_1_PATH completionBlock:^(NSDictionary *response, NSError *error) {
                 sleep(SLEEP);
                 
-                _response = response;
-                _error = error;
+                _retrieveResponse = response;
+                _retrieveError = error;
                 
                 [self notify:kXCTUnitWaitStatusSuccess];
             }];
@@ -163,14 +116,21 @@ float const TIMEOUT = 2.0;
     
     [self waitForStatus:kXCTUnitWaitStatusSuccess timeout:TIMEOUT];
     
-    XCTAssertNil(_error, @"Error object must be nil.");
-    XCTAssertNotNil(_response, @"Response dictionary must not be nil.");
+    XCTAssertNil(_updateError, @"Error object must be nil.");
+    XCTAssertNotNil(_updateResponse, @"Response dictionary must not be nil.");
+    XCTAssertNotNil(_updateResponse[@"status"], @"There must be a status entry in the response dictionary.");
+    NSNumber *statusCode = _updateResponse[@"status"];
+    NSUInteger code = statusCode.integerValue;
+    XCTAssertTrue(code == STATUS_200 || code == STATUS_201, @"Status code must be 200 or 201.");
     
-    XCTAssertNotNil(_response[@"node"], @"Node entry must not be nil.");
-    XCTAssertNotNil([_response valueForKeyPath:@"node.ctime"], @"node.ctime should not be nil.");
-    XCTAssertNotNil([_response valueForKeyPath:@"node.mtime"], @"node.mtime should not be nil.");
-    XCTAssertTrue([[_response valueForKeyPath:@"node.uri"] isEqualToString:NODE_1_PATH], @"node.uri should be equal to the reference value.");
-    XCTAssertEqual([[_response valueForKeyPath:@"node.entries"] count], 2, @"There should be two objects in the node's entries list.");
+    XCTAssertNil(_retrieveError, @"Error object must be nil.");
+    XCTAssertNotNil(_retrieveResponse, @"Response dictionary must not be nil.");
+    
+    XCTAssertNotNil(_retrieveResponse[@"node"], @"Node entry must not be nil.");
+    XCTAssertNotNil([_retrieveResponse valueForKeyPath:@"node.ctime"], @"node.ctime should not be nil.");
+    XCTAssertNotNil([_retrieveResponse valueForKeyPath:@"node.mtime"], @"node.mtime should not be nil.");
+    XCTAssertTrue([[_retrieveResponse valueForKeyPath:@"node.uri"] isEqualToString:NODE_1_PATH], @"node.uri should be equal to the reference value.");
+    XCTAssertEqual([[_retrieveResponse valueForKeyPath:@"node.entries"] count], 2, @"There should be two objects in the node's entries list.");
 }
 
 - (void)testRetrieveNodeNonexistent
@@ -196,22 +156,27 @@ float const TIMEOUT = 2.0;
     XCTAssertTrue(_error.code == STATUS_404, @"Error code must be 404");
 }
 
-- (void)testRetrieveAttribute
+- (void)testUpdateRetrieveAttribute
 {
-    static NSError *_error = nil;
-    static NSDictionary *_response = nil;
+    static NSError *_retrieveError = nil;
+    static NSDictionary *_retrieveResponse = nil;
+    static NSError *_updateError = nil;
+    static NSDictionary *_updateResponse = nil;
     
     [self prepare];
     
     [_gomClient updateAttribute:ATTRIBUTE_1_1_PATH withValue:ATTRIBUTE_1_1_VALUE completionBlock:^(NSDictionary *response, NSError *error) {
+        
+        _updateResponse = response;
+        _updateError = error;
         
         if (response) {
             
             [_gomClient retrieve:ATTRIBUTE_1_1_PATH completionBlock:^(NSDictionary *response, NSError *error) {
                 sleep(SLEEP);
                 
-                _response = response;
-                _error = error;
+                _retrieveResponse = response;
+                _retrieveError = error;
                 
                 [self notify:kXCTUnitWaitStatusSuccess];
             }];
@@ -222,16 +187,24 @@ float const TIMEOUT = 2.0;
     
     [self waitForStatus:kXCTUnitWaitStatusSuccess timeout:TIMEOUT];
     
-    XCTAssertNil(_error, @"Error object must be nil.");
-    XCTAssertNotNil(_response, @"Response dictionary must not be nil.");
+    XCTAssertNil(_updateError, @"Error object must be nil.");
+    XCTAssertNotNil(_updateResponse, @"Response dictionary must not be nil.");
+    XCTAssertNotNil(_updateResponse[@"status"], @"There must be a status entry in the response dictionary.");
+    NSNumber *statusCode = _updateResponse[@"status"];
+    NSUInteger code = statusCode.integerValue;
+    XCTAssertTrue(code == STATUS_200 || code == STATUS_201, @"Status code must be 200 or 201.");
+
     
-    XCTAssertNotNil(_response[@"attribute"], @"Attribute entry must not be nil.");
-    XCTAssertNotNil([_response valueForKeyPath:@"attribute.ctime"], @"attribute.ctime should not be nil.");
-    XCTAssertNotNil([_response valueForKeyPath:@"attribute.mtime"], @"attribute.mtime should not be nil.");
-    XCTAssertTrue([[_response valueForKeyPath:@"attribute.node"] isEqualToString:NODE_1_PATH], @"node.uri should be equal to the reference value.");
-    XCTAssertTrue([[_response valueForKeyPath:@"attribute.type"] isEqualToString:ATTRIBUTE_1_1_TYPE], @"attribute.type should be equal to the reference value.");
-    XCTAssertTrue([[_response valueForKeyPath:@"attribute.name"] isEqualToString:ATTRIBUTE_1_1_NAME], @"attribute.name should be equal to the reference value.");
-    XCTAssertTrue([[_response valueForKeyPath:@"attribute.value"] isEqualToString:ATTRIBUTE_1_1_VALUE], @"attribute.value should be equal to the reference value.");
+    XCTAssertNil(_retrieveError, @"Error object must be nil.");
+    XCTAssertNotNil(_retrieveResponse, @"Response dictionary must not be nil.");
+    
+    XCTAssertNotNil(_retrieveResponse[@"attribute"], @"Attribute entry must not be nil.");
+    XCTAssertNotNil([_retrieveResponse valueForKeyPath:@"attribute.ctime"], @"attribute.ctime should not be nil.");
+    XCTAssertNotNil([_retrieveResponse valueForKeyPath:@"attribute.mtime"], @"attribute.mtime should not be nil.");
+    XCTAssertTrue([[_retrieveResponse valueForKeyPath:@"attribute.node"] isEqualToString:NODE_1_PATH], @"node.uri should be equal to the reference value.");
+    XCTAssertTrue([[_retrieveResponse valueForKeyPath:@"attribute.type"] isEqualToString:ATTRIBUTE_1_1_TYPE], @"attribute.type should be equal to the reference value.");
+    XCTAssertTrue([[_retrieveResponse valueForKeyPath:@"attribute.name"] isEqualToString:ATTRIBUTE_1_1_NAME], @"attribute.name should be equal to the reference value.");
+    XCTAssertTrue([[_retrieveResponse valueForKeyPath:@"attribute.value"] isEqualToString:ATTRIBUTE_1_1_VALUE], @"attribute.value should be equal to the reference value.");
 }
 
 - (void)testRetrieveAttributeNonexistent
@@ -257,10 +230,12 @@ float const TIMEOUT = 2.0;
     XCTAssertTrue(_error.code == STATUS_404, @"Error code must be 404");
 }
 
-- (void)testDeleteAttribute
+- (void)testDestroyAttribute
 {
-    static NSError *_error = nil;
-    static NSDictionary *_response = nil;
+    static NSError *_destroyError = nil;
+    static NSDictionary *_destroyResponse = nil;
+    static NSError *_retrieveError = nil;
+    static NSDictionary *_retrieveResponse = nil;
     
     [self prepare];
     
@@ -272,27 +247,40 @@ float const TIMEOUT = 2.0;
             [_gomClient destroy:ATTRIBUTE_2_2_PATH completionBlock:^(NSDictionary *response, NSError *error) {
                 sleep(SLEEP);
                 
-                _response = response;
-                _error = error;
+                _destroyResponse = response;
+                _destroyError = error;
                 
-                [self notify:kXCTUnitWaitStatusSuccess];
+                [_gomClient retrieve:ATTRIBUTE_2_2_PATH completionBlock:^(NSDictionary *response, NSError *error) {
+                    
+                    _retrieveResponse = response;
+                    _retrieveError = error;
+                    
+                    [self notify:kXCTUnitWaitStatusSuccess];
+                }];
+                
             }];
         }
     }];
     
     [self waitForStatus:kXCTUnitWaitStatusSuccess timeout:TIMEOUT];
     
-    XCTAssertNil(_error, @"Error object must be nil.");
-    XCTAssertNotNil(_response, @"Response dictionary must not be nil.");
-    XCTAssertNotNil(_response[@"success"], @"There must be a success entry in the response dictionary.");
-    NSNumber *statusCode = _response[@"success"];
+    XCTAssertNil(_destroyError, @"Error object must be nil.");
+    XCTAssertNotNil(_destroyResponse, @"Response dictionary must not be nil.");
+    XCTAssertNotNil(_destroyResponse[@"success"], @"There must be a success entry in the response dictionary.");
+    NSNumber *statusCode = _destroyResponse[@"success"];
     XCTAssertTrue(statusCode.boolValue, @"Success entry must be true.");
+    
+    XCTAssertNil(_retrieveResponse, @"Response dictionary must be nil.");
+    XCTAssertNotNil(_retrieveError, @"Error object must not be nil.");
+    XCTAssertTrue(_retrieveError.code == STATUS_404, @"Error code must be 404");
 }
 
-- (void)testDeleteNode
+- (void)testDestroyNode
 {
-    static NSError *_error = nil;
-    static NSDictionary *_response = nil;
+    static NSError *_destroyError = nil;
+    static NSDictionary *_destroyResponse = nil;
+    static NSError *_retrieveError = nil;
+    static NSDictionary *_retrieveResponse = nil;
     
     [self prepare];
     
@@ -304,10 +292,17 @@ float const TIMEOUT = 2.0;
             [_gomClient destroy:NODE_3_PATH completionBlock:^(NSDictionary *response, NSError *error) {
                 sleep(SLEEP);
                 
-                _response = response;
-                _error = error;
+                _destroyResponse = response;
+                _destroyError = error;
                 
-                [self notify:kXCTUnitWaitStatusSuccess];
+                [_gomClient retrieve:NODE_3_PATH completionBlock:^(NSDictionary *response, NSError *error) {
+                    
+                    _retrieveResponse = response;
+                    _retrieveError = error;
+                    
+                    [self notify:kXCTUnitWaitStatusSuccess];
+                    
+                }];
             }];
             
         }
@@ -316,11 +311,15 @@ float const TIMEOUT = 2.0;
     
     [self waitForStatus:kXCTUnitWaitStatusSuccess timeout:TIMEOUT];
     
-    XCTAssertNil(_error, @"Error object must be nil.");
-    XCTAssertNotNil(_response, @"Response dictionary must not be nil.");
-    XCTAssertNotNil(_response[@"success"], @"There must be a success entry in the response dictionary.");
-    NSNumber *statusCode = _response[@"success"];
+    XCTAssertNil(_destroyError, @"Error object must be nil.");
+    XCTAssertNotNil(_destroyResponse, @"Response dictionary must not be nil.");
+    XCTAssertNotNil(_destroyResponse[@"success"], @"There must be a success entry in the response dictionary.");
+    NSNumber *statusCode = _destroyResponse[@"success"];
     XCTAssertTrue(statusCode.boolValue, @"Success entry must be true.");
+    
+    XCTAssertNil(_retrieveResponse, @"Response dictionary must be nil.");
+    XCTAssertNotNil(_retrieveError, @"Error object must not be nil.");
+    XCTAssertTrue(_retrieveError.code == STATUS_404, @"Error code must be 404");
 }
 
 @end
