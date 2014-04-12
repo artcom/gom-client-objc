@@ -20,20 +20,43 @@
 
 @implementation GomClientTest
 
-NSString * const GOM_URI = @"http://gom";
+NSString * const GOM_URI = @"http://192.168.56.101:3080";
 
 NSString * const NODE_1_PATH = @"/tests/node_1";
 
-NSString * const ATTRIBUTE_1_TYPE = @"string";
-NSString * const ATTRIBUTE_1_NAME = @"attribute_1";
-NSString * const ATTRIBUTE_1_VALUE = @"value1";
-NSString * const ATTRIBUTE_1_PATH = @"/tests/node_1:attribute_1";
+NSString * const ATTRIBUTE_1_1_TYPE = @"string";
+NSString * const ATTRIBUTE_1_1_NAME = @"attribute_1";
+NSString * const ATTRIBUTE_1_1_VALUE = @"value1";
+NSString * const ATTRIBUTE_1_1_PATH = @"/tests/node_1:attribute_1";
 
-NSString * const ATTRIBUTE_2_TYPE = @"string";
-NSString * const ATTRIBUTE_2_NAME = @"attribute_2";
-NSString * const ATTRIBUTE_2_VALUE = @"value2";
-NSString * const ATTRIBUTE_2_PATH = @"/tests/node_1:attribute_2";
+NSString * const ATTRIBUTE_1_2_TYPE = @"string";
+NSString * const ATTRIBUTE_1_2_NAME = @"attribute_2";
+NSString * const ATTRIBUTE_1_2_VALUE = @"value2";
+NSString * const ATTRIBUTE_1_2_PATH = @"/tests/node_1:attribute_2";
 
+NSString * const NODE_2_PATH = @"/tests/node_2";
+
+NSString * const ATTRIBUTE_2_1_TYPE = @"string";
+NSString * const ATTRIBUTE_2_1_NAME = @"attribute_1";
+NSString * const ATTRIBUTE_2_1_VALUE = @"value1";
+NSString * const ATTRIBUTE_2_1_PATH = @"/tests/node_2:attribute_1";
+
+NSString * const ATTRIBUTE_2_2_TYPE = @"string";
+NSString * const ATTRIBUTE_2_2_NAME = @"attribute_2";
+NSString * const ATTRIBUTE_2_2_VALUE = @"value2";
+NSString * const ATTRIBUTE_2_2_PATH = @"/tests/node_2:attribute_2";
+
+NSString * const NODE_3_PATH = @"/tests/node_3";
+
+NSString * const ATTRIBUTE_3_1_TYPE = @"string";
+NSString * const ATTRIBUTE_3_1_NAME = @"attribute_1";
+NSString * const ATTRIBUTE_3_1_VALUE = @"value1";
+NSString * const ATTRIBUTE_3_1_PATH = @"/tests/node_3:attribute_1";
+
+NSString * const ATTRIBUTE_3_2_TYPE = @"string";
+NSString * const ATTRIBUTE_3_2_NAME = @"attribute_2";
+NSString * const ATTRIBUTE_3_2_VALUE = @"value2";
+NSString * const ATTRIBUTE_3_2_PATH = @"/tests/node_3:attribute_2";
 
 NSString * const NODE_X_PATH = @"/tests/node_x";
 NSString * const ATTRIBUTE_X_PATH = @"/tests/node_1:attribute_x";
@@ -68,7 +91,7 @@ float const TIMEOUT = 2.0;
     static NSError *_error = nil;
     static NSDictionary *_response = nil;
     
-    [_gomClient updateAttribute:ATTRIBUTE_1_PATH withValue:ATTRIBUTE_1_VALUE completionBlock:^(NSDictionary *response, NSError *error) {
+    [_gomClient updateAttribute:ATTRIBUTE_1_1_PATH withValue:ATTRIBUTE_1_1_VALUE completionBlock:^(NSDictionary *response, NSError *error) {
         sleep(SLEEP);
         
         _response = response;
@@ -94,7 +117,7 @@ float const TIMEOUT = 2.0;
     static NSError *_error = nil;
     static NSDictionary *_response = nil;
     
-    NSDictionary *attributes = @{ ATTRIBUTE_2_NAME : ATTRIBUTE_2_VALUE };
+    NSDictionary *attributes = @{ ATTRIBUTE_1_2_NAME : ATTRIBUTE_1_2_VALUE };
     [_gomClient updateNode:NODE_1_PATH withAttributes:attributes completionBlock:^(NSDictionary *response, NSError *error) {
         sleep(SLEEP);
         
@@ -121,13 +144,21 @@ float const TIMEOUT = 2.0;
     static NSError *_error = nil;
     static NSDictionary *_response = nil;
     
-    [_gomClient retrieve:NODE_1_PATH completionBlock:^(NSDictionary *response, NSError *error) {
-        sleep(SLEEP);
+    NSDictionary *attributes = @{ ATTRIBUTE_1_2_NAME : ATTRIBUTE_1_2_VALUE };
+    [_gomClient updateNode:NODE_1_PATH withAttributes:attributes completionBlock:^(NSDictionary *response, NSError *error) {
         
-        _response = response;
-        _error = error;
-        
-        [self notify:kXCTUnitWaitStatusSuccess];
+        if (response) {
+            
+            [_gomClient retrieve:NODE_1_PATH completionBlock:^(NSDictionary *response, NSError *error) {
+                sleep(SLEEP);
+                
+                _response = response;
+                _error = error;
+                
+                [self notify:kXCTUnitWaitStatusSuccess];
+            }];
+            
+        }
     }];
     
     [self waitForStatus:kXCTUnitWaitStatusSuccess timeout:TIMEOUT];
@@ -172,13 +203,21 @@ float const TIMEOUT = 2.0;
     
     [self prepare];
     
-    [_gomClient retrieve:ATTRIBUTE_1_PATH completionBlock:^(NSDictionary *response, NSError *error) {
-        sleep(SLEEP);
+    [_gomClient updateAttribute:ATTRIBUTE_1_1_PATH withValue:ATTRIBUTE_1_1_VALUE completionBlock:^(NSDictionary *response, NSError *error) {
         
-        _response = response;
-        _error = error;
+        if (response) {
+            
+            [_gomClient retrieve:ATTRIBUTE_1_1_PATH completionBlock:^(NSDictionary *response, NSError *error) {
+                sleep(SLEEP);
+                
+                _response = response;
+                _error = error;
+                
+                [self notify:kXCTUnitWaitStatusSuccess];
+            }];
+            
+        }
         
-        [self notify:kXCTUnitWaitStatusSuccess];
     }];
     
     [self waitForStatus:kXCTUnitWaitStatusSuccess timeout:TIMEOUT];
@@ -190,9 +229,9 @@ float const TIMEOUT = 2.0;
     XCTAssertNotNil([_response valueForKeyPath:@"attribute.ctime"], @"attribute.ctime should not be nil.");
     XCTAssertNotNil([_response valueForKeyPath:@"attribute.mtime"], @"attribute.mtime should not be nil.");
     XCTAssertTrue([[_response valueForKeyPath:@"attribute.node"] isEqualToString:NODE_1_PATH], @"node.uri should be equal to the reference value.");
-    XCTAssertTrue([[_response valueForKeyPath:@"attribute.type"] isEqualToString:ATTRIBUTE_1_TYPE], @"attribute.type should be equal to the reference value.");
-    XCTAssertTrue([[_response valueForKeyPath:@"attribute.name"] isEqualToString:ATTRIBUTE_1_NAME], @"attribute.name should be equal to the reference value.");
-    XCTAssertTrue([[_response valueForKeyPath:@"attribute.value"] isEqualToString:ATTRIBUTE_1_VALUE], @"attribute.value should be equal to the reference value.");
+    XCTAssertTrue([[_response valueForKeyPath:@"attribute.type"] isEqualToString:ATTRIBUTE_1_1_TYPE], @"attribute.type should be equal to the reference value.");
+    XCTAssertTrue([[_response valueForKeyPath:@"attribute.name"] isEqualToString:ATTRIBUTE_1_1_NAME], @"attribute.name should be equal to the reference value.");
+    XCTAssertTrue([[_response valueForKeyPath:@"attribute.value"] isEqualToString:ATTRIBUTE_1_1_VALUE], @"attribute.value should be equal to the reference value.");
 }
 
 - (void)testRetrieveAttributeNonexistent
@@ -224,14 +263,21 @@ float const TIMEOUT = 2.0;
     static NSDictionary *_response = nil;
     
     [self prepare];
-
-    [_gomClient destroy:ATTRIBUTE_2_PATH completionBlock:^(NSDictionary *response, NSError *error) {
-        sleep(SLEEP);
+    
+    NSDictionary *attributes = @{ ATTRIBUTE_2_1_NAME : ATTRIBUTE_2_1_VALUE, ATTRIBUTE_2_2_NAME : ATTRIBUTE_2_2_VALUE };
+    [_gomClient updateNode:NODE_2_PATH withAttributes:attributes completionBlock:^(NSDictionary *response, NSError *error) {
         
-        _response = response;
-        _error = error;
-        
-        [self notify:kXCTUnitWaitStatusSuccess];
+        if (response) {
+            
+            [_gomClient destroy:ATTRIBUTE_2_2_PATH completionBlock:^(NSDictionary *response, NSError *error) {
+                sleep(SLEEP);
+                
+                _response = response;
+                _error = error;
+                
+                [self notify:kXCTUnitWaitStatusSuccess];
+            }];
+        }
     }];
     
     [self waitForStatus:kXCTUnitWaitStatusSuccess timeout:TIMEOUT];
@@ -250,13 +296,22 @@ float const TIMEOUT = 2.0;
     
     [self prepare];
     
-    [_gomClient destroy:NODE_1_PATH completionBlock:^(NSDictionary *response, NSError *error) {
-        sleep(SLEEP);
+    NSDictionary *attributes = @{ ATTRIBUTE_3_1_NAME : ATTRIBUTE_3_1_VALUE, ATTRIBUTE_3_2_NAME : ATTRIBUTE_3_2_VALUE };
+    [_gomClient updateNode:NODE_3_PATH withAttributes:attributes completionBlock:^(NSDictionary *response, NSError *error) {
         
-        _response = response;
-        _error = error;
+        if (response) {
+            
+            [_gomClient destroy:NODE_3_PATH completionBlock:^(NSDictionary *response, NSError *error) {
+                sleep(SLEEP);
+                
+                _response = response;
+                _error = error;
+                
+                [self notify:kXCTUnitWaitStatusSuccess];
+            }];
+            
+        }
         
-        [self notify:kXCTUnitWaitStatusSuccess];
     }];
     
     [self waitForStatus:kXCTUnitWaitStatusSuccess timeout:TIMEOUT];
