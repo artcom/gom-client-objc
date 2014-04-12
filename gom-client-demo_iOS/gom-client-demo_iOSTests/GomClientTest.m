@@ -92,7 +92,7 @@ float const TIMEOUT = 2.0;
     static NSDictionary *_retrieveResponse = nil;
     static NSError *_updateError = nil;
     static NSDictionary *_updateResponse = nil;
-
+    
     
     NSDictionary *attributes = @{ ATTRIBUTE_1_2_NAME : ATTRIBUTE_1_2_VALUE };
     [_gomClient updateNode:NODE_1_PATH withAttributes:attributes completionBlock:^(NSDictionary *response, NSError *error) {
@@ -103,7 +103,6 @@ float const TIMEOUT = 2.0;
         if (response) {
             
             [_gomClient retrieve:NODE_1_PATH completionBlock:^(NSDictionary *response, NSError *error) {
-                sleep(SLEEP);
                 
                 _retrieveResponse = response;
                 _retrieveError = error;
@@ -141,7 +140,6 @@ float const TIMEOUT = 2.0;
     static NSDictionary *_response = nil;
     
     [_gomClient retrieve:NODE_X_PATH completionBlock:^(NSDictionary *response, NSError *error) {
-        sleep(SLEEP);
         
         _response = response;
         _error = error;
@@ -173,7 +171,6 @@ float const TIMEOUT = 2.0;
         if (response) {
             
             [_gomClient retrieve:ATTRIBUTE_1_1_PATH completionBlock:^(NSDictionary *response, NSError *error) {
-                sleep(SLEEP);
                 
                 _retrieveResponse = response;
                 _retrieveError = error;
@@ -193,7 +190,7 @@ float const TIMEOUT = 2.0;
     NSNumber *statusCode = _updateResponse[@"status"];
     NSUInteger code = statusCode.integerValue;
     XCTAssertTrue(code == STATUS_200 || code == STATUS_201, @"Status code must be 200 or 201.");
-
+    
     
     XCTAssertNil(_retrieveError, @"Error object must be nil.");
     XCTAssertNotNil(_retrieveResponse, @"Response dictionary must not be nil.");
@@ -215,7 +212,6 @@ float const TIMEOUT = 2.0;
     [self prepare];
     
     [_gomClient retrieve:ATTRIBUTE_X_PATH completionBlock:^(NSDictionary *response, NSError *error) {
-        sleep(SLEEP);
         
         _response = response;
         _error = error;
@@ -245,7 +241,6 @@ float const TIMEOUT = 2.0;
         if (response) {
             
             [_gomClient destroy:ATTRIBUTE_2_2_PATH completionBlock:^(NSDictionary *response, NSError *error) {
-                sleep(SLEEP);
                 
                 _destroyResponse = response;
                 _destroyError = error;
@@ -290,7 +285,6 @@ float const TIMEOUT = 2.0;
         if (response) {
             
             [_gomClient destroy:NODE_3_PATH completionBlock:^(NSDictionary *response, NSError *error) {
-                sleep(SLEEP);
                 
                 _destroyResponse = response;
                 _destroyError = error;
