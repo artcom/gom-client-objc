@@ -65,7 +65,6 @@ NSUInteger const STATUS_200 = 200;
 NSUInteger const STATUS_201 = 201;
 NSUInteger const STATUS_404 = 404;
 
-float const SLEEP = 1.0;
 float const TIMEOUT = 2.0;
 
 - (void)setUp
@@ -92,7 +91,6 @@ float const TIMEOUT = 2.0;
     static NSDictionary *_retrieveResponse = nil;
     static NSError *_updateError = nil;
     static NSDictionary *_updateResponse = nil;
-    
     
     NSDictionary *attributes = @{ ATTRIBUTE_1_2_NAME : ATTRIBUTE_1_2_VALUE };
     [_gomClient updateNode:NODE_1_PATH withAttributes:attributes completionBlock:^(NSDictionary *response, NSError *error) {
@@ -156,12 +154,12 @@ float const TIMEOUT = 2.0;
 
 - (void)testUpdateRetrieveAttribute
 {
+    [self prepare];
+    
     static NSError *_retrieveError = nil;
     static NSDictionary *_retrieveResponse = nil;
     static NSError *_updateError = nil;
     static NSDictionary *_updateResponse = nil;
-    
-    [self prepare];
     
     [_gomClient updateAttribute:ATTRIBUTE_1_1_PATH withValue:ATTRIBUTE_1_1_VALUE completionBlock:^(NSDictionary *response, NSError *error) {
         
@@ -206,10 +204,10 @@ float const TIMEOUT = 2.0;
 
 - (void)testRetrieveAttributeNonexistent
 {
+    [self prepare];
+    
     static NSError *_error = nil;
     static NSDictionary *_response = nil;
-    
-    [self prepare];
     
     [_gomClient retrieve:ATTRIBUTE_X_PATH completionBlock:^(NSDictionary *response, NSError *error) {
         
@@ -228,12 +226,12 @@ float const TIMEOUT = 2.0;
 
 - (void)testDestroyAttribute
 {
+    [self prepare];
+    
     static NSError *_destroyError = nil;
     static NSDictionary *_destroyResponse = nil;
     static NSError *_retrieveError = nil;
     static NSDictionary *_retrieveResponse = nil;
-    
-    [self prepare];
     
     NSDictionary *attributes = @{ ATTRIBUTE_2_1_NAME : ATTRIBUTE_2_1_VALUE, ATTRIBUTE_2_2_NAME : ATTRIBUTE_2_2_VALUE };
     [_gomClient updateNode:NODE_2_PATH withAttributes:attributes completionBlock:^(NSDictionary *response, NSError *error) {
@@ -272,12 +270,12 @@ float const TIMEOUT = 2.0;
 
 - (void)testDestroyNode
 {
+    [self prepare];
+    
     static NSError *_destroyError = nil;
     static NSDictionary *_destroyResponse = nil;
     static NSError *_retrieveError = nil;
     static NSDictionary *_retrieveResponse = nil;
-    
-    [self prepare];
     
     NSDictionary *attributes = @{ ATTRIBUTE_3_1_NAME : ATTRIBUTE_3_1_VALUE, ATTRIBUTE_3_2_NAME : ATTRIBUTE_3_2_VALUE };
     [_gomClient updateNode:NODE_3_PATH withAttributes:attributes completionBlock:^(NSDictionary *response, NSError *error) {
