@@ -11,10 +11,11 @@
 #import "GOMClient.h"
 
 
-@interface GomClientTest : XCTAsyncTestCase
+@interface GomClientTest : XCTAsyncTestCase <GOMClientDelegate>
 
 @property (nonatomic, strong) NSURL *gomUri;
 @property (nonatomic, strong) GOMClient *gomClient;
+@property (nonatomic, assign) BOOL delegateResponded;
 
 @end
 
@@ -39,24 +40,8 @@ NSString * const NODE_2_PATH = @"/tests/node_2";
 NSString * const ATTRIBUTE_2_1_TYPE = @"string";
 NSString * const ATTRIBUTE_2_1_NAME = @"attribute_1";
 NSString * const ATTRIBUTE_2_1_VALUE = @"value1";
+NSString * const ATTRIBUTE_2_1_VALUE_NEW = @"value_new";
 NSString * const ATTRIBUTE_2_1_PATH = @"/tests/node_2:attribute_1";
-
-NSString * const ATTRIBUTE_2_2_TYPE = @"string";
-NSString * const ATTRIBUTE_2_2_NAME = @"attribute_2";
-NSString * const ATTRIBUTE_2_2_VALUE = @"value2";
-NSString * const ATTRIBUTE_2_2_PATH = @"/tests/node_2:attribute_2";
-
-NSString * const NODE_3_PATH = @"/tests/node_3";
-
-NSString * const ATTRIBUTE_3_1_TYPE = @"string";
-NSString * const ATTRIBUTE_3_1_NAME = @"attribute_1";
-NSString * const ATTRIBUTE_3_1_VALUE = @"value1";
-NSString * const ATTRIBUTE_3_1_PATH = @"/tests/node_3:attribute_1";
-
-NSString * const ATTRIBUTE_3_2_TYPE = @"string";
-NSString * const ATTRIBUTE_3_2_NAME = @"attribute_2";
-NSString * const ATTRIBUTE_3_2_VALUE = @"value2";
-NSString * const ATTRIBUTE_3_2_PATH = @"/tests/node_3:attribute_2";
 
 NSString * const NODE_X_PATH = @"/tests/node_x";
 NSString * const ATTRIBUTE_X_PATH = @"/tests/node_1:attribute_x";
@@ -65,20 +50,38 @@ NSUInteger const STATUS_200 = 200;
 NSUInteger const STATUS_201 = 201;
 NSUInteger const STATUS_404 = 404;
 
-float const TIMEOUT = 2.0;
+float const TIMEOUT = 10.0;
+
+- (void) gomClientDidBecomeReady:(GOMClient *)gomClient
+{
+    _delegateResponded = YES;
+}
+
+- (void)gomClient:(GOMClient *)gomClient didFailWithError:(NSError *)error
+{
+    XCTFail(@"Error: %@", error.userInfo);
+    
+    _delegateResponded = YES;
+}
 
 - (void)setUp
 {
     [super setUp];
     
     _gomUri = [NSURL URLWithString:GOM_URI];
-    _gomClient = [[GOMClient alloc] initWithGomURI:_gomUri delegate:nil];
+    _gomClient = [[GOMClient alloc] initWithGomURI:_gomUri delegate:self];
+    
+    // wait until GOM client responds to delegate
+    while(_delegateResponded == NO) {
+        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
+    }
 }
 
 - (void)tearDown
 {
     _gomClient = nil;
     _gomUri = nil;
+    _delegateResponded = NO;
     
     [super tearDown];
 }
@@ -92,7 +95,7 @@ float const TIMEOUT = 2.0;
     static NSError *_updateError = nil;
     static NSDictionary *_updateResponse = nil;
     
-    NSDictionary *attributes = @{ ATTRIBUTE_1_2_NAME : ATTRIBUTE_1_2_VALUE };
+    NSDictionary *attributes = @{ ATTRIBUTE_1_1_NAME : ATTRIBUTE_1_1_VALUE, ATTRIBUTE_1_2_NAME : ATTRIBUTE_1_2_VALUE };
     [_gomClient updateNode:NODE_1_PATH withAttributes:attributes completionBlock:^(NSDictionary *response, NSError *error) {
         
         _updateResponse = response;
@@ -233,17 +236,17 @@ float const TIMEOUT = 2.0;
     static NSError *_retrieveError = nil;
     static NSDictionary *_retrieveResponse = nil;
     
-    NSDictionary *attributes = @{ ATTRIBUTE_2_1_NAME : ATTRIBUTE_2_1_VALUE, ATTRIBUTE_2_2_NAME : ATTRIBUTE_2_2_VALUE };
-    [_gomClient updateNode:NODE_2_PATH withAttributes:attributes completionBlock:^(NSDictionary *response, NSError *error) {
+    NSDictionary *attributes = @{ ATTRIBUTE_1_1_NAME : ATTRIBUTE_1_1_VALUE, ATTRIBUTE_1_2_NAME : ATTRIBUTE_1_2_VALUE };
+    [_gomClient updateNode:NODE_1_PATH withAttributes:attributes completionBlock:^(NSDictionary *response, NSError *error) {
         
         if (response) {
             
-            [_gomClient destroy:ATTRIBUTE_2_2_PATH completionBlock:^(NSDictionary *response, NSError *error) {
+            [_gomClient destroy:ATTRIBUTE_1_2_PATH completionBlock:^(NSDictionary *response, NSError *error) {
                 
                 _destroyResponse = response;
                 _destroyError = error;
                 
-                [_gomClient retrieve:ATTRIBUTE_2_2_PATH completionBlock:^(NSDictionary *response, NSError *error) {
+                [_gomClient retrieve:ATTRIBUTE_1_2_PATH completionBlock:^(NSDictionary *response, NSError *error) {
                     
                     _retrieveResponse = response;
                     _retrieveError = error;
@@ -277,17 +280,17 @@ float const TIMEOUT = 2.0;
     static NSError *_retrieveError = nil;
     static NSDictionary *_retrieveResponse = nil;
     
-    NSDictionary *attributes = @{ ATTRIBUTE_3_1_NAME : ATTRIBUTE_3_1_VALUE, ATTRIBUTE_3_2_NAME : ATTRIBUTE_3_2_VALUE };
-    [_gomClient updateNode:NODE_3_PATH withAttributes:attributes completionBlock:^(NSDictionary *response, NSError *error) {
+    NSDictionary *attributes = @{ ATTRIBUTE_1_1_NAME : ATTRIBUTE_1_1_VALUE, ATTRIBUTE_1_2_NAME : ATTRIBUTE_1_2_VALUE };
+    [_gomClient updateNode:NODE_1_PATH withAttributes:attributes completionBlock:^(NSDictionary *response, NSError *error) {
         
         if (response) {
             
-            [_gomClient destroy:NODE_3_PATH completionBlock:^(NSDictionary *response, NSError *error) {
+            [_gomClient destroy:NODE_1_PATH completionBlock:^(NSDictionary *response, NSError *error) {
                 
                 _destroyResponse = response;
                 _destroyError = error;
                 
-                [_gomClient retrieve:NODE_3_PATH completionBlock:^(NSDictionary *response, NSError *error) {
+                [_gomClient retrieve:NODE_1_PATH completionBlock:^(NSDictionary *response, NSError *error) {
                     
                     _retrieveResponse = response;
                     _retrieveError = error;
@@ -312,6 +315,66 @@ float const TIMEOUT = 2.0;
     XCTAssertNil(_retrieveResponse, @"Response dictionary must be nil.");
     XCTAssertNotNil(_retrieveError, @"Error object must not be nil.");
     XCTAssertTrue(_retrieveError.code == STATUS_404, @"Error code must be 404");
+}
+
+- (void)testReceiveGNPAfterUpdate
+{
+    [self prepare];
+    
+    static NSDictionary *_initialResponse = nil;
+    static NSDictionary *_updateResponse = nil;
+    
+    [_gomClient updateAttribute:ATTRIBUTE_2_1_PATH withValue:ATTRIBUTE_2_1_VALUE completionBlock:^(NSDictionary *response, NSError *error) {
+        
+        if (response) {
+            
+            [_gomClient registerGOMObserverForPath:ATTRIBUTE_2_1_PATH options:nil clientCallback:^(NSDictionary *response) {
+                
+                if ([response[@"event_type"] isEqualToString:@"initial"]) {
+                    _initialResponse = response;
+                    
+                    // trigger GNP by updating attribute
+                    [_gomClient updateAttribute:ATTRIBUTE_2_1_PATH withValue:ATTRIBUTE_2_1_VALUE_NEW completionBlock:nil];
+                    
+                } else if ([response[@"event_type"] isEqualToString:@"update"]) {
+                    _updateResponse = response;
+                    
+                    // test case officially finished
+                    [self notify:kXCTUnitWaitStatusSuccess];
+                }
+                
+            }];
+            
+        }
+    }];
+    
+    [self waitForStatus:kXCTUnitWaitStatusSuccess timeout:TIMEOUT];
+    
+    // check initial response
+    XCTAssertTrue([_initialResponse[@"path"] isEqualToString:ATTRIBUTE_2_1_PATH], @"path should be equal to the reference value.");
+    XCTAssertTrue([_initialResponse[@"event_type"] isEqualToString:@"initial"], @"event_type should be equal to the reference value.");
+    
+    NSDictionary *payload = _initialResponse[@"payload"];
+    XCTAssertNotNil(payload[@"attribute"], @"Attribute entry must not be nil.");
+    XCTAssertNotNil([payload valueForKeyPath:@"attribute.ctime"], @"attribute.ctime should not be nil.");
+    XCTAssertNotNil([payload valueForKeyPath:@"attribute.mtime"], @"attribute.mtime should not be nil.");
+    XCTAssertTrue([[payload valueForKeyPath:@"attribute.node"] isEqualToString:NODE_2_PATH], @"node.uri should be equal to the reference value.");
+    XCTAssertTrue([[payload valueForKeyPath:@"attribute.type"] isEqualToString:ATTRIBUTE_2_1_TYPE], @"attribute.type should be equal to the reference value.");
+    XCTAssertTrue([[payload valueForKeyPath:@"attribute.name"] isEqualToString:ATTRIBUTE_2_1_NAME], @"attribute.name should be equal to the reference value.");
+    XCTAssertTrue([[payload valueForKeyPath:@"attribute.value"] isEqualToString:ATTRIBUTE_2_1_VALUE], @"attribute.value should be equal to the reference value.");
+    
+    // check response from update
+    XCTAssertTrue([_updateResponse[@"path"] isEqualToString:ATTRIBUTE_2_1_PATH], @"path should be equal to the reference value.");
+    XCTAssertTrue([_updateResponse[@"event_type"] isEqualToString:@"update"], @"event_type should be equal to the reference value.");
+    
+    payload = _updateResponse[@"payload"];
+    XCTAssertNotNil(payload[@"attribute"], @"Attribute entry must not be nil.");
+    XCTAssertNotNil([payload valueForKeyPath:@"attribute.ctime"], @"attribute.ctime should not be nil.");
+    XCTAssertNotNil([payload valueForKeyPath:@"attribute.mtime"], @"attribute.mtime should not be nil.");
+    XCTAssertTrue([[payload valueForKeyPath:@"attribute.node"] isEqualToString:NODE_2_PATH], @"node.uri should be equal to the reference value.");
+    XCTAssertTrue([[payload valueForKeyPath:@"attribute.type"] isEqualToString:ATTRIBUTE_2_1_TYPE], @"attribute.type should be equal to the reference value.");
+    XCTAssertTrue([[payload valueForKeyPath:@"attribute.name"] isEqualToString:ATTRIBUTE_2_1_NAME], @"attribute.name should be equal to the reference value.");
+    XCTAssertTrue([[payload valueForKeyPath:@"attribute.value"] isEqualToString:ATTRIBUTE_2_1_VALUE_NEW], @"attribute.value should be equal to the reference value.");
 }
 
 @end
