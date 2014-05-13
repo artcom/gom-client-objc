@@ -13,6 +13,7 @@
 #import "NSData+JSON.h"
 #import "NSDictionary+JSON.h"
 #import "NSDictionary+XML.h"
+#import "NSURLRequest+GOMClient.h"
 
 
 NSString * const GOMClientErrorDomain = @"de.artcom.gom-client-objc";
@@ -70,7 +71,7 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
 
 - (void)retrieve:(NSString *)path completionBlock:(GOMClientOperationCallback)block
 {
-    NSURLRequest *request = [self _createRequestWithPath:path method:@"GET" headerFields:@{@"Content-Type" : @"application/json", @"Accept" : @"application/json"} payloadData:nil];
+    NSURLRequest *request = [NSURLRequest createGetRequestWithPath:path gomRoot:self.gomRoot];
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue currentQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         [self _handleOperationResponse:response data:data error:connectionError completionBlock:block];
     }];
@@ -83,8 +84,7 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
     }
     NSString *payload = [attributes convertToNodeXML];
     NSData *payloadData = [payload dataUsingEncoding:NSUTF8StringEncoding];
-    NSURLRequest *request = [self _createRequestWithPath:node method:@"POST" headerFields:@{@"Content-Type" : @"application/xml", @"Accept" : @"application/json"} payloadData:payloadData];
-    
+    NSURLRequest *request = [NSURLRequest createPostRequestWithPath:node payload:payloadData gomRoot:self.gomRoot];
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue currentQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         [self _handleOperationResponse:response data:data error:connectionError completionBlock:block];
     }];
@@ -94,8 +94,7 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
 {
     NSString *payload = [value convertToAttributeXML];
     NSData *payloadData = [payload dataUsingEncoding:NSUTF8StringEncoding];
-    NSURLRequest *request = [self _createRequestWithPath:attribute method:@"PUT" headerFields:@{@"Content-Type" : @"application/xml", @"Accept" : @"application/json"} payloadData:payloadData];
-    
+    NSURLRequest *request = [NSURLRequest createPutRequestWithPath:attribute payload:payloadData gomRoot:self.gomRoot];
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue currentQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         [self _handleOperationResponse:response data:data error:connectionError completionBlock:block];
     }];
@@ -108,8 +107,7 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
     }
     NSString *payload = [attributes convertToNodeXML];
     NSData *payloadData = [payload dataUsingEncoding:NSUTF8StringEncoding];
-    NSURLRequest *request = [self _createRequestWithPath:node method:@"PUT" headerFields:@{@"Content-Type" : @"application/xml", @"Accept" : @"application/json"} payloadData:payloadData];
-    
+    NSURLRequest *request = [NSURLRequest createPutRequestWithPath:node payload:payloadData gomRoot:self.gomRoot];
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue currentQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         [self _handleOperationResponse:response data:data error:connectionError completionBlock:block];
     }];
@@ -117,7 +115,7 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
 
 - (void)destroy:(NSString *)path completionBlock:(GOMClientOperationCallback)block
 {
-    NSURLRequest *request = [self _createRequestWithPath:path method:@"DELETE" headerFields:nil payloadData:nil];
+    NSURLRequest *request = [NSURLRequest createDeleteRequestWithPath:path gomRoot:self.gomRoot];
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue currentQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         [self _handleOperationResponse:response data:data error:connectionError completionBlock:block];
     }];
