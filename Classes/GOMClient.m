@@ -19,11 +19,9 @@
 NSString * const GOMClientErrorDomain = @"de.artcom.gom-client-objc";
 NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
 
-@interface GOMClient () <SRWebSocketDelegate>
+@interface GOMClient () <SRWebSocketDelegate, GOMOperationDelegate>
 
-- (NSURLRequest *)_createRequestWithPath:(NSString *)path method:(NSString *)method headerFields:(NSDictionary *)headerFields payloadData:(NSData *)payloadData;
-- (void)_handleOperationResponse:(NSURLResponse *)response data:(NSData *)data error:(NSError *)connectionError completionBlock:(GOMClientOperationCallback)block;
-
+- (void)_runGOMOperationWithRequest:(NSURLRequest *)request completionBlock:(GOMClientOperationCallback)block;
 - (void)_registerGOMObserverForBinding:(GOMBinding *)binding;
 - (void)_unregisterGOMObserverForBinding:(GOMBinding *)binding;
 - (void)_sendCommand:(NSDictionary *)commands;
@@ -43,6 +41,7 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
     SRWebSocket *_webSocket;
     NSString *_webSocketUri;
     NSMutableDictionary *_priv_bindings;
+    NSMutableArray *_operations;
 }
 
 - (id)initWithGomURI:(NSURL *)gomURI delegate:(id<GOMClientDelegate>)delegate
@@ -51,6 +50,7 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
     if (self) {
         _gomRoot = gomURI;
         _priv_bindings = [[NSMutableDictionary alloc] init];
+        _operations = [[NSMutableArray alloc] init];
         _delegate = delegate;
         [self reconnectWebsocket];
     }
@@ -72,9 +72,7 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
 - (void)retrieve:(NSString *)path completionBlock:(GOMClientOperationCallback)block
 {
     NSURLRequest *request = [NSURLRequest createGetRequestWithPath:path gomRoot:self.gomRoot];
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue currentQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-        [self _handleOperationResponse:response data:data error:connectionError completionBlock:block];
-    }];
+    [self _runGOMOperationWithRequest:request completionBlock:block];
 }
 
 - (void)create:(NSString *)node withAttributes:(NSDictionary *)attributes completionBlock:(GOMClientOperationCallback)block
@@ -85,9 +83,7 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
     NSString *payload = [attributes convertToNodeXML];
     NSData *payloadData = [payload dataUsingEncoding:NSUTF8StringEncoding];
     NSURLRequest *request = [NSURLRequest createPostRequestWithPath:node payload:payloadData gomRoot:self.gomRoot];
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue currentQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-        [self _handleOperationResponse:response data:data error:connectionError completionBlock:block];
-    }];
+    [self _runGOMOperationWithRequest:request completionBlock:block];
 }
 
 - (void)updateAttribute:(NSString *)attribute withValue:(NSString *)value completionBlock:(GOMClientOperationCallback)block
@@ -95,9 +91,7 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
     NSString *payload = [value convertToAttributeXML];
     NSData *payloadData = [payload dataUsingEncoding:NSUTF8StringEncoding];
     NSURLRequest *request = [NSURLRequest createPutRequestWithPath:attribute payload:payloadData gomRoot:self.gomRoot];
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue currentQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-        [self _handleOperationResponse:response data:data error:connectionError completionBlock:block];
-    }];
+    [self _runGOMOperationWithRequest:request completionBlock:block];
 }
 
 - (void)updateNode:(NSString *)node withAttributes:(NSDictionary *)attributes completionBlock:(GOMClientOperationCallback)block
@@ -108,64 +102,25 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
     NSString *payload = [attributes convertToNodeXML];
     NSData *payloadData = [payload dataUsingEncoding:NSUTF8StringEncoding];
     NSURLRequest *request = [NSURLRequest createPutRequestWithPath:node payload:payloadData gomRoot:self.gomRoot];
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue currentQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-        [self _handleOperationResponse:response data:data error:connectionError completionBlock:block];
-    }];
+    [self _runGOMOperationWithRequest:request completionBlock:block];
 }
 
 - (void)destroy:(NSString *)path completionBlock:(GOMClientOperationCallback)block
 {
     NSURLRequest *request = [NSURLRequest createDeleteRequestWithPath:path gomRoot:self.gomRoot];
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue currentQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-        [self _handleOperationResponse:response data:data error:connectionError completionBlock:block];
-    }];
+    [self _runGOMOperationWithRequest:request completionBlock:block];
 }
 
-- (NSURLRequest *)_createRequestWithPath:(NSString *)path method:(NSString *)method headerFields:(NSDictionary *)headerFields payloadData:(NSData *)payloadData {
-    NSURL *requestURL = [self.gomRoot URLByAppendingPathComponent:path];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:requestURL];
-    [request setHTTPMethod:method];
-    
-    if (headerFields) {
-        [request setAllHTTPHeaderFields:headerFields];
-    }
-    if (payloadData) {
-        [request setHTTPBody:payloadData];
-    }
-    return request;
-}
-
-- (void)_handleOperationResponse:(NSURLResponse *)response data:(NSData *)data error:(NSError *)connectionError completionBlock:(GOMClientOperationCallback)block
+- (void)_runGOMOperationWithRequest:(NSURLRequest *)request completionBlock:(GOMClientOperationCallback)block
 {
-    NSDictionary *responseData = nil;
-    NSError *error = nil;
-    
-    if (connectionError) {
-        error = connectionError;
-    } else {
-        NSInteger statusCode = ((NSHTTPURLResponse *)response).statusCode;
-        
-        if (statusCode >= 400) {
-            NSDictionary *userInfo = @{NSLocalizedDescriptionKey : [NSHTTPURLResponse localizedStringForStatusCode:statusCode]};
-            error = [NSError errorWithDomain:GOMClientErrorDomain code:statusCode userInfo:userInfo];
-        } else if (statusCode >= 200) {
-            if (data) {
-                responseData = [data parseAsJSON];
-            }
-            if (responseData == nil) {
-                responseData = @{@"success" : @YES};
-            }
-        }
-    }
-    
-    if (block) {
-        block(responseData, error);
-    }
+    GOMOperation *operation = [[GOMOperation alloc] initWithRequest:request delegate:self callback:block];
+    [_operations addObject:operation];
+    [operation run];
 }
 
 #pragma mark - GOM observers
 
-- (void)registerGOMObserverForPath:(NSString *)path options:(NSDictionary *)options clientCallback:(GOMClientGNPCallback)callback
+- (void)registerGOMObserverForPath:(NSString *)path clientCallback:(GOMClientGNPCallback)callback
 {
     GOMBinding *binding = _priv_bindings[path];
     if (binding == nil) {
@@ -178,7 +133,7 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
     [self _registerGOMObserverForBinding:binding];
 }
 
-- (void)unregisterGOMObserverForPath:(NSString *)path options:(NSDictionary *)options
+- (void)unregisterGOMObserverForPath:(NSString *)path
 {
     GOMBinding *binding = _priv_bindings[path];
     [self _unregisterGOMObserverForBinding:binding];
@@ -307,7 +262,7 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
                 }
             }
         }
-        [self _returnError:[self _gomClientErrorForCode:GOMClientWebsocketProxyUrlNotFound]];
+        [self _returnError:[self _gomClientErrorForCode:(GOMClientErrorCode)error.code]];
     }];
 }
 
@@ -337,6 +292,9 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
             break;
         case GOMClientWebsocketNotOpen:
             description = @"Websocket not open.";
+            break;
+        case GOMClientTooManyRedirects:
+            description = @"Too many redirects.";
             break;
         default:
             description = @"Unknown error code.";
@@ -371,6 +329,13 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
             [self reconnectWebsocket];
         }
     }
+}
+
+#pragma mark - GOMOperationDelegate
+
+- (void)gomOperationDidFinish:(GOMOperation *)operation
+{
+    [_operations removeObject:operation];
 }
 
 #pragma mark - SRWebSocketDelegate

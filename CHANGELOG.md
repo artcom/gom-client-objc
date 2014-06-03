@@ -1,5 +1,15 @@
 # gom-client-objc CHANGELOG
 
+## x.x.x
+
+### API cleanup:
+
+- removed `options` parameter from `- (void)registerGOMObserverForPath:(NSString *)path clientCallback:(GOMClientGNPCallback)callback` and `- (void)unregisterGOMObserverForPath:(NSString *)path`
+
+### Features
+
+- redirects are handled stricter now - after more than 10 redirects the request is cancelled
+
 ## 0.5.1
 
 - Fixed GNP handling. Response dictionaries have top-level key named after operation:

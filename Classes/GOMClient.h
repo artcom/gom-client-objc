@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #import "GOMClientDelegate.h"
+#import "GOMOperation.h"
 #import "GOMBinding.h"
 #import "GOMNode.h"
 #import "GOMAttribute.h"
@@ -17,10 +18,10 @@ extern NSString * const GOMClientErrorDomain;
 
 typedef enum {
     GOMClientWebsocketProxyUrlNotFound,
-    GOMClientWebsocketNotOpen
+    GOMClientWebsocketNotOpen,
+    GOMClientTooManyRedirects
 } GOMClientErrorCode;
 
-typedef void (^GOMClientOperationCallback)(NSDictionary *, NSError *);
 typedef void (^GOMClientGNPCallback)(NSDictionary *);
 
 @interface GOMClient : NSObject
@@ -39,7 +40,7 @@ typedef void (^GOMClientGNPCallback)(NSDictionary *);
 - (void)updateNode:(NSString *)node withAttributes:(NSDictionary *)attributes completionBlock:(GOMClientOperationCallback)block;
 - (void)destroy:(NSString *)path completionBlock:(GOMClientOperationCallback)block;
 
-- (void)registerGOMObserverForPath:(NSString *)path options:(NSDictionary *)options clientCallback:(GOMClientGNPCallback)callback;
-- (void)unregisterGOMObserverForPath:(NSString *)path options:(NSDictionary *)options;
+- (void)registerGOMObserverForPath:(NSString *)path clientCallback:(GOMClientGNPCallback)callback;
+- (void)unregisterGOMObserverForPath:(NSString *)path;
 
 @end
