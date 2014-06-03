@@ -292,7 +292,7 @@ Fundamental errors are returned to the delegate through the `GOMClientDelegate` 
 * Register an observer:
 
     ```objective-c
-    [gomClient registerGOMObserverForPath:@"/tests/node_1:attribute_2" options:nil clientCallback:^(NSDictionary *dict) {
+    [gomClient registerGOMObserverForPath:@"/tests/node_1:attribute_2" clientCallback:^(NSDictionary *dict) {
 
         // Your code here
 
@@ -321,7 +321,7 @@ Fundamental errors are returned to the delegate through the `GOMClientDelegate` 
 * Unregister an observer:
 
     ```objective-c
-   [gomClient unregisterGOMObserverForPath:@"/tests/node_1:attribute_2" options:nil];
+   [gomClient unregisterGOMObserverForPath:@"/tests/node_1:attribute_2"];
     ```
 
 ### Mapping response dictionaries to data objects

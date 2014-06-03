@@ -328,7 +328,7 @@ float const TIMEOUT = 10.0;
         
         if (response) {
             
-            [_gomClient registerGOMObserverForPath:ATTRIBUTE_2_1_PATH options:nil clientCallback:^(NSDictionary *response) {
+            [_gomClient registerGOMObserverForPath:ATTRIBUTE_2_1_PATH clientCallback:^(NSDictionary *response) {
                 
                 if ([response[@"event_type"] isEqualToString:@"initial"]) {
                     _initialResponse = response;
@@ -388,7 +388,7 @@ float const TIMEOUT = 10.0;
         
         if (response) {
             
-            [_gomClient registerGOMObserverForPath:ATTRIBUTE_2_1_PATH options:nil clientCallback:^(NSDictionary *response) {
+            [_gomClient registerGOMObserverForPath:ATTRIBUTE_2_1_PATH clientCallback:^(NSDictionary *response) {
                 
                 if ([response[@"event_type"] isEqualToString:@"initial"]) {
                     _initialResponse = response;

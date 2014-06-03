@@ -21,6 +21,7 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
 
 @interface GOMClient () <SRWebSocketDelegate, GOMOperationDelegate>
 
+- (void)_runGOMOperationWithRequest:(NSURLRequest *)request completionBlock:(GOMClientOperationCallback)block;
 - (void)_registerGOMObserverForBinding:(GOMBinding *)binding;
 - (void)_unregisterGOMObserverForBinding:(GOMBinding *)binding;
 - (void)_sendCommand:(NSDictionary *)commands;
@@ -71,9 +72,7 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
 - (void)retrieve:(NSString *)path completionBlock:(GOMClientOperationCallback)block
 {
     NSURLRequest *request = [NSURLRequest createGetRequestWithPath:path gomRoot:self.gomRoot];
-    GOMOperation *operation = [[GOMOperation alloc] initWithRequest:request delegate:self callback:block];
-    [_operations addObject:operation];
-    [operation run];
+    [self _runGOMOperationWithRequest:request completionBlock:block];
 }
 
 - (void)create:(NSString *)node withAttributes:(NSDictionary *)attributes completionBlock:(GOMClientOperationCallback)block
@@ -84,9 +83,7 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
     NSString *payload = [attributes convertToNodeXML];
     NSData *payloadData = [payload dataUsingEncoding:NSUTF8StringEncoding];
     NSURLRequest *request = [NSURLRequest createPostRequestWithPath:node payload:payloadData gomRoot:self.gomRoot];
-    GOMOperation *operation = [[GOMOperation alloc] initWithRequest:request delegate:self callback:block];
-    [_operations addObject:operation];
-    [operation run];
+    [self _runGOMOperationWithRequest:request completionBlock:block];
 }
 
 - (void)updateAttribute:(NSString *)attribute withValue:(NSString *)value completionBlock:(GOMClientOperationCallback)block
@@ -94,9 +91,8 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
     NSString *payload = [value convertToAttributeXML];
     NSData *payloadData = [payload dataUsingEncoding:NSUTF8StringEncoding];
     NSURLRequest *request = [NSURLRequest createPutRequestWithPath:attribute payload:payloadData gomRoot:self.gomRoot];
-    GOMOperation *operation = [[GOMOperation alloc] initWithRequest:request delegate:self callback:block];
-    [_operations addObject:operation];
-    [operation run];}
+    [self _runGOMOperationWithRequest:request completionBlock:block];
+}
 
 - (void)updateNode:(NSString *)node withAttributes:(NSDictionary *)attributes completionBlock:(GOMClientOperationCallback)block
 {
@@ -106,14 +102,17 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
     NSString *payload = [attributes convertToNodeXML];
     NSData *payloadData = [payload dataUsingEncoding:NSUTF8StringEncoding];
     NSURLRequest *request = [NSURLRequest createPutRequestWithPath:node payload:payloadData gomRoot:self.gomRoot];
-    GOMOperation *operation = [[GOMOperation alloc] initWithRequest:request delegate:self callback:block];
-    [_operations addObject:operation];
-    [operation run];
+    [self _runGOMOperationWithRequest:request completionBlock:block];
 }
 
 - (void)destroy:(NSString *)path completionBlock:(GOMClientOperationCallback)block
 {
     NSURLRequest *request = [NSURLRequest createDeleteRequestWithPath:path gomRoot:self.gomRoot];
+    [self _runGOMOperationWithRequest:request completionBlock:block];
+}
+
+- (void)_runGOMOperationWithRequest:(NSURLRequest *)request completionBlock:(GOMClientOperationCallback)block
+{
     GOMOperation *operation = [[GOMOperation alloc] initWithRequest:request delegate:self callback:block];
     [_operations addObject:operation];
     [operation run];
@@ -121,7 +120,7 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
 
 #pragma mark - GOM observers
 
-- (void)registerGOMObserverForPath:(NSString *)path options:(NSDictionary *)options clientCallback:(GOMClientGNPCallback)callback
+- (void)registerGOMObserverForPath:(NSString *)path clientCallback:(GOMClientGNPCallback)callback
 {
     GOMBinding *binding = _priv_bindings[path];
     if (binding == nil) {
@@ -134,7 +133,7 @@ NSString * const WEBSOCKETS_PROXY_PATH = @"/services/websockets_proxy:url";
     [self _registerGOMObserverForBinding:binding];
 }
 
-- (void)unregisterGOMObserverForPath:(NSString *)path options:(NSDictionary *)options
+- (void)unregisterGOMObserverForPath:(NSString *)path
 {
     GOMBinding *binding = _priv_bindings[path];
     [self _unregisterGOMObserverForBinding:binding];

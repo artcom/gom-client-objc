@@ -40,7 +40,7 @@ typedef void (^GOMClientGNPCallback)(NSDictionary *);
 - (void)updateNode:(NSString *)node withAttributes:(NSDictionary *)attributes completionBlock:(GOMClientOperationCallback)block;
 - (void)destroy:(NSString *)path completionBlock:(GOMClientOperationCallback)block;
 
-- (void)registerGOMObserverForPath:(NSString *)path options:(NSDictionary *)options clientCallback:(GOMClientGNPCallback)callback;
-- (void)unregisterGOMObserverForPath:(NSString *)path options:(NSDictionary *)options;
+- (void)registerGOMObserverForPath:(NSString *)path clientCallback:(GOMClientGNPCallback)callback;
+- (void)unregisterGOMObserverForPath:(NSString *)path;
 
 @end
