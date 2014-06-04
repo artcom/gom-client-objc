@@ -180,14 +180,14 @@
 
 - (void)observerViewController:(ObserverViewController *)observerViewController didAddObserverWithPath:(NSString *)path
 {
-    [self.gomClient registerGOMObserverForPath:path options:nil clientCallback:^(NSDictionary *dict) {
+    [self.gomClient registerGOMObserverForPath:path clientCallback:^(NSDictionary *dict) {
         [self writeToConsole:dict error:nil];
     }];
 }
 
 - (void)observerViewController:(ObserverViewController *)observerViewController didRemoveObserverWithPath:(NSString *)path
 {
-    [self.gomClient unregisterGOMObserverForPath:path options:nil];
+    [self.gomClient unregisterGOMObserverForPath:path];
 }
 
 - (void)didFinishManagingObservers:(ObserverViewController *)observerViewController
