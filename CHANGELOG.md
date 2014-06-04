@@ -1,6 +1,6 @@
 # gom-client-objc CHANGELOG
 
-## x.x.x
+## 0.6.0
 
 ### API cleanup:
 
