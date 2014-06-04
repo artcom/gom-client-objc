@@ -104,7 +104,8 @@ NSUInteger const MaxNumberOfRedirects = 10;
         _performedRedirects++;
         if (_performedRedirects == MaxNumberOfRedirects) {
             [connection cancel];
-            _callback(nil, [NSError errorWithDomain:GOMClientErrorDomain code:GOMClientTooManyRedirects userInfo:nil]);
+            NSError *error = [NSError errorWithDomain:GOMClientErrorDomain code:GOMClientTooManyRedirects userInfo:nil];
+            [self _handleOperationResponse:nil data:nil error:error completionBlock:nil];
             return nil;
         } else {
             NSURL *redirectedUrl = request.URL;
