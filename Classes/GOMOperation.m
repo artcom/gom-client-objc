@@ -27,7 +27,7 @@ NSUInteger const MaxNumberOfRedirects = 10;
 
 @implementation GOMOperation
 
-- (id)initWithRequest:(NSURLRequest *)request delegate:(id)delegate callback:(GOMClientOperationCallback)callback
+- (id)initWithRequest:(NSURLRequest *)request delegate:(id<GOMOperationDelegate>)delegate callback:(GOMClientOperationCallback)callback
 {
     self = [super init];
     if (self) {

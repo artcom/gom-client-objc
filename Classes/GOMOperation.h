@@ -10,9 +10,10 @@
 
 typedef void (^GOMClientOperationCallback)(NSDictionary *, NSError *);
 
+@protocol GOMOperationDelegate;
 @interface GOMOperation : NSObject <NSURLConnectionDataDelegate>
 
-- (id)initWithRequest:(NSURLRequest *)request delegate:(id)delegate callback:(GOMClientOperationCallback)callback;
+- (id)initWithRequest:(NSURLRequest *)request delegate:(id<GOMOperationDelegate>)delegate callback:(GOMClientOperationCallback)callback;
 - (void)run;
 
 @end
