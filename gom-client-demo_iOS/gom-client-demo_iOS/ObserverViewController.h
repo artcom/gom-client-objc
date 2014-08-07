@@ -8,12 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-#import "GOMClient.h"
+#import "GOMGnpHandler.h"
 
 @protocol ObserverViewControllerDelegate;
 @interface ObserverViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 @property (weak, nonatomic) id<ObserverViewControllerDelegate> delegate;
-@property (weak, nonatomic) GOMClient *gomClient;
+@property (weak, nonatomic) GOMGnpHandler *gomGnpHandler;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UITextField *observerPathField;
 @property (weak, nonatomic) IBOutlet UIView *inputContainer;

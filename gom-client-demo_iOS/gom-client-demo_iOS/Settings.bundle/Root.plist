@@ -6,7 +6,7 @@
 	<array>
 		<dict>
 			<key>Title</key>
-			<string>GOM adress</string>
+			<string>GOM Adress</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 		</dict>
@@ -21,6 +21,30 @@
 			<false/>
 			<key>Key</key>
 			<string>gom_address_preference</string>
+			<key>KeyboardType</key>
+			<string>Alphabet</string>
+			<key>Title</key>
+			<string></string>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+		</dict>
+        <dict>
+			<key>Title</key>
+			<string>Websocket Proxy Path</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>AutocapitalizationType</key>
+			<string>None</string>
+			<key>AutocorrectionType</key>
+			<string>No</string>
+			<key>DefaultValue</key>
+			<string></string>
+			<key>IsSecure</key>
+			<false/>
+			<key>Key</key>
+			<string>websocket_proxy_path_preference</string>
 			<key>KeyboardType</key>
 			<string>Alphabet</string>
 			<key>Title</key>

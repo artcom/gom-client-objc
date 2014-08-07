@@ -13,8 +13,10 @@
 {
     BOOL isSlidUp;
 }
-@property (nonatomic, strong) GOMClient *gomClient;
 @property (nonatomic, strong) NSURL *gomRoot;
+@property (nonatomic, strong) GOMClient *gomClient;
+@property (nonatomic, strong) GOMGnpHandler *gomGnpHandler;
+
 
 
 - (void)registerObservers;
@@ -75,15 +77,34 @@
     NSString *gomRootPath = [[NSUserDefaults standardUserDefaults] stringForKey:@"gom_address_preference"];
     if (gomRootPath && [gomRootPath isEqualToString:@""] == NO) {
         self.gomRoot = [NSURL URLWithString:gomRootPath];
-        _gomClient = [[GOMClient alloc] initWithGomURI:_gomRoot delegate:self];
+        _gomClient = [[GOMClient alloc] initWithGomURI:_gomRoot];
     }
+    
+    [self setupGnpHandler];
 }
 
-#pragma mark - GOMClientDelegate
-
-- (void)gomClientDidBecomeReady:(GOMClient *)gomClient
+- (void)setupGnpHandler
 {
-    NSLog(@"GOMClient did become ready");
+    NSString *websocketProxyPath = [[NSUserDefaults standardUserDefaults] stringForKey:@"websocket_proxy_path_preference"];
+    if (websocketProxyPath == nil) {
+        return;
+    }
+    __block NSURL *webSocketUri = nil;
+    [self.gomClient retrieve:websocketProxyPath completionBlock:^(NSDictionary *response, NSError *error) {
+        if (response) {
+            GOMAttribute *attribute = [GOMAttribute attributeFromDictionary:response];
+            webSocketUri = [NSURL URLWithString:attribute.value];
+            self.gomGnpHandler = [[GOMGnpHandler alloc] initWithWebsocketUri:webSocketUri delegate:self];
+        }
+    }];
+    
+}
+
+#pragma mark - GOMGnpHandlerDelegate
+
+- (void)gomGnpHandlerDidBecomeReady:(GOMGnpHandler *)gomGnpHandler
+{
+    NSLog(@"GOMGnpHandler did become ready");
     
     [UIView animateWithDuration:0.4
                      animations:^{
@@ -95,7 +116,7 @@
      ];
 }
 
-- (void)gomClient:(GOMClient *)gomClient didFailWithError:(NSError *)error
+- (void)gomGnpHandler:(GOMGnpHandler *)gomGnpHandler didFailWithError:(NSError *)error
 {
     [UIView animateWithDuration:0.4
                      animations:^{
@@ -106,8 +127,8 @@
                      }
      ];
     
-    NSLog(@"GOMClient did fail with error:\n%@", error);
-    self.gomClient = nil;
+    NSLog(@"GOMGnpHandler did fail with error:\n%@", error);
+    self.gomGnpHandler = nil;
 }
 
 #pragma - mark UI handling
@@ -180,14 +201,14 @@
 
 - (void)observerViewController:(ObserverViewController *)observerViewController didAddObserverWithPath:(NSString *)path
 {
-    [self.gomClient registerGOMObserverForPath:path clientCallback:^(NSDictionary *dict) {
+    [self.gomGnpHandler registerGOMObserverForPath:path clientCallback:^(NSDictionary *dict) {
         [self writeToConsole:dict error:nil];
     }];
 }
 
 - (void)observerViewController:(ObserverViewController *)observerViewController didRemoveObserverWithPath:(NSString *)path
 {
-    [self.gomClient unregisterGOMObserverForPath:path];
+    [self.gomGnpHandler unregisterGOMObserverForPath:path];
 }
 
 - (void)didFinishManagingObservers:(ObserverViewController *)observerViewController
@@ -199,7 +220,7 @@
     if ([segue.identifier isEqualToString:@"ManageObservers"]) {
         ObserverViewController *destViewController = segue.destinationViewController;
         destViewController.delegate = self;
-        destViewController.gomClient = self.gomClient;
+        destViewController.gomGnpHandler = self.gomGnpHandler;
     }
 }
 
