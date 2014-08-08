@@ -1,5 +1,5 @@
 //
-//  GOMGnpHandlerTest.m
+//  GOMObserverTest.m
 //  gom-client-demo_iOS
 //
 //  Created by Julian Krumow on 07.08.14.
@@ -8,10 +8,10 @@
 
 #import <XCTest/XCTest.h>
 #import "XCTAsyncTestCase.h"
-#import "GOMGnpHandler.h"
+#import "GOMObserver.h"
 #import "GOMClient.h"
 
-@interface GOMGnpHandlerTest : XCTAsyncTestCase <GOMGnpHandlerDelegate>
+@interface GOMObserverTest : XCTAsyncTestCase <GOMObserverDelegate>
 
 @property (nonatomic, strong) NSString *GOM_URI;
 @property (nonatomic, strong) NSString *WEBSOCKET_GNP_URI;
@@ -27,19 +27,19 @@
 
 @property (nonatomic, strong) NSURL *gomUri;
 @property (nonatomic, strong) GOMClient *gomClient;
-@property (nonatomic, strong) GOMGnpHandler *gnpHandler;
+@property (nonatomic, strong) GOMObserver *gomObserver;
 @property (nonatomic, assign) BOOL delegateResponded;
 
 @end
 
-@implementation GOMGnpHandlerTest
+@implementation GOMObserverTest
 
-- (void) gomGnpHandlerDidBecomeReady:(GOMGnpHandler *)gomGnpHandler
+- (void) gomObserverDidBecomeReady:(GOMObserver *)gomObserver
 {
     _delegateResponded = YES;
 }
 
-- (void)gomGnpHandler:(GOMGnpHandler *)gomGnpHandler didFailWithError:(NSError *)error
+- (void)gomObserver:(GOMObserver *)gomObserver didFailWithError:(NSError *)error
 {
     XCTFail(@"Error: %@", error.userInfo);
     
@@ -68,7 +68,7 @@
     _gomClient = [[GOMClient alloc] initWithGomURI:_gomUri];
     
     NSURL *webSocketProxyUri = [NSURL URLWithString:_WEBSOCKET_GNP_URI];
-    _gnpHandler = [[GOMGnpHandler alloc] initWithWebsocketUri:webSocketProxyUri delegate:self];
+    _gomObserver = [[GOMObserver alloc] initWithWebsocketUri:webSocketProxyUri delegate:self];
     
     // wait until GNP handler responds to delegate
     while(_delegateResponded == NO) {
@@ -93,7 +93,7 @@
     
     _gomClient = nil;
     _gomUri = nil;
-    _gnpHandler = nil;
+    _gomObserver = nil;
     
     _delegateResponded = NO;
     
@@ -111,7 +111,7 @@
         
         if (response) {
             
-            [_gnpHandler registerGOMObserverForPath:_ATTRIBUTE_PATH clientCallback:^(GOMGnp *response) {
+            [_gomObserver registerGOMObserverForPath:_ATTRIBUTE_PATH clientCallback:^(GOMGnp *response) {
                 
                 if ([response.eventType isEqualToString:@"initial"]) {
                     _initialResponse = response;
@@ -169,7 +169,7 @@
         
         if (response) {
             
-            [_gnpHandler registerGOMObserverForPath:_ATTRIBUTE_PATH clientCallback:^(GOMGnp *response) {
+            [_gomObserver registerGOMObserverForPath:_ATTRIBUTE_PATH clientCallback:^(GOMGnp *response) {
                 
                 if ([response.eventType isEqualToString:@"initial"]) {
                     _initialResponse = response;

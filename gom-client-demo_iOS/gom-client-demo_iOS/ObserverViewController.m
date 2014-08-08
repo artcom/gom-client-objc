@@ -41,9 +41,9 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)setGomGnpHandler:(GOMGnpHandler *)gomGnpHandler
+- (void)setGomObserver:(GOMObserver *)gomObserver
 {
-    _gomGnpHandler = gomGnpHandler;
+    _gomObserver = gomObserver;
     [self.tableView reloadData];
 }
 
@@ -56,7 +56,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.gomGnpHandler.bindings.count;
+    return self.gomObserver.bindings.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -66,7 +66,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"observerCell"];
     }
     
-    GOMBinding *binding = self.gomGnpHandler.bindings.allValues[indexPath.row];
+    GOMBinding *binding = self.gomObserver.bindings.allValues[indexPath.row];
     NSString *path = binding.subscriptionUri;
     
     cell.textLabel.text = path;
@@ -79,7 +79,7 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (UITableViewCellEditingStyleDelete) {
-        GOMBinding *binding = [self.gomGnpHandler.bindings.allValues objectAtIndex:indexPath.row];
+        GOMBinding *binding = [self.gomObserver.bindings.allValues objectAtIndex:indexPath.row];
         if ([self.delegate respondsToSelector:@selector(observerViewController:didRemoveObserverWithPath:)]) {
             [self.delegate observerViewController:self didRemoveObserverWithPath:binding.subscriptionUri];
         }

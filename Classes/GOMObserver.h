@@ -1,5 +1,5 @@
 //
-//  GOMGnpHandler.h
+//  GOMObserver.h
 //  gom-client-objc
 //
 //  Created by Julian Krumow on 07.08.14.
@@ -8,26 +8,26 @@
 
 #import <Foundation/Foundation.h>
 
-#import "GOMGnpHandlerDelegate.h"
+#import "GOMObserverDelegate.h"
 #import "GOMBinding.h"
 #import "GOMGNp.h"
 
 typedef void (^GOMClientGNPCallback)(GOMGnp *);
 
-extern NSString * const GOMGnpHandlerErrorDomain;
+extern NSString * const GOMObserverErrorDomain;
 
 typedef enum {
-    GOMGnpHandlerWebsocketProxyUrlNotFound,
-    GOMGnpHandlerWebsocketNotOpen
-} GOMGnpHandlerErrorCode;
+    GOMObserverWebsocketProxyUrlNotFound,
+    GOMObserverWebsocketNotOpen
+} GOMObserverErrorCode;
 
-@interface GOMGnpHandler : NSObject
+@interface GOMObserver : NSObject
 
 @property (nonatomic, strong, readonly) NSURL *webSocketUri;
 @property (nonatomic, strong, readonly) NSDictionary *bindings;
-@property (nonatomic, weak) id<GOMGnpHandlerDelegate> delegate;
+@property (nonatomic, weak) id<GOMObserverDelegate> delegate;
 
-- (id)initWithWebsocketUri:(NSURL *)websocketUri delegate:(id<GOMGnpHandlerDelegate>)delegate;
+- (id)initWithWebsocketUri:(NSURL *)websocketUri delegate:(id<GOMObserverDelegate>)delegate;
 
 - (void)reconnectWebsocket;
 - (void)disconnectWebsocket;

@@ -9,10 +9,10 @@
 #import <UIKit/UIKit.h>
 
 #import "GOMClient.h"
-#import "GOMGnpHandler.h"
+#import "GOMObserver.h"
 #import "ObserverViewController.h"
 
-@interface ViewController : UIViewController <GOMGnpHandlerDelegate, ObserverViewControllerDelegate, UITextFieldDelegate>
+@interface ViewController : UIViewController <GOMObserverDelegate, ObserverViewControllerDelegate, UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextView *consoleView;
 @property (weak, nonatomic) IBOutlet UIView *inputContainer;

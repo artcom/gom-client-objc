@@ -1,12 +1,12 @@
 //
-//  GOMGnpHandler.m
+//  GOMObserver.m
 //  gom-client-objc
 //
 //  Created by Julian Krumow on 07.08.14.
 //  Copyright (c) 2014 ART+COM AG. All rights reserved.
 //
 
-#import "GOMGnpHandler.h"
+#import "GOMObserver.h"
 #import "SRWebSocket.h"
 
 #import "GOMGnp.h"
@@ -18,9 +18,9 @@
 #import "NSDictionary+JSON.h"
 #import "NSDictionary+XML.h"
 
-NSString * const GOMGnpHandlerErrorDomain = @"de.artcom.gom-client-objc.gnphandler";
+NSString * const GOMObserverErrorDomain = @"de.artcom.gom-client-objc.observer";
 
-@interface GOMGnpHandler () <SRWebSocketDelegate>
+@interface GOMObserver () <SRWebSocketDelegate>
 
 @property (nonatomic, strong) SRWebSocket *webSocket;
 @property (nonatomic, strong) NSMutableDictionary *priv_bindings;
@@ -36,14 +36,14 @@ NSString * const GOMGnpHandlerErrorDomain = @"de.artcom.gom-client-objc.gnphandl
 - (void)_checkReconnect;
 - (void)_reRegisterObservers;
 - (void)_returnError:(NSError *)error;
-- (NSError *)_gomGnpHandlerForCode:(GOMGnpHandlerErrorCode)code;
+- (NSError *)_gomObserverErrorForCode:(GOMObserverErrorCode)code;
 - (GOMEntry *)_createGOMEntryFromDictionary:(NSDictionary *)dictionary;
 
 @end
 
-@implementation GOMGnpHandler
+@implementation GOMObserver
 
-- (instancetype)initWithWebsocketUri:(NSURL *)websocketUri delegate:(id<GOMGnpHandlerDelegate>)delegate
+- (instancetype)initWithWebsocketUri:(NSURL *)websocketUri delegate:(id<GOMObserverDelegate>)delegate
 {
     self = [super init];
     if (self) {
@@ -115,7 +115,7 @@ NSString * const GOMGnpHandlerErrorDomain = @"de.artcom.gom-client-objc.gnphandl
         NSData *jsonData = [commands convertToJSON];
         [_webSocket send:jsonData];
     } else {
-        [self _returnError:[self _gomGnpHandlerForCode:GOMGnpHandlerWebsocketNotOpen]];
+        [self _returnError:[self _gomObserverErrorForCode:GOMObserverWebsocketNotOpen]];
     }
 }
 
@@ -196,7 +196,7 @@ NSString * const GOMGnpHandlerErrorDomain = @"de.artcom.gom-client-objc.gnphandl
         [_webSocket open];
         return;
     }
-    [self _returnError:[self _gomGnpHandlerForCode:GOMGnpHandlerWebsocketProxyUrlNotFound]];
+    [self _returnError:[self _gomObserverErrorForCode:GOMObserverWebsocketProxyUrlNotFound]];
 }
 
 - (void)disconnectWebsocket
@@ -208,20 +208,20 @@ NSString * const GOMGnpHandlerErrorDomain = @"de.artcom.gom-client-objc.gnphandl
 }
 
 - (void)_returnError:(NSError *)error {
-    if ([self.delegate respondsToSelector:@selector(gomGnpHandler:didFailWithError:)]) {
-        [self.delegate gomGnpHandler:self didFailWithError:error];
+    if ([self.delegate respondsToSelector:@selector(gomObserver:didFailWithError:)]) {
+        [self.delegate gomObserver:self didFailWithError:error];
     }
 }
 
-- (NSError *)_gomGnpHandlerForCode:(GOMGnpHandlerErrorCode)code
+- (NSError *)_gomObserverErrorForCode:(GOMObserverErrorCode)code
 {
     NSString *description = nil;
     
     switch (code) {
-        case GOMGnpHandlerWebsocketProxyUrlNotFound:
+        case GOMObserverWebsocketProxyUrlNotFound:
             description = @"Websocket proxy url not found.";
             break;
-        case GOMGnpHandlerWebsocketNotOpen:
+        case GOMObserverWebsocketNotOpen:
             description = @"Websocket not open.";
             break;
         default:
@@ -230,15 +230,15 @@ NSString * const GOMGnpHandlerErrorDomain = @"de.artcom.gom-client-objc.gnphandl
     }
     
     NSDictionary *userInfo = @{NSLocalizedDescriptionKey : NSLocalizedString(description, nil)};
-    return [NSError errorWithDomain:GOMGnpHandlerErrorDomain code:code userInfo:userInfo];
+    return [NSError errorWithDomain:GOMObserverErrorDomain code:code userInfo:userInfo];
 }
 
 - (void)_reRegisterObservers
 {
-    if ([self.delegate respondsToSelector:@selector(gomGnpHandler:shouldReRegisterObserverWithBinding:)]) {
+    if ([self.delegate respondsToSelector:@selector(gomObserver:shouldReRegisterObserverWithBinding:)]) {
         for (NSString *path in _priv_bindings.allKeys) {
             GOMBinding *binding = _priv_bindings[path];
-            if ([self.delegate gomGnpHandler:self shouldReRegisterObserverWithBinding:binding]) {
+            if ([self.delegate gomObserver:self shouldReRegisterObserverWithBinding:binding]) {
                 binding.registered = NO;
                 [self _registerGOMObserverForBinding:binding];
             } else {
@@ -252,8 +252,8 @@ NSString * const GOMGnpHandlerErrorDomain = @"de.artcom.gom-client-objc.gnphandl
 
 - (void)_checkReconnect
 {
-    if ([self.delegate respondsToSelector:@selector(gomGnpHandlerShouldReconnect:)]) {
-        if ([self.delegate gomGnpHandlerShouldReconnect:self]) {
+    if ([self.delegate respondsToSelector:@selector(gomObserverShouldReconnect:)]) {
+        if ([self.delegate gomObserverShouldReconnect:self]) {
             [self reconnectWebsocket];
         }
     }
@@ -264,8 +264,8 @@ NSString * const GOMGnpHandlerErrorDomain = @"de.artcom.gom-client-objc.gnphandl
 - (void)webSocketDidOpen:(SRWebSocket *)webSocket;
 {
     NSLog(@"Websocket Connected");
-    if ([self.delegate respondsToSelector:@selector(gomGnpHandlerDidBecomeReady:)]) {
-        [self.delegate gomGnpHandlerDidBecomeReady:self];
+    if ([self.delegate respondsToSelector:@selector(gomObserverDidBecomeReady:)]) {
+        [self.delegate gomObserverDidBecomeReady:self];
     }
     
     if (_priv_bindings.count > 0) {

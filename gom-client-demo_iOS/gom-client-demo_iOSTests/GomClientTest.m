@@ -9,7 +9,7 @@
 #import <XCTest/XCTest.h>
 #import "XCTAsyncTestCase.h"
 #import "GOMClient.h"
-#import "GOMGnpHandler.h"
+#import "GOMObserver.h"
 
 
 @interface GomClientTest : XCTAsyncTestCase
