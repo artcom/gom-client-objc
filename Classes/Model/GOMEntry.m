@@ -7,7 +7,16 @@
 //
 
 #import "GOMEntry.h"
+#import "NSDate+XSDDateTime.h"
 
 @implementation GOMEntry
+
+- (void)setValue:(id)value forKey:(NSString *)key
+{
+    if ([key isEqualToString:@"ctime"] || [key isEqualToString:@"mtime"]) {
+        value = [NSDate dateFromXSDTimeString:value];
+    }
+    [super setValue:value forKey:key];
+}
 
 @end

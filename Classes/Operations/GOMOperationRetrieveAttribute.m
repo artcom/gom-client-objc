@@ -7,7 +7,6 @@
 //
 
 #import "GOMOperationRetrieveAttribute.h"
-#import "GOMAttribute.h"
 
 @interface GOMOperationRetrieveAttribute ()
 

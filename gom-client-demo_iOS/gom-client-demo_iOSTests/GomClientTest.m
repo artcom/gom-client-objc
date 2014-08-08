@@ -109,10 +109,10 @@ float const TIMEOUT = 10.0;
     XCTAssertNil(_retrieveError, @"Error object must be nil.");
     XCTAssertNotNil(_retrievedNode, @"Response dictionary must not be nil.");
     
-//    XCTAssertNotNil([_retrieveResponse valueForKeyPath:@"node.ctime"], @"node.ctime should not be nil.");
-//    XCTAssertNotNil([_retrieveResponse valueForKeyPath:@"node.mtime"], @"node.mtime should not be nil.");
-//    XCTAssertTrue([[_retrieveResponse valueForKeyPath:@"node.uri"] isEqualToString:NODE_1_PATH], @"node.uri should be equal to the reference value.");
-//    XCTAssertEqual([[_retrieveResponse valueForKeyPath:@"node.entries"] count], 2, @"There should be two objects in the node's entries list.");
+    XCTAssertNotNil(_retrievedNode.ctime, @"node.ctime should not be nil.");
+    XCTAssertNotNil(_retrievedNode.mtime, @"node.mtime should not be nil.");
+    XCTAssertTrue([_retrievedNode.uri isEqualToString:NODE_1_PATH], @"node.uri should be equal to the reference value.");
+    XCTAssertEqual(_retrievedNode.entries.count, 2, @"There should be two objects in the node's entries list.");
 }
 
 - (void)testRetrieveNodeNonexistent
@@ -179,12 +179,12 @@ float const TIMEOUT = 10.0;
     XCTAssertNotNil(_retrievedAttribute, @"Response dictionary must not be nil.");
     
     XCTAssertNotNil(_retrievedAttribute, @"Attribute entry must not be nil.");
-//    XCTAssertNotNil([_retrievedAttribute valueForKeyPath:@"attribute.ctime"], @"attribute.ctime should not be nil.");
-//    XCTAssertNotNil([_retrievedAttribute valueForKeyPath:@"attribute.mtime"], @"attribute.mtime should not be nil.");
-//    XCTAssertTrue([[_retrievedAttribute valueForKeyPath:@"attribute.node"] isEqualToString:NODE_1_PATH], @"node.uri should be equal to the reference value.");
-//    XCTAssertTrue([[_retrievedAttribute valueForKeyPath:@"attribute.type"] isEqualToString:ATTRIBUTE_1_1_TYPE], @"attribute.type should be equal to the reference value.");
-//    XCTAssertTrue([[_retrievedAttribute valueForKeyPath:@"attribute.name"] isEqualToString:ATTRIBUTE_1_1_NAME], @"attribute.name should be equal to the reference value.");
-//    XCTAssertTrue([[_retrievedAttribute valueForKeyPath:@"attribute.value"] isEqualToString:ATTRIBUTE_1_1_VALUE], @"attribute.value should be equal to the reference value.");
+    XCTAssertNotNil(_retrievedAttribute.ctime, @"attribute.ctime should not be nil.");
+    XCTAssertNotNil(_retrievedAttribute.mtime, @"attribute.mtime should not be nil.");
+    XCTAssertTrue([_retrievedAttribute.node isEqualToString:NODE_1_PATH], @"node.uri should be equal to the reference value.");
+    XCTAssertTrue([_retrievedAttribute.type isEqualToString:ATTRIBUTE_1_1_TYPE], @"attribute.type should be equal to the reference value.");
+    XCTAssertTrue([_retrievedAttribute.name isEqualToString:ATTRIBUTE_1_1_NAME], @"attribute.name should be equal to the reference value.");
+    XCTAssertTrue([_retrievedAttribute.value isEqualToString:ATTRIBUTE_1_1_VALUE], @"attribute.value should be equal to the reference value.");
 }
 
 - (void)testRetrieveAttributeNonexistent

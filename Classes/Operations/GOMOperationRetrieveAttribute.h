@@ -7,8 +7,7 @@
 //
 
 #include "GOMOperation.h"
-
-@class GOMAttribute;
+#include "GOMAttribute.h"
 
 typedef void (^GOMClientRetrieveAttributeCallback)(GOMAttribute *, NSError *);
 

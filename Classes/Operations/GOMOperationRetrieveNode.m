@@ -7,7 +7,6 @@
 //
 
 #import "GOMOperationRetrieveNode.h"
-#import "GOMNode.h"
 
 @interface GOMOperationRetrieveNode ()
 

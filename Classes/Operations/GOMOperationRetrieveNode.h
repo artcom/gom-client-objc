@@ -7,8 +7,7 @@
 //
 
 #import "GOMOperation.h"
-
-@class GOMNode;
+#import "GOMNode.h"
 
 typedef void (^GOMClientRetrieveNodeCallback)(GOMNode *, NSError *);
 
