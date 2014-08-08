@@ -1,8 +1,14 @@
 # gom-client-objc CHANGELOG
 
+## 1.0.0
+
+### API cleanup
+
+- separated GOMClient and GOMObserver
+
 ## 0.6.0
 
-### API cleanup:
+### API cleanup
 
 - removed `options` parameter from `- (void)registerGOMObserverForPath:(NSString *)path clientCallback:(GOMClientGNPCallback)callback` and `- (void)unregisterGOMObserverForPath:(NSString *)path`
 

@@ -25,17 +25,8 @@ All dependencies are defined in the file ```gom-client-objc.podspec```
 
 ```objective-c
 NSURL *gomURI = [NSURL URLWithString:@"http://<ip-or-name>:<port>"];
-GOMClient *gomClient = [[GOMClient alloc] initWithGomURI:gomURI delegate:self];
+GOMClient *gomClient = [[GOMClient alloc] initWithGomURI:gomURI];
 ```
-
-As soon as the GOMClient object is initialized and completely set up it will communicate its state through the `GOMClientDelegate` protocol method ```- (void)gomClientDidBecomeReady:(GOMClient *)gomClient``` returning a reference of the GOMClient object in question.
-
-#### Errorhandling
-
-Errors that occur during GOM requests are passed to the sender through the completion blocks of the respective methods.
-
-Fundamental errors are returned to the delegate through the `GOMClientDelegate` protocol method ```- (void)gomClient:(GOMClient *)gomClient didFailWithError:(NSError *)error```
-
 
 ### RESTful operations
 
@@ -287,12 +278,24 @@ Fundamental errors are returned to the delegate through the `GOMClientDelegate` 
     NSError Domain=de.artcom.gom-client-objc Code=404 "not found"
     ```
 
-### Handling observers
+## GOMObserver
+
+* instantiate the `GOMObserver`instance.
+
+```objective-c
+NSURL *webSocketProxyUri = [NSURL URLWithString:@"ws://<ip-or-name>:<port>"];
+GOMObserver *gomObserver = [[GOMObserver alloc] initWithWebsocketUri:webSocketProxyUri delegate:self];
+```
+
+As soon as the GOMObserver instance is initialized and completely set up it will communicate its state through the `GOMObserver` protocol method ```- (void)gomObserverDidBecomeReady:(GOMObserver *)gomObserver``` returning a reference of the GOMObserver object in question.
+
+Fundamental errors are returned to the delegate through the `GOMObserverDelegate` protocol method ```- (void)gomObserver:(GOMObserver *)gomObserver didFailWithError:(NSError *)error```
+
 
 * Register an observer:
 
     ```objective-c
-    [gomClient registerGOMObserverForPath:@"/tests/node_1:attribute_2" clientCallback:^(NSDictionary *dict) {
+    [gomObserver registerGOMObserverForPath:@"/tests/node_1:attribute_2" clientCallback:^(GOMGnp *gnp) {
 
         // Your code here
 
@@ -321,23 +324,7 @@ Fundamental errors are returned to the delegate through the `GOMClientDelegate` 
 * Unregister an observer:
 
     ```objective-c
-   [gomClient unregisterGOMObserverForPath:@"/tests/node_1:attribute_2"];
-    ```
-
-### Mapping response dictionaries to data objects
-
-If the response dictionaries from the GOM are to cumbersome to handle you can use the following classes to map the dictionaries to data objects.
-
-* When receiving an attribute:
-
-    ```objective-c
-    GOMAttribute *attribute = [GOMAttribute attributeFromDictionary:response];
-    ```
-
-* When receiving a node:
-    
-    ```objective-c
-    GOMNode *node = [GOMNode nodeFromDictionary:response];
+   [gomObserver unregisterGOMObserverForPath:@"/tests/node_1:attribute_2"];
     ```
 
 ### Handling websocket reconnects
