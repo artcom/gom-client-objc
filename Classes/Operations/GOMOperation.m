@@ -14,27 +14,22 @@ NSUInteger const MaxNumberOfRedirects = 10;
 
 @interface GOMOperation ()
 
-@property (nonatomic, weak)id<GOMOperationDelegate> delegate;
-
-@property (nonatomic, strong, readonly) GOMClientOperationCallback callback;
-@property (nonatomic, strong, readonly) NSURLRequest *request;
-@property (nonatomic, strong, readonly) NSURLConnection *connection;
-@property (nonatomic, strong, readonly) NSURLResponse *response;
-@property (nonatomic, strong, readonly) NSMutableData *responseData;
-@property (nonatomic, assign, readonly) NSUInteger performedRedirects;
+@property (nonatomic, strong) NSURLConnection *connection;
+@property (nonatomic, strong) NSURLResponse *response;
+@property (nonatomic, strong) NSMutableData *responseData;
+@property (nonatomic, assign) NSUInteger performedRedirects;
 
 @end
 
 @implementation GOMOperation
 
-- (id)initWithRequest:(NSURLRequest *)request delegate:(id)delegate callback:(GOMClientOperationCallback)callback
+- (id)initWithRequest:(NSURLRequest *)request delegate:(id<GOMOperationDelegate>)delegate
 {
     self = [super init];
     if (self) {
         
         _request = request;
         _delegate = delegate;
-        _callback = callback;
         _performedRedirects = 0;
         _responseData = [[NSMutableData alloc] init];
     }
@@ -46,7 +41,7 @@ NSUInteger const MaxNumberOfRedirects = 10;
     _connection = [NSURLConnection connectionWithRequest:_request delegate:self];
 }
 
-- (void)_handleOperationResponse:(NSURLResponse *)response data:(NSData *)data error:(NSError *)connectionError completionBlock:(GOMClientOperationCallback)block
+- (void)_handleOperationResponse:(NSURLResponse *)response data:(NSData *)data error:(NSError *)connectionError
 {
     NSDictionary *responseData = nil;
     NSError *error = nil;
@@ -69,11 +64,14 @@ NSUInteger const MaxNumberOfRedirects = 10;
         }
     }
     
-    if (block) {
-        block(responseData, error);
-    }
+    [self handleResponse:responseData error:error];
     
     [self.delegate gomOperationDidFinish:self];
+}
+
+- (void)handleResponse:(NSDictionary *)response error:(NSError *)error
+{
+    
 }
 
 #pragma mark - NSURLConnectionDataDelegate
@@ -90,12 +88,12 @@ NSUInteger const MaxNumberOfRedirects = 10;
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-    [self _handleOperationResponse:_response data:_responseData error:nil completionBlock:_callback];
+    [self _handleOperationResponse:_response data:_responseData error:nil];
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
-    [self _handleOperationResponse:nil data:nil error:error completionBlock:_callback];
+    [self _handleOperationResponse:nil data:nil error:error];
 }
 
 - (NSURLRequest *)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)response
@@ -105,7 +103,7 @@ NSUInteger const MaxNumberOfRedirects = 10;
         if (_performedRedirects == MaxNumberOfRedirects) {
             [connection cancel];
             NSError *error = [NSError errorWithDomain:GOMClientErrorDomain code:GOMClientTooManyRedirects userInfo:nil];
-            [self _handleOperationResponse:nil data:nil error:error completionBlock:nil];
+            [self _handleOperationResponse:nil data:nil error:error];
             return nil;
         } else {
             NSURL *redirectedUrl = request.URL;

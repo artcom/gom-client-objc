@@ -8,13 +8,19 @@
 
 #import <Foundation/Foundation.h>
 
+@class GOMEntry;
+@protocol GOMOperationDelegate;
+
 typedef void (^GOMClientOperationCallback)(NSDictionary *, NSError *);
 
 @interface GOMOperation : NSObject <NSURLConnectionDataDelegate>
 
-- (id)initWithRequest:(NSURLRequest *)request delegate:(id)delegate callback:(GOMClientOperationCallback)callback;
-- (void)run;
+@property (nonatomic, weak)id<GOMOperationDelegate> delegate;
+@property (nonatomic, strong) NSURLRequest *request;
 
+- (id)initWithRequest:(NSURLRequest *)request delegate:(id<GOMOperationDelegate>)delegate;
+- (void)run;
+- (void)handleResponse:(NSDictionary *)response error:(NSError *)error;
 @end
 
 @protocol GOMOperationDelegate <NSObject>
@@ -22,3 +28,4 @@ typedef void (^GOMClientOperationCallback)(NSDictionary *, NSError *);
 - (void)gomOperationDidFinish:(GOMOperation *)operation;
 
 @end
+

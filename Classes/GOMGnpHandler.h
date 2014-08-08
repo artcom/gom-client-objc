@@ -3,7 +3,7 @@
 //  gom-client-objc
 //
 //  Created by Julian Krumow on 07.08.14.
-//
+//  Copyright (c) 2014 ART+COM AG. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

@@ -8,9 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-#import "GOMOperation.h"
-#import "GOMNode.h"
-#import "GOMAttribute.h"
+#import "GOMOperationCreate.h"
+#import "GOMOperationUpdate.h"
+#import "GOMOperationDelete.h"
+#import "GOMOperationRetrieveAttribute.h"
+#import "GOMOperationRetrieveNode.h"
 
 extern NSString * const GOMClientErrorDomain;
 
@@ -25,7 +27,9 @@ typedef enum {
 
 - (id)initWithGomURI:(NSURL *)gomURI;
 
-- (void)retrieve:(NSString *)path completionBlock:(GOMClientOperationCallback)block;
+- (void)retrieveAttribute:(NSString *)path completionBlock:(GOMClientRetrieveAttributeCallback)block;
+- (void)retrieveNode:(NSString *)path completionBlock:(GOMClientRetrieveNodeCallback)block;
+
 - (void)create:(NSString *)node withAttributes:(NSDictionary *)attributes completionBlock:(GOMClientOperationCallback)block;
 - (void)updateAttribute:(NSString *)attribute withValue:(NSString *)value completionBlock:(GOMClientOperationCallback)block;
 - (void)updateNode:(NSString *)node withAttributes:(NSDictionary *)attributes completionBlock:(GOMClientOperationCallback)block;

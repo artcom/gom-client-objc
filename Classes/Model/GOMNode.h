@@ -7,14 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "GOMEntry.h"
 
-@interface GOMNode : NSObject
-
-@property (nonatomic, strong) NSDate *ctime;
-@property (nonatomic, strong) NSDate *mtime;
+@interface GOMNode : GOMEntry
 
 @property (nonatomic, strong) NSString *uri;
-
 @property (nonatomic, strong) NSMutableArray *entries;
 
 + (BOOL)isNode:(NSDictionary *)dictionary;

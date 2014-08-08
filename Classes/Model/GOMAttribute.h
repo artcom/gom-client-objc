@@ -7,11 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "GOMEntry.h"
 
-@interface GOMAttribute : NSObject
-
-@property (nonatomic, strong) NSDate *ctime;
-@property (nonatomic, strong) NSDate *mtime;
+@interface GOMAttribute : GOMEntry
 
 @property (nonatomic, strong) NSString *node;
 @property (nonatomic, strong) NSString *type;

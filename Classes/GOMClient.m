@@ -19,8 +19,6 @@ NSString * const GOMClientErrorDomain = @"de.artcom.gom-client-objc.client";
 
 @interface GOMClient () <GOMOperationDelegate>
 
-- (void)_runGOMOperationWithRequest:(NSURLRequest *)request completionBlock:(GOMClientOperationCallback)block;
-
 @end
 
 @implementation GOMClient {
@@ -41,10 +39,16 @@ NSString * const GOMClientErrorDomain = @"de.artcom.gom-client-objc.client";
 
 #pragma mark - GOM operations
 
-- (void)retrieve:(NSString *)path completionBlock:(GOMClientOperationCallback)block
+- (void)retrieveAttribute:(NSString *)path completionBlock:(GOMClientRetrieveAttributeCallback)block
 {
-    NSURLRequest *request = [NSURLRequest createGetRequestWithPath:path gomRoot:self.gomRoot];
-    [self _runGOMOperationWithRequest:request completionBlock:block];
+	NSURLRequest *request = [NSURLRequest createGetRequestWithPath:path gomRoot:self.gomRoot];
+    [self _runGOMOperationForAttributeWithRequest:request completionBlock:block];
+}
+
+- (void)retrieveNode:(NSString *)path completionBlock:(GOMClientRetrieveNodeCallback)block
+{
+	NSURLRequest *request = [NSURLRequest createGetRequestWithPath:path gomRoot:self.gomRoot];
+    [self _runGOMOperationForNodeWithRequest:request completionBlock:block];
 }
 
 - (void)create:(NSString *)node withAttributes:(NSDictionary *)attributes completionBlock:(GOMClientOperationCallback)block
@@ -55,7 +59,7 @@ NSString * const GOMClientErrorDomain = @"de.artcom.gom-client-objc.client";
     NSString *payload = [attributes convertToNodeXML];
     NSData *payloadData = [payload dataUsingEncoding:NSUTF8StringEncoding];
     NSURLRequest *request = [NSURLRequest createPostRequestWithPath:node payload:payloadData gomRoot:self.gomRoot];
-    [self _runGOMOperationWithRequest:request completionBlock:block];
+    [self _runGOMOperationCreateWithRequest:request completionBlock:block];
 }
 
 - (void)updateAttribute:(NSString *)attribute withValue:(NSString *)value completionBlock:(GOMClientOperationCallback)block
@@ -63,7 +67,7 @@ NSString * const GOMClientErrorDomain = @"de.artcom.gom-client-objc.client";
     NSString *payload = [value convertToAttributeXML];
     NSData *payloadData = [payload dataUsingEncoding:NSUTF8StringEncoding];
     NSURLRequest *request = [NSURLRequest createPutRequestWithPath:attribute payload:payloadData gomRoot:self.gomRoot];
-    [self _runGOMOperationWithRequest:request completionBlock:block];
+    [self _runGOMOperationUpdateWithRequest:request completionBlock:block];
 }
 
 - (void)updateNode:(NSString *)node withAttributes:(NSDictionary *)attributes completionBlock:(GOMClientOperationCallback)block
@@ -74,18 +78,49 @@ NSString * const GOMClientErrorDomain = @"de.artcom.gom-client-objc.client";
     NSString *payload = [attributes convertToNodeXML];
     NSData *payloadData = [payload dataUsingEncoding:NSUTF8StringEncoding];
     NSURLRequest *request = [NSURLRequest createPutRequestWithPath:node payload:payloadData gomRoot:self.gomRoot];
-    [self _runGOMOperationWithRequest:request completionBlock:block];
+    [self _runGOMOperationUpdateWithRequest:request completionBlock:block];
 }
 
 - (void)destroy:(NSString *)path completionBlock:(GOMClientOperationCallback)block
 {
     NSURLRequest *request = [NSURLRequest createDeleteRequestWithPath:path gomRoot:self.gomRoot];
-    [self _runGOMOperationWithRequest:request completionBlock:block];
+    [self _runGOMOperationDeleteWithRequest:request completionBlock:block];
 }
 
-- (void)_runGOMOperationWithRequest:(NSURLRequest *)request completionBlock:(GOMClientOperationCallback)block
+#pragma mark - Running a GOMOperation
+
+- (void)_runGOMOperationCreateWithRequest:(NSURLRequest *)request completionBlock:(GOMClientOperationCallback)block
 {
-    GOMOperation *operation = [[GOMOperation alloc] initWithRequest:request delegate:self callback:block];
+    GOMOperation *operation = [[GOMOperationCreate alloc] initWithRequest:request delegate:self callback:block];
+    [self _runGomOperation:operation];
+}
+
+- (void)_runGOMOperationUpdateWithRequest:(NSURLRequest *)request completionBlock:(GOMClientOperationCallback)block
+{
+    GOMOperation *operation = [[GOMOperationUpdate alloc] initWithRequest:request delegate:self callback:block];
+    [self _runGomOperation:operation];
+}
+
+- (void)_runGOMOperationDeleteWithRequest:(NSURLRequest *)request completionBlock:(GOMClientOperationCallback)block
+{
+    GOMOperation *operation = [[GOMOperationDelete alloc] initWithRequest:request delegate:self callback:block];
+    [self _runGomOperation:operation];
+}
+
+- (void)_runGOMOperationForAttributeWithRequest:(NSURLRequest *)request completionBlock:(GOMClientRetrieveAttributeCallback)block
+{
+    GOMOperationRetrieveAttribute *operation = [[GOMOperationRetrieveAttribute alloc] initWithRequest:request delegate:self callback:block];
+    [self _runGomOperation:operation];
+}
+
+- (void)_runGOMOperationForNodeWithRequest:(NSURLRequest *)request completionBlock:(GOMClientRetrieveNodeCallback)block
+{
+    GOMOperationRetrieveNode *operation = [[GOMOperationRetrieveNode alloc] initWithRequest:request delegate:self callback:block];
+    [self _runGomOperation:operation];
+}
+
+- (void)_runGomOperation:(GOMOperation *)operation
+{
     [_operations addObject:operation];
     [operation run];
 }
