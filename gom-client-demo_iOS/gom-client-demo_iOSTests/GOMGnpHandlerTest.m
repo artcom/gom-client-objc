@@ -104,22 +104,22 @@
 {
     [self prepare];
     
-    static NSDictionary *_initialResponse = nil;
-    static NSDictionary *_updateResponse = nil;
+    static GOMGnp *_initialResponse = nil;
+    static GOMGnp *_updateResponse = nil;
     
     [_gomClient updateAttribute:_ATTRIBUTE_PATH withValue:_ATTRIBUTE_VALUE completionBlock:^(NSDictionary *response, NSError *error) {
         
         if (response) {
             
-            [_gnpHandler registerGOMObserverForPath:_ATTRIBUTE_PATH clientCallback:^(NSDictionary *response) {
+            [_gnpHandler registerGOMObserverForPath:_ATTRIBUTE_PATH clientCallback:^(GOMGnp *response) {
                 
-                if ([response[@"event_type"] isEqualToString:@"initial"]) {
+                if ([response.eventType isEqualToString:@"initial"]) {
                     _initialResponse = response;
                     
                     // trigger GNP by updating attribute
                     [_gomClient updateAttribute:_ATTRIBUTE_PATH withValue:_ATTRIBUTE_VALUE_NEW completionBlock:nil];
                     
-                } else if ([response[@"event_type"] isEqualToString:@"update"]) {
+                } else if ([response.eventType isEqualToString:@"update"]) {
                     _updateResponse = response;
                     
                     // test case officially finished
@@ -134,52 +134,50 @@
     [self waitForStatus:kXCTUnitWaitStatusSuccess timeout:_TIMEOUT];
     
     // check initial response
-    XCTAssertTrue([_initialResponse[@"path"] isEqualToString:_ATTRIBUTE_PATH], @"path should be equal to the reference value.");
-    XCTAssertTrue([_initialResponse[@"event_type"] isEqualToString:@"initial"], @"event_type should be equal to the reference value.");
+    XCTAssertTrue([_initialResponse.path isEqualToString:_ATTRIBUTE_PATH], @"path should be equal to the reference value.");
+    XCTAssertTrue([_initialResponse.eventType isEqualToString:@"initial"], @"event_type should be equal to the reference value.");
     
-    NSDictionary *payload = _initialResponse[@"payload"];
-    XCTAssertNotNil(payload[@"attribute"], @"Attribute entry must not be nil.");
-    XCTAssertNotNil([payload valueForKeyPath:@"attribute.ctime"], @"attribute.ctime should not be nil.");
-    XCTAssertNotNil([payload valueForKeyPath:@"attribute.mtime"], @"attribute.mtime should not be nil.");
-    XCTAssertTrue([[payload valueForKeyPath:@"attribute.node"] isEqualToString:_NODE_PATH], @"node.uri should be equal to the reference value.");
-    XCTAssertTrue([[payload valueForKeyPath:@"attribute.type"] isEqualToString:_ATTRIBUTE_TYPE], @"attribute.type should be equal to the reference value.");
-    XCTAssertTrue([[payload valueForKeyPath:@"attribute.name"] isEqualToString:_ATTRIBUTE_NAME], @"attribute.name should be equal to the reference value.");
-    XCTAssertTrue([[payload valueForKeyPath:@"attribute.value"] isEqualToString:_ATTRIBUTE_VALUE], @"attribute.value should be equal to the reference value.");
+    GOMAttribute *payload = (GOMAttribute *)_initialResponse.payload;
+    XCTAssertNotNil(payload.ctime, @"attribute.ctime should not be nil.");
+    XCTAssertNotNil(payload.mtime, @"attribute.mtime should not be nil.");
+    XCTAssertTrue([payload.node isEqualToString:_NODE_PATH], @"node.uri should be equal to the reference value.");
+    XCTAssertTrue([payload.type isEqualToString:_ATTRIBUTE_TYPE], @"attribute.type should be equal to the reference value.");
+    XCTAssertTrue([payload.name isEqualToString:_ATTRIBUTE_NAME], @"attribute.name should be equal to the reference value.");
+    XCTAssertTrue([payload.value isEqualToString:_ATTRIBUTE_VALUE], @"attribute.value should be equal to the reference value.");
     
     // check response from update
-    XCTAssertTrue([_updateResponse[@"path"] isEqualToString:_ATTRIBUTE_PATH], @"path should be equal to the reference value.");
-    XCTAssertTrue([_updateResponse[@"event_type"] isEqualToString:@"update"], @"event_type should be equal to the reference value.");
+    XCTAssertTrue([_updateResponse.path isEqualToString:_ATTRIBUTE_PATH], @"path should be equal to the reference value.");
+    XCTAssertTrue([_updateResponse.eventType isEqualToString:@"update"], @"event_type should be equal to the reference value.");
     
-    payload = _updateResponse[@"payload"];
-    XCTAssertNotNil(payload[@"attribute"], @"Attribute entry must not be nil.");
-    XCTAssertNotNil([payload valueForKeyPath:@"attribute.ctime"], @"attribute.ctime should not be nil.");
-    XCTAssertNotNil([payload valueForKeyPath:@"attribute.mtime"], @"attribute.mtime should not be nil.");
-    XCTAssertTrue([[payload valueForKeyPath:@"attribute.node"] isEqualToString:_NODE_PATH], @"node.uri should be equal to the reference value.");
-    XCTAssertTrue([[payload valueForKeyPath:@"attribute.type"] isEqualToString:_ATTRIBUTE_TYPE], @"attribute.type should be equal to the reference value.");
-    XCTAssertTrue([[payload valueForKeyPath:@"attribute.name"] isEqualToString:_ATTRIBUTE_NAME], @"attribute.name should be equal to the reference value.");
-    XCTAssertTrue([[payload valueForKeyPath:@"attribute.value"] isEqualToString:_ATTRIBUTE_VALUE_NEW], @"attribute.value should be equal to the reference value.");
+    payload = (GOMAttribute *)_updateResponse.payload;
+    XCTAssertNotNil(payload.ctime, @"attribute.ctime should not be nil.");
+    XCTAssertNotNil(payload.mtime, @"attribute.mtime should not be nil.");
+    XCTAssertTrue([payload.node isEqualToString:_NODE_PATH], @"node.uri should be equal to the reference value.");
+    XCTAssertTrue([payload.type isEqualToString:_ATTRIBUTE_TYPE], @"attribute.type should be equal to the reference value.");
+    XCTAssertTrue([payload.name isEqualToString:_ATTRIBUTE_NAME], @"attribute.name should be equal to the reference value.");
+    XCTAssertTrue([payload.value isEqualToString:_ATTRIBUTE_VALUE_NEW], @"attribute.value should be equal to the reference value.");
 }
 
 - (void)testReceiveGNPAfterDestroy
 {
     [self prepare];
     
-    static NSDictionary *_initialResponse = nil;
-    static NSDictionary *_destroyResponse = nil;
+    static GOMGnp *_initialResponse = nil;
+    static GOMGnp *_destroyResponse = nil;
     
     [_gomClient updateAttribute:_ATTRIBUTE_PATH withValue:_ATTRIBUTE_VALUE completionBlock:^(NSDictionary *response, NSError *error) {
         
         if (response) {
             
-            [_gnpHandler registerGOMObserverForPath:_ATTRIBUTE_PATH clientCallback:^(NSDictionary *response) {
+            [_gnpHandler registerGOMObserverForPath:_ATTRIBUTE_PATH clientCallback:^(GOMGnp *response) {
                 
-                if ([response[@"event_type"] isEqualToString:@"initial"]) {
+                if ([response.eventType isEqualToString:@"initial"]) {
                     _initialResponse = response;
                     
                     // trigger GNP by updating attribute
                     [_gomClient destroy:_ATTRIBUTE_PATH completionBlock:nil];
                     
-                } else if ([response[@"event_type"] isEqualToString:@"delete"]) {
+                } else if ([response.eventType isEqualToString:@"delete"]) {
                     _destroyResponse = response;
                     
                     // test case officially finished
@@ -194,28 +192,26 @@
     [self waitForStatus:kXCTUnitWaitStatusSuccess timeout:_TIMEOUT];
     
     // check initial response
-    XCTAssertTrue([_initialResponse[@"path"] isEqualToString:_ATTRIBUTE_PATH], @"path should be equal to the reference value.");
-    XCTAssertTrue([_initialResponse[@"event_type"] isEqualToString:@"initial"], @"event_type should be equal to the reference value.");
+    XCTAssertTrue([_initialResponse.path isEqualToString:_ATTRIBUTE_PATH], @"path should be equal to the reference value.");
+    XCTAssertTrue([_initialResponse.eventType isEqualToString:@"initial"], @"event_type should be equal to the reference value.");
     
-    NSDictionary *payload = _initialResponse[@"payload"];
-    XCTAssertNotNil(payload[@"attribute"], @"Attribute entry must not be nil.");
-    XCTAssertNotNil([payload valueForKeyPath:@"attribute.ctime"], @"attribute.ctime should not be nil.");
-    XCTAssertNotNil([payload valueForKeyPath:@"attribute.mtime"], @"attribute.mtime should not be nil.");
-    XCTAssertTrue([[payload valueForKeyPath:@"attribute.node"] isEqualToString:_NODE_PATH], @"node.uri should be equal to the reference value.");
-    XCTAssertTrue([[payload valueForKeyPath:@"attribute.type"] isEqualToString:_ATTRIBUTE_TYPE], @"attribute.type should be equal to the reference value.");
-    XCTAssertTrue([[payload valueForKeyPath:@"attribute.name"] isEqualToString:_ATTRIBUTE_NAME], @"attribute.name should be equal to the reference value.");
-    XCTAssertTrue([[payload valueForKeyPath:@"attribute.value"] isEqualToString:_ATTRIBUTE_VALUE], @"attribute.value should be equal to the reference value.");
+    GOMAttribute *payload = (GOMAttribute *)_initialResponse.payload;
+    XCTAssertNotNil(payload.ctime, @"attribute.ctime should not be nil.");
+    XCTAssertNotNil(payload.mtime, @"attribute.mtime should not be nil.");
+    XCTAssertTrue([payload.node isEqualToString:_NODE_PATH], @"node.uri should be equal to the reference value.");
+    XCTAssertTrue([payload.type isEqualToString:_ATTRIBUTE_TYPE], @"attribute.type should be equal to the reference value.");
+    XCTAssertTrue([payload.name isEqualToString:_ATTRIBUTE_NAME], @"attribute.name should be equal to the reference value.");
+    XCTAssertTrue([payload.value isEqualToString:_ATTRIBUTE_VALUE], @"attribute.value should be equal to the reference value.");
     
     // check response from update
-    XCTAssertTrue([_destroyResponse[@"path"] isEqualToString:_ATTRIBUTE_PATH], @"path should be equal to the reference value.");
-    XCTAssertTrue([_destroyResponse[@"event_type"] isEqualToString:@"delete"], @"event_type should be equal to the reference value.");
+    XCTAssertTrue([_destroyResponse.path isEqualToString:_ATTRIBUTE_PATH], @"path should be equal to the reference value.");
+    XCTAssertTrue([_destroyResponse.eventType isEqualToString:@"delete"], @"event_type should be equal to the reference value.");
     
-    payload = _destroyResponse[@"payload"];
-    XCTAssertNotNil(payload[@"attribute"], @"Attribute entry must not be nil.");
-    XCTAssertTrue([[payload valueForKeyPath:@"attribute.node"] isEqualToString:_NODE_PATH], @"node.uri should be equal to the reference value.");
-    XCTAssertTrue([[payload valueForKeyPath:@"attribute.type"] isEqualToString:_ATTRIBUTE_TYPE], @"attribute.type should be equal to the reference value.");
-    XCTAssertTrue([[payload valueForKeyPath:@"attribute.name"] isEqualToString:_ATTRIBUTE_NAME], @"attribute.name should be equal to the reference value.");
-    XCTAssertTrue([[payload valueForKeyPath:@"attribute.value"] isKindOfClass:[NSNull class]], @"attribute.value should be of class NSNull");
+    payload = (GOMAttribute *)_destroyResponse.payload;
+    XCTAssertTrue([payload.node isEqualToString:_NODE_PATH], @"node.uri should be equal to the reference value.");
+    XCTAssertTrue([payload.type isEqualToString:_ATTRIBUTE_TYPE], @"attribute.type should be equal to the reference value.");
+    XCTAssertTrue([payload.name isEqualToString:_ATTRIBUTE_NAME], @"attribute.name should be equal to the reference value.");
+    XCTAssertNil(payload.value, @"attribute.value should be of nil");
 }
 
 @end

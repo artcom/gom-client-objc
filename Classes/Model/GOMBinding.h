@@ -19,7 +19,7 @@
 - (id)initWithSubscriptionUri:(NSString *)subscriptionUri;
 - (void)addHandle:(GOMHandle *)handle;
 
-- (void)fireCallbacksWithObject:(id)object;
-- (void)fireInitialCallbacksWithObject:(id)object;
+- (void)fireCallbacksWithObject:(GOMGnp *)object;
+- (void)fireInitialCallbacksWithObject:(GOMGnp *)object;
 
 @end

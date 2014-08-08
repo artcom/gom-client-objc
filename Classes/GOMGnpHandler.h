@@ -10,8 +10,9 @@
 
 #import "GOMGnpHandlerDelegate.h"
 #import "GOMBinding.h"
+#import "GOMGNp.h"
 
-typedef void (^GOMClientGNPCallback)(NSDictionary *);
+typedef void (^GOMClientGNPCallback)(GOMGnp *);
 
 extern NSString * const GOMGnpHandlerErrorDomain;
 

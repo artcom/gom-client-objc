@@ -23,7 +23,7 @@
 - (void)removeObservers;
 - (void)slideUp;
 - (void)slideDown;
-- (void)writeToConsole:(NSDictionary *)output error:(NSError *)error;
+- (void)writeToConsole:(id)object error:(NSError *)error;
 - (void)resetTextfields;
 @end
 
@@ -90,9 +90,8 @@
         return;
     }
     __block NSURL *webSocketUri = nil;
-    [self.gomClient retrieve:websocketProxyPath completionBlock:^(NSDictionary *response, NSError *error) {
-        if (response) {
-            GOMAttribute *attribute = [GOMAttribute attributeFromDictionary:response];
+    [self.gomClient retrieveAttribute:websocketProxyPath completionBlock:^(GOMAttribute *attribute, NSError *error) {
+        if (attribute) {
             webSocketUri = [NSURL URLWithString:attribute.value];
             self.gomGnpHandler = [[GOMGnpHandler alloc] initWithWebsocketUri:webSocketUri delegate:self];
         }
@@ -167,13 +166,26 @@
     }
 }
 
-- (void)writeToConsole:(NSDictionary *)dictionary error:(NSError *)error
+- (void)writeToConsole:(id)object error:(NSError *)error
 {
     NSString *output = nil;
-    if (dictionary) {
-        output = dictionary.description;
-    } else {
+    
+    if (object == nil) {
         output = error.description;
+    } else {
+        if ([object isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *dictionary = object;
+            output = dictionary.description;
+        } else if ([object isKindOfClass:[GOMGnp class]]) {
+            GOMGnp *gnp = object;
+            output = gnp.eventType;
+        } else if ([object isKindOfClass:[GOMAttribute class]]) {
+            GOMAttribute *attribute = object;
+            output = attribute.name;
+        } else if ([object isKindOfClass:[GOMNode class]]) {
+            GOMNode *node = object;
+            output = node.uri;
+        }
     }
     NSLog(@"%@", output);
     
@@ -201,7 +213,7 @@
 
 - (void)observerViewController:(ObserverViewController *)observerViewController didAddObserverWithPath:(NSString *)path
 {
-    [self.gomGnpHandler registerGOMObserverForPath:path clientCallback:^(NSDictionary *dict) {
+    [self.gomGnpHandler registerGOMObserverForPath:path clientCallback:^(GOMGnp *dict) {
         [self writeToConsole:dict error:nil];
     }];
 }
@@ -226,9 +238,16 @@
 
 - (IBAction)retrievePressed:(id)sender {
     [self resetTextfields];
-    [self.gomClient retrieve:self.attributeField.text completionBlock:^(NSDictionary *response, NSError *error) {
-        [self writeToConsole:response error:error];
-    }];
+    NSString *enteredText = self.attributeField.text;
+    if ([enteredText rangeOfString:@":"].location == NSNotFound) {
+        [self.gomClient retrieveNode:self.attributeField.text completionBlock:^(GOMNode *node, NSError *error) {
+            [self writeToConsole:(GOMEntry *)node error:error];
+        }];
+    } else {
+        [self.gomClient retrieveAttribute:self.attributeField.text completionBlock:^(GOMAttribute *attribute, NSError *error) {
+            [self writeToConsole:(GOMEntry *)attribute error:error];
+        }];
+    }
 }
 
 - (IBAction)createPressed:(id)sender {

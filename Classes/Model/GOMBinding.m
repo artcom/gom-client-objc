@@ -30,14 +30,14 @@
     [self.handles addObject:handle];
 }
 
-- (void)fireCallbacksWithObject:(id)object
+- (void)fireCallbacksWithObject:(GOMGnp *)object
 {
     for (GOMHandle *handle in self.handles) {
         [handle fireCallbackWithObject:object];
     }
 }
 
-- (void)fireInitialCallbacksWithObject:(id)object
+- (void)fireInitialCallbacksWithObject:(GOMGnp *)object
 {
     for (GOMHandle *handle in self.handles) {
         [handle fireInitialCallbackWithObject:object];

@@ -9,6 +9,9 @@
 #import "GOMGnpHandler.h"
 #import "SRWebSocket.h"
 
+#import "GOMGnp.h"
+#import "GOMAttribute.h"
+#import "GOMNode.h"
 #import "NSString+JSON.h"
 #import "NSString+XML.h"
 #import "NSData+JSON.h"
@@ -34,6 +37,7 @@ NSString * const GOMGnpHandlerErrorDomain = @"de.artcom.gom-client-objc.gnphandl
 - (void)_reRegisterObservers;
 - (void)_returnError:(NSError *)error;
 - (NSError *)_gomGnpHandlerForCode:(GOMGnpHandlerErrorCode)code;
+- (GOMEntry *)_createGOMEntryFromDictionary:(NSDictionary *)dictionary;
 
 @end
 
@@ -129,17 +133,17 @@ NSString * const GOMGnpHandlerErrorDomain = @"de.artcom.gom-client-objc.gnphandl
     NSString *payloadString = response[@"initial"];
     
     if (payloadString) {
-        NSMutableDictionary *gnpDictionary = [[NSMutableDictionary alloc] init];
+        GOMGnp *gnpObject = [[GOMGnp alloc] init];
         NSDictionary *parsedPayload = [payloadString parseAsJSON];
-        gnpDictionary[@"payload"] = parsedPayload;
-        gnpDictionary[@"event_type"] = @"initial";
+        gnpObject.payload = [self _createGOMEntryFromDictionary:parsedPayload];
+        gnpObject.eventType = @"initial";
         
         NSString *path = response[@"path"];
-        gnpDictionary[@"path"] = path;
+        gnpObject.path = path;
         
         GOMBinding *binding = _priv_bindings[path];
         if (binding) {
-            [binding fireInitialCallbacksWithObject:gnpDictionary];
+            [binding fireInitialCallbacksWithObject:gnpObject];
         }
     }
 }
@@ -149,27 +153,38 @@ NSString * const GOMGnpHandlerErrorDomain = @"de.artcom.gom-client-objc.gnphandl
     NSString *payloadString = response[@"payload"];
     
     if (payloadString) {
-        NSMutableDictionary *gnpDictionary = [[NSMutableDictionary alloc] init];
+        GOMGnp *gnpObject = [[GOMGnp alloc] init];
         NSDictionary *parsedPayload = [payloadString parseAsJSON];
         if (parsedPayload[@"create"]) {
-            gnpDictionary[@"payload"] = parsedPayload[@"create"];
-            gnpDictionary[@"event_type"] = @"create";
+            gnpObject.payload = [self _createGOMEntryFromDictionary:parsedPayload[@"create"]];
+            gnpObject.eventType = @"create";
         } else if (parsedPayload[@"update"]) {
-            gnpDictionary[@"payload"] = parsedPayload[@"update"];
-            gnpDictionary[@"event_type"] = @"update";
+            gnpObject.payload = [self _createGOMEntryFromDictionary:parsedPayload[@"update"]];
+            gnpObject.eventType = @"update";
         } else if (parsedPayload[@"delete"]) {
-            gnpDictionary[@"payload"] = parsedPayload[@"delete"];
-            gnpDictionary[@"event_type"] = @"delete";
+            gnpObject.payload = [self _createGOMEntryFromDictionary:parsedPayload[@"delete"]];
+            gnpObject.eventType = @"delete";
         }
         
         NSString *path = response[@"path"];
-        gnpDictionary[@"path"] = path;
+        gnpObject.path = path;
         
         GOMBinding *binding = _priv_bindings[path];
-        if (gnpDictionary[@"payload"] && binding) {
-            [binding fireCallbacksWithObject:gnpDictionary];
+        if (gnpObject.payload && binding) {
+            [binding fireCallbacksWithObject:gnpObject];
         }
     }
+}
+
+- (GOMEntry *)_createGOMEntryFromDictionary:(NSDictionary *)dictionary
+{
+    GOMEntry *entry = nil;
+    if ([GOMAttribute isAttribute:dictionary]) {
+        entry = [GOMAttribute attributeFromDictionary:dictionary];
+    } else {
+        entry = [GOMNode nodeFromDictionary:dictionary];
+    }
+    return entry;
 }
 
 - (void)reconnectWebsocket
