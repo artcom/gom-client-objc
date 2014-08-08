@@ -10,7 +10,7 @@
 
 @implementation GOMHandle
 
-- (id)initWithBinding:(GOMBinding *)binding callback:(GOMHandleCallback)callback
+- (instancetype)initWithBinding:(GOMBinding *)binding callback:(GOMHandleCallback)callback
 {
     self = [super init];
     if (self) {

@@ -15,7 +15,6 @@
 #import "NSDictionary+XML.h"
 #import "NSURLRequest+GOMClient.h"
 
-NSString * const GOMClientErrorDomain = @"de.artcom.gom-client-objc.client";
 
 @interface GOMClient () <GOMOperationDelegate>
 
@@ -26,7 +25,7 @@ NSString * const GOMClientErrorDomain = @"de.artcom.gom-client-objc.client";
     NSMutableArray *_operations;
 }
 
-- (id)initWithGomURI:(NSURL *)gomURI
+- (instancetype)initWithGomURI:(NSURL *)gomURI
 {
     self = [super init];
     if (self) {

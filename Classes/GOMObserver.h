@@ -14,20 +14,13 @@
 
 typedef void (^GOMClientGNPCallback)(GOMGnp *);
 
-extern NSString * const GOMObserverErrorDomain;
-
-typedef enum {
-    GOMObserverWebsocketProxyUrlNotFound,
-    GOMObserverWebsocketNotOpen
-} GOMObserverErrorCode;
-
 @interface GOMObserver : NSObject
 
 @property (nonatomic, strong, readonly) NSURL *webSocketUri;
 @property (nonatomic, strong, readonly) NSDictionary *bindings;
 @property (nonatomic, weak) id<GOMObserverDelegate> delegate;
 
-- (id)initWithWebsocketUri:(NSURL *)websocketUri delegate:(id<GOMObserverDelegate>)delegate;
+- (instancetype)initWithWebsocketUri:(NSURL *)websocketUri delegate:(id<GOMObserverDelegate>)delegate;
 
 - (void)reconnectWebsocket;
 - (void)disconnectWebsocket;

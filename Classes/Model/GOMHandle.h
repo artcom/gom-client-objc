@@ -19,7 +19,7 @@ typedef void (^GOMHandleCallback)(GOMGnp *);
 @property (nonatomic, strong, readonly) GOMHandleCallback callback;
 @property (nonatomic, assign, readonly) BOOL initialRetrieved;
 
-- (id)initWithBinding:(GOMBinding *)binding callback:(GOMHandleCallback)callback;
+- (instancetype)initWithBinding:(GOMBinding *)binding callback:(GOMHandleCallback)callback;
 
 - (void)fireCallbackWithObject:(id)object;
 - (void)fireInitialCallbackWithObject:(id)object;

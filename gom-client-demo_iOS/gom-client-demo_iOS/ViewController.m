@@ -179,13 +179,13 @@
             output = dictionary.description;
         } else if ([object isKindOfClass:[GOMGnp class]]) {
             GOMGnp *gnp = object;
-            output = gnp.eventType;
+            output = gnp.debugDescription;
         } else if ([object isKindOfClass:[GOMAttribute class]]) {
             GOMAttribute *attribute = object;
-            output = attribute.name;
+            output = attribute.debugDescription;
         } else if ([object isKindOfClass:[GOMNode class]]) {
             GOMNode *node = object;
-            output = node.uri;
+            output = node.debugDescription;
         }
     }
     NSLog(@"%@", output);

@@ -13,6 +13,6 @@ typedef void (^GOMClientRetrieveNodeCallback)(GOMNode *, NSError *);
 
 @interface GOMOperationRetrieveNode : GOMOperation
 
-- (id)initWithRequest:(NSURLRequest *)request delegate:(id)delegate callback:(GOMClientRetrieveNodeCallback)callback;
+- (instancetype)initWithRequest:(NSURLRequest *)request delegate:(id)delegate callback:(GOMClientRetrieveNodeCallback)callback;
 
 @end

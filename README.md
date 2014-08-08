@@ -35,7 +35,7 @@ GOMClient *gomClient = [[GOMClient alloc] initWithGomURI:gomURI];
     * Attribute retrieval:
     
     ```objective-c
-    [gomClient retrieve:@"/tests/node_1:attribute_1" completionBlock:^(NSDictionary *response, NSError *error) {
+    [gomClient retrieveAttribute:@"/tests/node_1:attribute_1" completionBlock:^(GOMAttribute *attribute, NSError *error) {
 
         // Your code here
         
@@ -63,7 +63,7 @@ GOMClient *gomClient = [[GOMClient alloc] initWithGomURI:gomURI];
     * Node retrieval:
   
     ```objective-c
-    [gomClient retrieve:@"/tests/node_1" completionBlock:^(NSDictionary *response, NSError *error) {
+    [gomClient retrieveNode:@"/tests/node_1" completionBlock:^(GOMNode *node, NSError *error) {
    
         // Your code here
 
@@ -292,7 +292,7 @@ As soon as the GOMObserver instance is initialized and completely set up it will
 Fundamental errors are returned to the delegate through the `GOMObserverDelegate` protocol method ```- (void)gomObserver:(GOMObserver *)gomObserver didFailWithError:(NSError *)error```
 
 
-* Register an observer:
+* Register an observer in a GOM entry:
 
     ```objective-c
     [gomObserver registerGOMObserverForPath:@"/tests/node_1:attribute_2" clientCallback:^(GOMGnp *gnp) {
@@ -306,7 +306,7 @@ Fundamental errors are returned to the delegate through the `GOMObserverDelegate
     
     ```
     {
-        event_type = "initial"
+        eventType = "initial"
         path = "/tests/node_1:attribute_2"
         payload = {
             attribute = {
@@ -329,9 +329,9 @@ Fundamental errors are returned to the delegate through the `GOMObserverDelegate
 
 ### Handling websocket reconnects
 
-If the gom client's websocket fails it sends the delegate the message ```- (BOOL)gomClientShouldReconnect:(GOMClient *)gomClient```. Return `YES` to reconnect. You can also trigger the reconnect later by calling ```- (void)reconnectWebSocket```.
+If the gom observer's websocket fails it sends the delegate the message ```- (BOOL)gomObserverShouldReconnect:(GOMObserver *)gomObserver```. Return `YES` to reconnect. You can also trigger the reconnect later by calling ```- (void)reconnectWebSocket```.
 
-When the gom client reconnects and finds existing bindings it sends the delegate the message ```- (BOOL)gomClient:(GOMClient *)gomClient shouldReRegisterObserverWithBinding:(GOMBinding *)binding```. 
+When the gom client reconnects and finds existing bindings it sends the delegate the message ```- (BOOL)gomObserver:(GOMObserver *)gomObserver shouldReRegisterObserverWithBinding:(GOMBinding *)binding```. 
 
 Return `YES` to re-register an observer for the path in question.
 Re-registration will be silent, no initial GNP will be received. Return `NO` to discard the existing binding.
@@ -361,7 +361,12 @@ All dependencies are defined in the file `Podfile`
 ## Demo app
 Setting the GOM root address:
 
-![Setting the GOM root](https://github.com/artcom/gom-client-objc/raw/master/documentation/images/screenshots/1_settings.png)
+![Setting the GOM root](https://github.com/artcom/gom-client-objc/raw/master/documentation/images/screenshots/1a_settings.png)
+
+Setting the GOM observer's websocket proxy path:
+
+![Setting the GOM root](https://github.com/artcom/gom-client-objc/raw/master/documentation/images/screenshots/1b_settings.png)
+
 
 Startup - the demo app offers input fields for GOM node or attriute and a value. Four buttons below represent the commands you can send to the GOM:
 

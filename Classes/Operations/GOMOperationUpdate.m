@@ -10,7 +10,7 @@
 
 @implementation GOMOperationUpdate
 
-- (id)initWithRequest:(NSURLRequest *)request delegate:(id)delegate callback:(GOMClientOperationCallback)callback
+- (instancetype)initWithRequest:(NSURLRequest *)request delegate:(id)delegate callback:(GOMClientOperationCallback)callback
 {
     self = [super initWithRequest:request delegate:delegate];
     if (self) {

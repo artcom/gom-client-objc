@@ -17,7 +17,7 @@
 @implementation GOMOperationRetrieveAttribute
 
 
-- (id)initWithRequest:(NSURLRequest *)request delegate:(id)delegate callback:(GOMClientRetrieveAttributeCallback)callback
+- (instancetype)initWithRequest:(NSURLRequest *)request delegate:(id)delegate callback:(GOMClientRetrieveAttributeCallback)callback
 {
     self = [super initWithRequest:request delegate:delegate];
     if (self) {

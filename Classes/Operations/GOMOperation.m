@@ -8,7 +8,7 @@
 
 #import "GOMOperation.h"
 #import "NSData+JSON.h"
-#import "GOMClient.h"
+#import "NSError+GOMErrors.h"
 
 NSUInteger const MaxNumberOfRedirects = 10;
 
@@ -23,7 +23,7 @@ NSUInteger const MaxNumberOfRedirects = 10;
 
 @implementation GOMOperation
 
-- (id)initWithRequest:(NSURLRequest *)request delegate:(id<GOMOperationDelegate>)delegate
+- (instancetype)initWithRequest:(NSURLRequest *)request delegate:(id<GOMOperationDelegate>)delegate
 {
     if ([self class] == [GOMOperation class]) {
         @throw [NSException exceptionWithName:NSInternalInconsistencyException
@@ -108,7 +108,7 @@ NSUInteger const MaxNumberOfRedirects = 10;
         _performedRedirects++;
         if (_performedRedirects == MaxNumberOfRedirects) {
             [connection cancel];
-            NSError *error = [NSError errorWithDomain:GOMClientErrorDomain code:GOMClientTooManyRedirects userInfo:nil];
+            NSError *error = [NSError gomClientErrorForCode:GOMClientTooManyRedirects];
             [self _handleOperationResponse:nil data:nil error:error];
             return nil;
         } else {

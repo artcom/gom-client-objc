@@ -18,7 +18,7 @@ typedef void (^GOMClientOperationCallback)(NSDictionary *, NSError *);
 @property (nonatomic, weak)id<GOMOperationDelegate> delegate;
 @property (nonatomic, strong) NSURLRequest *request;
 
-- (id)initWithRequest:(NSURLRequest *)request delegate:(id<GOMOperationDelegate>)delegate;
+- (instancetype)initWithRequest:(NSURLRequest *)request delegate:(id<GOMOperationDelegate>)delegate;
 - (void)run;
 - (void)handleResponse:(NSDictionary *)response error:(NSError *)error;
 @end

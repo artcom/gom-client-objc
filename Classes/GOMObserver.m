@@ -17,8 +17,7 @@
 #import "NSData+JSON.h"
 #import "NSDictionary+JSON.h"
 #import "NSDictionary+XML.h"
-
-NSString * const GOMObserverErrorDomain = @"de.artcom.gom-client-objc.observer";
+#import "NSError+GOMErrors.h"
 
 @interface GOMObserver () <SRWebSocketDelegate>
 
@@ -36,7 +35,6 @@ NSString * const GOMObserverErrorDomain = @"de.artcom.gom-client-objc.observer";
 - (void)_checkReconnect;
 - (void)_reRegisterObservers;
 - (void)_returnError:(NSError *)error;
-- (NSError *)_gomObserverErrorForCode:(GOMObserverErrorCode)code;
 - (GOMEntry *)_createGOMEntryFromDictionary:(NSDictionary *)dictionary;
 
 @end
@@ -115,7 +113,7 @@ NSString * const GOMObserverErrorDomain = @"de.artcom.gom-client-objc.observer";
         NSData *jsonData = [commands convertToJSON];
         [_webSocket send:jsonData];
     } else {
-        [self _returnError:[self _gomObserverErrorForCode:GOMObserverWebsocketNotOpen]];
+        [self _returnError:[NSError gomObserverErrorForCode:GOMObserverWebsocketNotOpen]];
     }
 }
 
@@ -196,7 +194,7 @@ NSString * const GOMObserverErrorDomain = @"de.artcom.gom-client-objc.observer";
         [_webSocket open];
         return;
     }
-    [self _returnError:[self _gomObserverErrorForCode:GOMObserverWebsocketProxyUrlNotFound]];
+    [self _returnError:[NSError gomObserverErrorForCode:GOMObserverWebsocketProxyUrlNotFound]];
 }
 
 - (void)disconnectWebsocket
@@ -213,25 +211,6 @@ NSString * const GOMObserverErrorDomain = @"de.artcom.gom-client-objc.observer";
     }
 }
 
-- (NSError *)_gomObserverErrorForCode:(GOMObserverErrorCode)code
-{
-    NSString *description = nil;
-    
-    switch (code) {
-        case GOMObserverWebsocketProxyUrlNotFound:
-            description = @"Websocket proxy url not found.";
-            break;
-        case GOMObserverWebsocketNotOpen:
-            description = @"Websocket not open.";
-            break;
-        default:
-            description = @"Unknown error code.";
-            break;
-    }
-    
-    NSDictionary *userInfo = @{NSLocalizedDescriptionKey : NSLocalizedString(description, nil)};
-    return [NSError errorWithDomain:GOMObserverErrorDomain code:code userInfo:userInfo];
-}
 
 - (void)_reRegisterObservers
 {

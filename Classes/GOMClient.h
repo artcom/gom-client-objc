@@ -13,19 +13,13 @@
 #import "GOMOperationDelete.h"
 #import "GOMOperationRetrieveAttribute.h"
 #import "GOMOperationRetrieveNode.h"
-
-extern NSString * const GOMClientErrorDomain;
-
-typedef enum {
-    GOMClientTooManyRedirects
-} GOMClientErrorCode;
-
+#import "GOMObserver.h"
 
 @interface GOMClient : NSObject
 
 @property (nonatomic, strong, readonly) NSURL *gomRoot;
 
-- (id)initWithGomURI:(NSURL *)gomURI;
+- (instancetype)initWithGomURI:(NSURL *)gomURI;
 
 - (void)retrieveAttribute:(NSString *)path completionBlock:(GOMClientRetrieveAttributeCallback)block;
 - (void)retrieveNode:(NSString *)path completionBlock:(GOMClientRetrieveNodeCallback)block;

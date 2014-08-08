@@ -16,7 +16,7 @@
 @property (nonatomic, strong, readonly) NSMutableArray *handles;
 @property (nonatomic, assign) BOOL registered;
 
-- (id)initWithSubscriptionUri:(NSString *)subscriptionUri;
+- (instancetype)initWithSubscriptionUri:(NSString *)subscriptionUri;
 - (void)addHandle:(GOMHandle *)handle;
 
 - (void)fireCallbacksWithObject:(GOMGnp *)object;

@@ -14,7 +14,7 @@
 
 @implementation GOMBinding
 
-- (id)initWithSubscriptionUri:(NSString *)subscriptionUri
+- (instancetype)initWithSubscriptionUri:(NSString *)subscriptionUri
 {
     self = [super init];
     if (self) {

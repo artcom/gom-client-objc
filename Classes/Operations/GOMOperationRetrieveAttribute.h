@@ -13,6 +13,6 @@ typedef void (^GOMClientRetrieveAttributeCallback)(GOMAttribute *, NSError *);
 
 @interface GOMOperationRetrieveAttribute : GOMOperation
 
-- (id)initWithRequest:(NSURLRequest *)request delegate:(id)delegate callback:(GOMClientRetrieveAttributeCallback)callback;
+- (instancetype)initWithRequest:(NSURLRequest *)request delegate:(id)delegate callback:(GOMClientRetrieveAttributeCallback)callback;
 
 @end

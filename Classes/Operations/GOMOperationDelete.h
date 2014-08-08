@@ -12,6 +12,6 @@
 
 @property (nonatomic, strong, readonly) GOMClientOperationCallback callback;
 
-- (id)initWithRequest:(NSURLRequest *)request delegate:(id)delegate callback:(GOMClientOperationCallback)callback;
+- (instancetype)initWithRequest:(NSURLRequest *)request delegate:(id)delegate callback:(GOMClientOperationCallback)callback;
 
 @end

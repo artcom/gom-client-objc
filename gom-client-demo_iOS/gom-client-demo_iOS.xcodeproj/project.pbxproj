@@ -164,8 +164,8 @@
 		3B779D2B1802B262007207B0 /* gom-client-demo_iOSTests */ = {
 			isa = PBXGroup;
 			children = (
-				3B65C2741994BE1200EDB8C9 /* GOMObserverTest.m */,
 				3B6CFCCD18F8771500F22551 /* GomClientTest.m */,
+				3B65C2741994BE1200EDB8C9 /* GOMObserverTest.m */,
 				3B893BC418CCA4C400F15B25 /* GOMAttributeTest.m */,
 				3B893BC518CCA4C400F15B25 /* GOMNodeTest.m */,
 				3B893BC818CCABFD00F15B25 /* DictionaryXMLTests.m */,

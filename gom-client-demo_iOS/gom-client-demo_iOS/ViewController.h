@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 
 #import "GOMClient.h"
-#import "GOMObserver.h"
 #import "ObserverViewController.h"
 
 @interface ViewController : UIViewController <GOMObserverDelegate, ObserverViewControllerDelegate, UITextFieldDelegate>
