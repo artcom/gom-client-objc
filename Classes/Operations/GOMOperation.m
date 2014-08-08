@@ -25,9 +25,13 @@ NSUInteger const MaxNumberOfRedirects = 10;
 
 - (id)initWithRequest:(NSURLRequest *)request delegate:(id<GOMOperationDelegate>)delegate
 {
+    if ([self class] == [GOMOperation class]) {
+        @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                       reason:@"Error, attempting to instantiate abstract class GOMOperation directly."
+                                     userInfo:nil];
+    }
     self = [super init];
     if (self) {
-        
         _request = request;
         _delegate = delegate;
         _performedRedirects = 0;
@@ -71,7 +75,9 @@ NSUInteger const MaxNumberOfRedirects = 10;
 
 - (void)handleResponse:(NSDictionary *)response error:(NSError *)error
 {
-    
+    @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                   reason:[NSString stringWithFormat:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)]
+                                 userInfo:nil];
 }
 
 #pragma mark - NSURLConnectionDataDelegate
